@@ -4,9 +4,10 @@
   "description": "A web-app that helps you keep track of the people you meet with",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --exit",
     "start": "node server.js"
   },
+  "repository": "https://github.com/willnix86/ppl",
   "author": "Will Nixon",
   "license": "ISC",
   "dependencies": {
