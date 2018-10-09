@@ -25,7 +25,7 @@ describe('Load static pages', function() {
     it('should load the user admin page HTML successfully', function() {
         let res;
         chai.request('http://localhost:8080')
-        .get('/user')
+        .get('/user.html')
         .then((_res) => {
             res = _res;
             res.should.have.status(200);
@@ -39,7 +39,7 @@ describe('Load static pages', function() {
     it('should load the person profile page HTML successfully', function() {
         let res;
         chai.request('http://localhost:8080')
-        .get('/person')
+        .get('/person.html')
         .then((_res) => {
             res = _res;
             res.should.have.status(200);
