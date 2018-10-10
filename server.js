@@ -22,7 +22,7 @@ app.get('/users', (req, res) => {
     User.find()
     .then(users => {
         res.json({
-            users: users.map((user) => user.serialize())
+            users: users.map((users) => users.serialize())
         });
     })
     .catch(err => {
@@ -34,6 +34,19 @@ app.get('/users', (req, res) => {
 // get users by ID
 
 // get people
+app.get('/people', (req, res) => {
+    Person.find()
+    .limit(10)
+    .then(people => {
+        res.json({
+            people: people.map((people) => people.serialize())
+        });
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({message: "Internal server error, please try again later."})
+    });
+});
 
 // get person by ID
 

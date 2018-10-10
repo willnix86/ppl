@@ -56,96 +56,96 @@ function generateUserData() {
     }
 };
 
-// //SEED PEOPLE DATA
-// function seedPeopleData() {
-//     console.log('Seeding people data...');
-//     const seedData = [];
-//     for (let i = 0; i <= 10; i++) {
-//         seedData.push(generatePeopleData());
-//     };
-//     return Person.insertMany(seedData);
-// }
+//SEED PEOPLE DATA
+function seedPeopleData() {
+    console.log('Seeding people data...');
+    const seedData = [];
+    for (let i = 0; i <= 10; i++) {
+        seedData.push(generatePeopleData());
+    };
+    return Person.insertMany(seedData);
+}
 
-// //GENERATE PEOPLE DATA
-// function generatePeopleData() {
-//     return {
-//         firstName: faker.name.firstName(),
-//         lastName: faker.name.lastName(),
-//         type: "Congregant",
-//         user: `${faker.name.firstName()} ${faker.name.lastName()}`,
-//         notes: [
-//             {
-//                 content: faker.lorem.sentence,
-//                 createdAt: faker.date.recent
-//             }, {
-//                 content: faker.lorem.sentence,
-//                 createdAt: faker.date.recent
-//             }, {
-//                 content: faker.lorem.sentence,
-//                 createdAt: faker.date.recent
-//             },{
-//                 content: faker.lorem.sentence,
-//                 createdAt: faker.date.recent
-//             }
-//         ],
-//         goals: [
-//             {
-//                 goal: faker.lorem.sentence,
-//                 createdAt: faker.date.recent,
-//                 completeBy: faker.date.soon,
-//                 completed: faker.random.boolean
-//             }, {
-//                 goal: faker.lorem.sentence,
-//                 createdAt: faker.date.recent,
-//                 completeBy: faker.date.soon,
-//                 completed: faker.random.boolean
-//             }, {
-//                 goal: faker.lorem.sentence,
-//                 createdAt: faker.date.recent,
-//                 completeBy: faker.date.soon,
-//                 completed: faker.random.boolean
-//             }
-//         ],
-//         files: [
-//             {
-//                 name: faker.system.fileName,
-//                 ext: faker.system.fileExt,
-//                 uploaded: faker.date.recent
-//             }, {
-//                 name: faker.system.fileName,
-//                 ext: faker.system.fileExt,
-//                 uploaded: faker.date.recent
-//             }, {
-//                 name: faker.system.fileName,
-//                 ext: faker.system.fileExt,
-//                 uploaded: faker.date.recent
-//             }, {
-//                 name: faker.system.fileName,
-//                 ext: faker.system.fileExt,
-//                 uploaded: faker.date.recent
-//             }
-//         ],
-//         meetings: [
-//             {
-//                 user: `${faker.name.firstName()} ${faker.name.lastName()}`,
-//                 person: `${faker.name.firstName()} ${faker.name.lastName()}`,
-//                 date: faker.date.past
-//             }, {
-//                 user: `${faker.name.firstName()} ${faker.name.lastName()}`,
-//                 person: `${faker.name.firstName()} ${faker.name.lastName()}`,
-//                 date: faker.date.recent
-//             }, {
-//                 user: `${faker.name.firstName()} ${faker.name.lastName()}`,
-//                 person: `${faker.name.firstName()} ${faker.name.lastName()}`,
-//                 date: faker.date.recent
-//             }, {
-//                 user: `${faker.name.firstName()} ${faker.name.lastName()}`,
-//                 person: `${faker.name.firstName()} ${faker.name.lastName()}`,
-//                 date: faker.date.soon
-//             },
-//         ]
-//     }
-// };
+//GENERATE PEOPLE DATA
+function generatePeopleData() {
+    return {
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        type: "Congregant",
+        user: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        notes: [
+            {
+                content: faker.lorem.sentence,
+                createdAt: faker.date.recent
+            }, {
+                content: faker.lorem.sentence,
+                createdAt: faker.date.recent
+            }, {
+                content: faker.lorem.sentence,
+                createdAt: faker.date.recent
+            },{
+                content: faker.lorem.sentence,
+                createdAt: faker.date.recent
+            }
+        ],
+        goals: [
+            {
+                goal: faker.lorem.sentence,
+                createdAt: faker.date.recent,
+                completeBy: faker.date.soon,
+                completed: faker.random.boolean
+            }, {
+                goal: faker.lorem.sentence,
+                createdAt: faker.date.recent,
+                completeBy: faker.date.soon,
+                completed: faker.random.boolean
+            }, {
+                goal: faker.lorem.sentence,
+                createdAt: faker.date.recent,
+                completeBy: faker.date.soon,
+                completed: faker.random.boolean
+            }
+        ],
+        files: [
+            {
+                name: faker.system.fileName,
+                ext: faker.system.fileExt,
+                uploaded: faker.date.recent
+            }, {
+                name: faker.system.fileName,
+                ext: faker.system.fileExt,
+                uploaded: faker.date.recent
+            }, {
+                name: faker.system.fileName,
+                ext: faker.system.fileExt,
+                uploaded: faker.date.recent
+            }, {
+                name: faker.system.fileName,
+                ext: faker.system.fileExt,
+                uploaded: faker.date.recent
+            }
+        ],
+        meetings: [
+            {
+                user: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                person: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                date: faker.date.past
+            }, {
+                user: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                person: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                date: faker.date.recent
+            }, {
+                user: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                person: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                date: faker.date.recent
+            }, {
+                user: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                person: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                date: faker.date.soon
+            },
+        ]
+    }
+};
 
 function tearDownDb() {
     console.log('Deleting database...');
@@ -161,9 +161,9 @@ describe('Ppl API Resource', function() {
         return seedUserData();
     });
 
-    // beforeEach(function() {
-    //     return seedPeopleData();
-    // });
+    beforeEach(function() {
+        return seedPeopleData();
+    });
 
     afterEach(function() {
         return tearDownDb();

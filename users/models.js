@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
     lastName: {type: String, required: true},
     userName: {type: String, required: true, unique: true},
     password: {type: String, required: true},
-    myPeople: [{type: mongoose.Schema.Types.ObjectId, ref: "Person", required: true}]
+    people: [{peopleType: mongoose.Schema.Types.ObjectId, ref: "Person", required: true}]
 });
 
 userSchema.methods.serialize = function() {
@@ -16,7 +16,7 @@ userSchema.methods.serialize = function() {
         userName: this.userName,
         firstName: this.firstName,
         lastName: this.lastName,
-        myPeople: this.myPpl
+        people: this.people
     };
 };
 
