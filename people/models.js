@@ -62,4 +62,4 @@ meetingSchema.methods.serialize = function() {
 
 const Person = mongoose.model('Person', personSchema);
 
-module.export = {Person};
+module.exports = {Person};
