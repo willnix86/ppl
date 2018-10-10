@@ -34,6 +34,11 @@ const personSchema = mongoose.Schema({
     meetings: [meetingSchema],
 });
 
+personSchema.pre('find', function(next) {
+    this.populate('user');
+    next();
+})
+
 personSchema.pre('findById', function(next) {
     this.populate('user');
     next();

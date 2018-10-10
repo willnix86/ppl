@@ -20,6 +20,16 @@ userSchema.methods.serialize = function() {
     };
 };
 
+userSchema.pre('find', function(next) {
+    this.populate('people');
+    next();
+})
+
+userSchema.pre('findById', function(next) {
+    this.populate('people');
+    next();
+})
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = {User};
