@@ -60,8 +60,6 @@ app.get('/people', (req, res) => {
 
 // get person by ID
 
-// post new person
-
 // post new user
 app.post('/users', (req, res) => {
     const requiredFields = ['firstName', 'lastName', 'userName', 'password'];
@@ -85,7 +83,6 @@ app.post('/users', (req, res) => {
                 lastName: req.body.lastName,
                 userName: req.body.userName,
                 password: req.body.password,
-                people: req.body.people,
                 meetings: req.body.meetings
             })
             .then(user => {
@@ -95,6 +92,30 @@ app.post('/users', (req, res) => {
     })
     .catch(err => res.status(500).send({message: 'Internal server error. Please try again later.'}))
 });
+
+// post new person
+app.post('/people', (req, res) => {
+    const requiredFields = ['firstName', 'lastName', 'user'];
+    for (let i = 0; i < requiredFields; i++) {
+        let field = requiredFields[i];
+        if (!(field in req.body)) {
+            let message = `Missing ${field} in request parameters`;
+            console.error(message);
+            res.status(400).send(message);
+        }
+    }
+    People.create({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        user: req.body.user,
+        notes: req.body.notes,
+        goals: req.body.goals
+    })
+    .then(person => {
+        res.json(person.serialize());
+    })
+    .catch(err => res.status(500).send({message: 'Internal server error. Please try again later.'}))
+})
 
 // post new goal to person
 

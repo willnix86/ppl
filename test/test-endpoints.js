@@ -31,28 +31,6 @@ function generateUserData() {
         lastName: faker.name.lastName(),
         userName: `${faker.name.firstName()}.${faker.name.lastName()}`,
         password: faker.internet.password(),
-        myPeople: [
-            {
-                firstName: faker.name.firstName(),
-                lastName: faker.name.lastName(),
-            },
-            {
-                firstName: faker.name.firstName(),
-                lastName: faker.name.lastName(),
-            },
-            {
-                firstName: faker.name.firstName(),
-                lastName: faker.name.lastName(),
-            },
-            {
-                firstName: faker.name.firstName(),
-                lastName: faker.name.lastName(),
-            },
-            {
-                firstName: faker.name.firstName(),
-                lastName: faker.name.lastName(),
-            }
-        ],
         meetings: [
             {
                 person: {
@@ -217,7 +195,7 @@ describe('Ppl API Resource', function() {
 
             res.body.forEach(function(user) {
                 user.should.be.a('object');
-                user.should.include.keys('id', 'firstName', 'lastName', 'userName', 'people', 'meetings');
+                user.should.include.keys('id', 'firstName', 'lastName', 'userName', 'meetings');
                 user.people.should.be.a('array');
                 user.meetings.should.be.a('array');
             });
@@ -231,8 +209,7 @@ describe('Ppl API Resource', function() {
             resUser.lastName.should.equal(user.lastName);
             resUser.userName.should.equal(user.userName);
             // console.log(resUser);
-            // console.log(user);
-            // resUser.people.should.equal(user.people);
+            // console.log(user)
             // resUser.meetings.should.equal(user.meetings);
         })
     })
@@ -251,8 +228,7 @@ describe('Ppl API Resource', function() {
             console.log(res.body);
             res.body.id.should.equal(id);
             res.body.should.be.a('object');
-            res.body.should.include.keys('id', 'firstName', 'lastName', 'userName', 'people', 'meetings');
-            res.body.people.should.be.a('array');
+            res.body.should.include.keys('id', 'firstName', 'lastName', 'userName', 'meetings');
             res.body.meetings.should.be.a('array');
         })
     })

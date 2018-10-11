@@ -19,21 +19,33 @@ const goalSchema = mongoose.Schema({
 const peopleSchema = mongoose.Schema({
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     notes: [noteSchema],
     goals: [goalSchema],
     //files: [fileSchema]
 });
 
+peopleSchema.methods.serialize = function() {
+    return {
+        id: this._id,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        user: this.user,
+        notes: this.notes,
+        goals: this.goals,
+    }
+}
+
 peopleSchema.pre('find', function(next) {
-    this.populate('user');
+    this.populate('user', {userName: 0, password: 0, meetings: 0, people: 0, __v: 0});
     next();
 })
 
 peopleSchema.pre('findById', function(next) {
-    this.populate('user');
+    this.populate('user', {userName: 0, password: 0, meetings: 0, people: 0, __v: 0});
     next();
 })
 
-const People = mongoose.model('People', peopleSchema);
+const People = mongoose.model('People', peopleSchema, 'people');
 
 module.exports = {People};
