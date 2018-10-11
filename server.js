@@ -8,7 +8,7 @@ const jsonParser = bodyParser.json();
 mongoose.Promise = global.Promise;
 
 const { PORT, DATABASE_URL } = require('./config');
-const { Person } = require('./people/models');
+const { People } = require('./people/models');
 const { User } = require('./users/models');
 
 const app = express();
@@ -19,11 +19,11 @@ app.use(morgan("common"));
 
 //get users
 app.get('/users', (req, res) => {
-    User.find()
+    User.find({}, '-__v')
     .then(users => {
-        res.json({
-            users: users.map((users) => users.serialize())
-        });
+        res.json(
+            users.map((users) => users.serialize())
+        );
     })
     .catch(err => {
         console.error(err);
@@ -32,15 +32,25 @@ app.get('/users', (req, res) => {
 });
 
 // get users by ID
+app.get('/users/:id', (req, res) => {
+    User.findById(req.params.id, '-__v')
+    .then(user => {
+        res.json(user.serialize());
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({message: "Internal server error, please try again later."})
+    })
+})
 
 // get people
 app.get('/people', (req, res) => {
-    Person.find()
+    People.find({}, '-__v')
     .limit(10)
     .then(people => {
-        res.json({
-            people: people.map((people) => people.serialize())
-        });
+        res.json(
+            people.map((people) => people.serialize())
+        );
     })
     .catch(err => {
         console.error(err);
@@ -74,7 +84,9 @@ app.post('/users', (req, res) => {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 userName: req.body.userName,
-                password: req.body.password
+                password: req.body.password,
+                people: req.body.people,
+                meetings: req.body.meetings
             })
             .then(user => {
                 res.status(201).json(user.serialize());

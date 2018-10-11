@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const should = chai.should();
 
 const { User } = require('../users/models');
-const { Person } = require('../people/models');
+const { People } = require('../people/models');
 const { app, runServer, closeServer } = require('../server');
 const { TEST_DATABASE_URL } = require('../config');
 
@@ -52,7 +52,43 @@ function generateUserData() {
                 firstName: faker.name.firstName(),
                 lastName: faker.name.lastName(),
             }
-        ]
+        ],
+        meetings: [
+            {
+                person: {
+                    firstName: faker.name.firstName(),
+                    lastName: faker.name.lastName()
+                },
+                date: faker.date.past()
+            }, 
+            {
+                person: {
+                    firstName: faker.name.firstName(),
+                    lastName: faker.name.lastName()
+                },
+                date: faker.date.recent()
+            },
+            {
+                person: {
+                    firstName: faker.name.firstName(),
+                    lastName: faker.name.lastName()
+                },
+                date: faker.date.recent()
+            },
+            {
+                person: {
+                    firstName: faker.name.firstName(),
+                    lastName: faker.name.lastName()
+                },
+                date: faker.date.recent()
+            },
+            {
+                person: {
+                    firstName: faker.name.firstName(),
+                    lastName: faker.name.lastName()
+                },
+                date: faker.date.recent()
+            }]
     }
 };
 
@@ -63,7 +99,7 @@ function seedPeopleData() {
     for (let i = 0; i <= 10; i++) {
         seedData.push(generatePeopleData());
     };
-    return Person.insertMany(seedData);
+    return People.insertMany(seedData);
 }
 
 //GENERATE PEOPLE DATA
@@ -72,77 +108,57 @@ function generatePeopleData() {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         type: "Congregant",
-        user: `${faker.name.firstName()} ${faker.name.lastName()}`,
         notes: [
             {
-                content: faker.lorem.sentence,
-                createdAt: faker.date.recent
+                content: faker.lorem.sentence(),
+                createdAt: faker.date.recent()
             }, {
-                content: faker.lorem.sentence,
-                createdAt: faker.date.recent
+                content: faker.lorem.sentence(),
+                createdAt: faker.date.recent()
             }, {
-                content: faker.lorem.sentence,
-                createdAt: faker.date.recent
+                content: faker.lorem.sentence(),
+                createdAt: faker.date.recent()
             },{
-                content: faker.lorem.sentence,
-                createdAt: faker.date.recent
+                content: faker.lorem.sentence(),
+                createdAt: faker.date.recent()
             }
         ],
         goals: [
             {
-                goal: faker.lorem.sentence,
-                createdAt: faker.date.recent,
-                completeBy: faker.date.soon,
-                completed: faker.random.boolean
+                goal: faker.lorem.sentence(),
+                createdAt: faker.date.recent(),
+                completeBy: faker.date.recent(),
+                completed: faker.random.boolean()
             }, {
-                goal: faker.lorem.sentence,
-                createdAt: faker.date.recent,
-                completeBy: faker.date.soon,
-                completed: faker.random.boolean
+                goal: faker.lorem.sentence(),
+                createdAt: faker.date.recent(),
+                completeBy: faker.date.recent(),
+                completed: faker.random.boolean()
             }, {
-                goal: faker.lorem.sentence,
-                createdAt: faker.date.recent,
-                completeBy: faker.date.soon,
-                completed: faker.random.boolean
+                goal: faker.lorem.sentence(),
+                createdAt: faker.date.recent(),
+                completeBy: faker.date.recent(),
+                completed: faker.random.boolean()
             }
         ],
         files: [
             {
-                name: faker.system.fileName,
-                ext: faker.system.fileExt,
-                uploaded: faker.date.recent
+                name: faker.system.fileName(),
+                ext: faker.system.fileExt(),
+                uploaded: faker.date.recent()
             }, {
-                name: faker.system.fileName,
-                ext: faker.system.fileExt,
-                uploaded: faker.date.recent
+                name: faker.system.fileName(),
+                ext: faker.system.fileExt(),
+                uploaded: faker.date.recent()
             }, {
-                name: faker.system.fileName,
-                ext: faker.system.fileExt,
-                uploaded: faker.date.recent
+                name: faker.system.fileName(),
+                ext: faker.system.fileExt(),
+                uploaded: faker.date.recent()
             }, {
-                name: faker.system.fileName,
-                ext: faker.system.fileExt,
-                uploaded: faker.date.recent
+                name: faker.system.fileName(),
+                ext: faker.system.fileExt(),
+                uploaded: faker.date.recent()
             }
-        ],
-        meetings: [
-            {
-                user: `${faker.name.firstName()} ${faker.name.lastName()}`,
-                person: `${faker.name.firstName()} ${faker.name.lastName()}`,
-                date: faker.date.past
-            }, {
-                user: `${faker.name.firstName()} ${faker.name.lastName()}`,
-                person: `${faker.name.firstName()} ${faker.name.lastName()}`,
-                date: faker.date.recent
-            }, {
-                user: `${faker.name.firstName()} ${faker.name.lastName()}`,
-                person: `${faker.name.firstName()} ${faker.name.lastName()}`,
-                date: faker.date.recent
-            }, {
-                user: `${faker.name.firstName()} ${faker.name.lastName()}`,
-                person: `${faker.name.firstName()} ${faker.name.lastName()}`,
-                date: faker.date.soon
-            },
         ]
     }
 };
@@ -173,6 +189,7 @@ describe('Ppl API Resource', function() {
         return closeServer();
     })
 
+// GET ALL USERS
     it('should return all users from database', function() {
         let res;
         return chai.request(app)
@@ -187,5 +204,59 @@ describe('Ppl API Resource', function() {
             res.body.should.have.lengthOf(count);
         })
     });
+    
+    it('should return users with all the right fields', function() {
+        let resUser;
+        return chai.request(app)
+        .get('/users')
+        .then(function(res) {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('array');
+            res.body.should.have.lengthOf.at.least(1);
+
+            res.body.forEach(function(user) {
+                user.should.be.a('object');
+                user.should.include.keys('id', 'firstName', 'lastName', 'userName', 'people', 'meetings');
+                user.people.should.be.a('array');
+                user.meetings.should.be.a('array');
+            });
+
+            resUser = res.body[0];
+            return User.findById(resUser.id);
+        })
+        .then(function(user) {
+            resUser.id.should.equal(user.id);
+            resUser.firstName.should.equal(user.firstName);
+            resUser.lastName.should.equal(user.lastName);
+            resUser.userName.should.equal(user.userName);
+            // console.log(resUser);
+            // console.log(user);
+            // resUser.people.should.equal(user.people);
+            // resUser.meetings.should.equal(user.meetings);
+        })
+    })
+
+// GET USER BY ID
+    it('should return the correct user from database', function() {
+        let id;
+        User.findOne()
+        .then(function(user) {
+            id = user.id;
+            return chai.request(app)
+            .get(`/users/${id}`)
+        })
+        .then(function(res) {
+            res.should.have.status(200);
+            console.log(res.body);
+            res.body.id.should.equal(id);
+            res.body.should.be.a('object');
+            res.body.should.include.keys('id', 'firstName', 'lastName', 'userName', 'people', 'meetings');
+            res.body.people.should.be.a('array');
+            res.body.meetings.should.be.a('array');
+        })
+    })
+
+// GET ALL PEOPLE
 
 })
