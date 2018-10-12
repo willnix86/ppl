@@ -1,120 +1,32 @@
 'use strict';
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const jsonParser = bodyParser.json();
-
-mongoose.Promise = global.Promise;
+const mongoose = require('mongoose');
 
 const { PORT, DATABASE_URL } = require('./config');
-const { People } = require('./people/models');
-const { User } = require('./users/models');
+const userRouter = require('./users/router');
+const peopleRouter = require('./people/router');
+const meetingRouter = require('./meetings/router');
 
 const app = express();
+
 app.use(express.static('public'));
-app.use(bodyParser.json());
+app.use('/users', userRouter);
+app.use('/people', peopleRouter);
+app.use('/meetings', meetingRouter);
 
 app.use(morgan("common"));
 
-//get users
-app.get('/users', (req, res) => {
-    User.find({}, '-__v')
-    .then(users => {
-        res.json(
-            users.map((users) => users.serialize())
-        );
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).json({message: "Internal server error, please try again later."})
-    });
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/views/index.html');
 });
 
-// get users by ID
-app.get('/users/:id', (req, res) => {
-    User.findById(req.params.id, '-__v')
-    .then(user => {
-        res.json(user.serialize());
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).json({message: "Internal server error, please try again later."})
-    })
+app.get('/user', (req, res) => {
+    res.sendFile(__dirname + '/views/user.html');
 })
 
-// get people
-app.get('/people', (req, res) => {
-    People.find({}, '-__v')
-    .limit(10)
-    .then(people => {
-        res.json(
-            people.map((people) => people.serialize())
-        );
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).json({message: "Internal server error, please try again later."})
-    });
-});
-
-// get person by ID
-
-// post new user
-app.post('/users', (req, res) => {
-    const requiredFields = ['firstName', 'lastName', 'userName', 'password'];
-    for (let i = 0; i < requiredFields; i++){
-        let field = requiredFields[i];
-        if (!(field in req.body)) {
-            let message = `Missing ${field} in request parameters`;
-            console.err(message);
-            res.status(400).send(message);
-        }
-    }
-    User.findOne({userName: req.body.userName})
-    .then(user => {
-        if (user) {
-            let message = `Username (${req.body.userName}) is already taken.`;
-            console.error(message);
-            res.status(400).send(message);
-        } else {
-            User.create({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                userName: req.body.userName,
-                password: req.body.password,
-                meetings: req.body.meetings
-            })
-            .then(user => {
-                res.status(201).json(user.serialize());
-            })
-        }
-    })
-    .catch(err => res.status(500).send({message: 'Internal server error. Please try again later.'}))
-});
-
-// post new person
-app.post('/people', (req, res) => {
-    const requiredFields = ['firstName', 'lastName', 'user'];
-    for (let i = 0; i < requiredFields; i++) {
-        let field = requiredFields[i];
-        if (!(field in req.body)) {
-            let message = `Missing ${field} in request parameters`;
-            console.error(message);
-            res.status(400).send(message);
-        }
-    }
-    People.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        user: req.body.user,
-        notes: req.body.notes,
-        goals: req.body.goals
-    })
-    .then(person => {
-        res.json(person.serialize());
-    })
-    .catch(err => res.status(500).send({message: 'Internal server error. Please try again later.'}))
+app.get('/person', (req, res) => {
+    res.sendFile(__dirname + '/views/person.html');
 })
 
 // post new goal to person
@@ -156,8 +68,6 @@ app.post('/people', (req, res) => {
 // delete file by id
 
 // delete meeting by id and person id
-
-
 
 let server;
 

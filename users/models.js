@@ -2,6 +2,8 @@
 
 const mongoose = require('mongoose');
 
+// MAKE MEETINGS IT'S OWN COLLECTION
+
 const meetingSchema = mongoose.Schema({
     person: {type: mongoose.Schema.Types.ObjectId, ref: 'People'},
     date: {type: Date, required: true}
@@ -30,7 +32,7 @@ userSchema.pre('find', function(next) {
     next();
 })
 
-userSchema.pre('findById', function(next) {
+userSchema.pre('findOne', function(next) {
     this.populate('meetings.person', {files: 0, goals: 0, notes: 0, user: 0, __v: 0});
     next();
 })

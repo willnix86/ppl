@@ -33,16 +33,17 @@ peopleSchema.methods.serialize = function() {
         user: this.user,
         notes: this.notes,
         goals: this.goals,
+        files: this.files
     }
 }
 
 peopleSchema.pre('find', function(next) {
-    this.populate('user', {userName: 0, password: 0, meetings: 0, people: 0, __v: 0});
+    this.populate('user', '-userName -password -meetings -__v')
     next();
 })
 
-peopleSchema.pre('findById', function(next) {
-    this.populate('user', {userName: 0, password: 0, meetings: 0, people: 0, __v: 0});
+peopleSchema.pre('findOne', function(next) {
+    this.populate('user', '-userName -password -meetings -__v');
     next();
 })
 
