@@ -18,17 +18,6 @@ describe('People API Resource', function() {
         return runServer(TEST_DATABASE_URL);
     });
 
-    beforeEach(function() {
-        const userData = seeders.seedUserData();
-        return Promise.all(
-            [
-                User.insertMany(userData),
-                seeders.seedPeopleData(userData)
-            ]
-        );
-        
-    });
-
     afterEach(function() {
         return seeders.tearDownDb();
     });
@@ -38,7 +27,17 @@ describe('People API Resource', function() {
     });
 
 // GET ENDPOINTS
-    describe('GET endpoints', function() {
+    context('Generic GET endpoints', function() {
+
+        beforeEach(function() {
+            const userData = seeders.seedUserData();
+            return Promise.all(
+                [
+                    User.insertMany(userData),
+                    seeders.seedPeopleData(userData)
+                ]
+            );
+        });
 
         // GET ALL PEOPLE
         it('should return all people from the database', function(){
@@ -106,8 +105,78 @@ describe('People API Resource', function() {
 
     });
 
+    context('Specialized GET endpoints', function() {
+
+        beforeEach(function() {
+            const userData = seeders.seedUserWithSpecificData();
+            return Promise.all(
+                [
+                    User.insertMany(userData),
+                    seeders.seedPeopleWithSpecificUsers(userData)
+                ]
+            );
+        });
+
+        // GET ALL PEOPLE ASSOCIATED WITH SPECIFIC USER
+        it('should return the correct people from the database', function() {
+            let id = "5bbfbe91f60377afff6deca9";
+            let res;
+            return chai.request(app)
+            .get(`/people/userId/${id}`)
+            .then(function(_res) {
+                res = _res;
+                res.should.have.status(200);
+                console.log(res.body);
+                res.body.should.have.lengthOf.at.least(1);
+                return People.countDocuments();
+            })
+            .then(function(count) {
+                res.body.should.have.lengthOf(count);
+            })
+        });
+
+        it('should return people with all the right fields', function() {
+            let id = "5bbfbe91f60377afff6deca9";
+            let resPerson;
+            return chai.request(app)
+            .get(`/people/userId/${id}`)
+            .then(function(res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('array');
+                res.body.should.have.lengthOf.at.least(1);
+                res.body.forEach(function(person){
+                    person.should.be.a('object');
+                    person.should.include.keys('id', 'firstName', 'lastName', 'user', 'notes', 'goals');
+                    person.user._id.should.equal(id);
+                    person.notes.should.be.a('array');
+                    person.goals.should.be.a('array');
+                })
+                resPerson = res.body[0];
+                return People.findOne({_id: resPerson.id});
+            })
+            .then(function(person) {
+                resPerson.id.should.equal(person.id);
+                resPerson.firstName.should.equal(person.firstName);
+                resPerson.lastName.should.equal(person.lastName);
+                //resPerson.user.should.equal(person.user);
+            })
+        });
+
+    })
+
 // POST ENDPOINTS
-    describe('POST endpoints', function() {
+    context('Generic POST endpoints', function() {
+
+        beforeEach(function() {
+            const userData = seeders.seedUserData();
+            return Promise.all(
+                [
+                    User.insertMany(userData),
+                    seeders.seedPeopleData(userData)
+                ]
+            );
+        });
 
         // POST NEW PERSON
         it('should add a new person', function() {
@@ -135,6 +204,43 @@ describe('People API Resource', function() {
             });
         });
 
+    });
+
+// PUT ENDPOINT
+    context('Generic PUT endpoints', function() {
+
+        beforeEach(function() {
+            const userData = seeders.seedUserData();
+            return Promise.all(
+                [
+                    User.insertMany(userData),
+                    seeders.seedPeopleData(userData)
+                ]
+            );
+        });
+
+        it('should update people in the database', function() {
+            const updateData = seeders.generatePeopleUpdateData();
+            return chai.request(app)
+            .get('/people')
+            .then(function(res) {
+                updateData.id = res.body[0].id;
+                console.log(updateData);
+                console.log(res.body[0]);
+                return chai.request(app)
+                .put(`/people/${updateData.id}`)
+                .send(updateData)
+            })
+            .then(function(res) {
+                res.should.have.status(204);
+                console.log(res.body);
+                People.findById(updateData.id)
+                .then(function(person) {
+                    person.lastName.should.equal(updateData.lastName);
+                    person.password.should.equal(updateData.password);
+                });
+            })
+        });
     });
     
 });

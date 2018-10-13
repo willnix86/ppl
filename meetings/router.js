@@ -6,17 +6,14 @@ const jsonParser = bodyParser.json();
 
 //get all meetings user is involved in
 router.get('/:id', (req, res) => {
-    // User.find({}, '-__v')
-    // .limit(10)
-    // .then(users => {
-    //     res.json(
-    //         users.map((users) => users.serialize())
-    //     );
-    // })
-    // .catch(err => {
-    //     console.error(err);
-    //     res.status(500).json({message: "Internal server error, please try again later."})
-    // });
+    Meeting.find({host: req.params.id}, '-__v')
+    .then(meeting => {
+        res.json(meeting);
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({message: "Internal server error, please try again later."})
+    });
 });
 
 // create a new meeting
@@ -32,10 +29,11 @@ router.post('/', jsonParser, (req, res) => {
     }
     Meeting.create({
         host: req.body.host,
-        person: req.body.person
+        person: req.body.person,
+        date: req.body.date
     })
-    .then(user => {
-        res.status(201).json(user.serialize());
+    .then(meeting => {
+        res.status(201).json(meeting);
     })
     .catch(err => res.status(500).send({message: 'Internal server error. Please try again later.'}))
 });

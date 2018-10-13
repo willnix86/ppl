@@ -4,7 +4,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-//get users
+//GET ALL USERS
 router.get('/', (req, res) => {
     User.find({}, '-__v')
     .limit(10)
@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// get user by ID
+// GET A USER BY ID
 router.get('/:id', (req, res) => {
     User.findOne( { _id: req.params.id }, '-__v')
     .then(user => {
@@ -31,7 +31,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
-// create a new user
+// CREATE A NEW USER
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['firstName', 'lastName', 'userName', 'password'];
     for (let i = 0; i < requiredFields; i++){
@@ -63,5 +63,30 @@ router.post('/', jsonParser, (req, res) => {
     })
     .catch(err => res.status(500).send({message: 'Internal server error. Please try again later.'}))
 });
+
+// EDIT A USER BY ID
+router.put('/:id', jsonParser, (req, res) => {
+    if (!(req.params.id && req.body.id === req.body.id)) {
+        let message = 'Request path id and request body id values must match';
+        console.error(message);
+        res.status(400).send(message);
+    }
+
+    const updated = {};
+    const updatableFields = ['firstName', 'lastName', 'password'];
+
+    updatableFields.forEach(field => {
+        if (field in req.body) {
+            updated[field] = req.body[field];
+        }
+    });
+
+    User
+    .findOneAndUpdate({_id: req.params.id}, {$set: updated}, {new: true})
+    .then(updatedUser => res.status(204).end())
+    .catch(err => res.status(500).json({message: 'Something went wrong.'}));
+});
+
+// DELETE A USER BY ID
 
 module.exports = router;

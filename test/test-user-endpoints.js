@@ -92,7 +92,7 @@ describe('Users API Resource', function() {
             });
         })
 
-    })
+    });
 
     // POST ENDPOINTS
     describe('POST endpoints', function() {
@@ -123,7 +123,31 @@ describe('Users API Resource', function() {
             });
         });
 
-    })
+    });
 
+    // PUT ENDPOINTS
+    describe('PUT endpoints', function() {
+        it('should update users in the database', function() {
+            const updateData = seeders.generateUserUpdateData();
+            return chai.request(app)
+            .get('/users')
+            .then(function(res) {
+                updateData.id = res.body[0].id;
+                return chai.request(app)
+                .put(`/users/${updateData.id}`)
+                .send(updateData)
+            })
+            .then(function(res) {
+                res.should.have.status(204);
+                User.findById(updateData.id)
+                .then(function(user) {
+                    user.lastName.should.equal(updateData.lastName);
+                    user.password.should.equal(updateData.password);
+                });
+            })
+        });
+    });
+
+    // DELETE ENDPOINTS
     
 })

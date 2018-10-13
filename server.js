@@ -29,45 +29,26 @@ app.get('/person', (req, res) => {
     res.sendFile(__dirname + '/views/person.html');
 })
 
-// post new goal to person
+// CRUD for Meetings
 
-// post new activity to person
+// CRUD for Files
+
+// post new goal to person
 
 // post new note to person
 
-// post new file
-
-// post new meeting to person
-
-// put person by ID
-
-// put user by ID
-
 // put goal by id and person id
-
-// put activity by id and person id
 
 // put note by id and person id
 
-// put file by id
-
 // put meeting by id and person id
-
-// delete person by ID
-
-// delete user by ID
 
 //.........THE FOLLOWING CAN USE $PULL..........//
 
 // delete goal by id and person id
 
-// delete activity by id and person id
-
 // delete note by id and person id
 
-// delete file by id
-
-// delete meeting by id and person id
 
 let server;
 
