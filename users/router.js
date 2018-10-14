@@ -1,5 +1,6 @@
 const express = require('express');
 const { User } = require('./models');
+const { People } = require('../people/models');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
@@ -87,6 +88,17 @@ router.put('/:id', jsonParser, (req, res) => {
     .catch(err => res.status(500).json({message: 'Something went wrong.'}));
 });
 
-// DELETE A USER BY ID
+// DELETE A USER BY ID (AND REMOVE ASSOCIATED PEOPLE ALONG WITH IT)
+router.delete('/:id', (req, res) => {
+    People.remove({ user: req.params.id})
+    .then(() => {
+        User.findByIdAndRemove(req.params.id)
+        .then(() => {
+            console.log(`Deleted user with id (${req.params.id})`);
+            res.status(204).end();
+            })
+    })
+    .catch(err => res.status(500).json({message: 'Internal server error.'}));
+});
 
 module.exports = router;

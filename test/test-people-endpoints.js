@@ -93,7 +93,6 @@ describe('People API Resource', function() {
             })
             .then(function(res) {
                 res.should.have.status(200);
-                console.log(res.body);
                 res.body.id.should.equal(id);
                 res.body.should.be.a('object');
                 res.body.should.include.keys('id', 'firstName', 'lastName', 'user', 'notes', 'goals', 'files');
@@ -126,7 +125,6 @@ describe('People API Resource', function() {
             .then(function(_res) {
                 res = _res;
                 res.should.have.status(200);
-                console.log(res.body);
                 res.body.should.have.lengthOf.at.least(1);
                 return People.countDocuments();
             })
@@ -225,15 +223,12 @@ describe('People API Resource', function() {
             .get('/people')
             .then(function(res) {
                 updateData.id = res.body[0].id;
-                console.log(updateData);
-                console.log(res.body[0]);
                 return chai.request(app)
                 .put(`/people/${updateData.id}`)
                 .send(updateData)
             })
             .then(function(res) {
                 res.should.have.status(204);
-                console.log(res.body);
                 People.findById(updateData.id)
                 .then(function(person) {
                     person.lastName.should.equal(updateData.lastName);
@@ -242,5 +237,41 @@ describe('People API Resource', function() {
             })
         });
     });
-    
+
+    // DELETE ENDPOINTS
+    context('DELETE endpoints', function() {
+
+        beforeEach(function() {
+            const userData = seeders.seedUserData();
+            return Promise.all(
+                [
+                    User.insertMany(userData),
+                    seeders.seedPeopleData(userData)
+                ]
+            );
+        });
+
+        it('should remove correct user from database', function() {
+            let person;
+            return (
+                chai.request(app)
+                .get('/people')
+                .then(function(res) {
+                    person = res.body[0].id;
+                    return chai.request(app)
+                    .delete(`/people/${person}`)
+                    .then(function(res){
+                        res.should.have.status(204);
+                    })
+                })
+                .then(function() {
+                    return chai.request(app)
+                    .get(`/people/${person}`)
+                    .then(function(res) {
+                        res.should.have.status(500);
+                    })
+                })
+            )
+        })
+    })
 });

@@ -149,5 +149,35 @@ describe('Users API Resource', function() {
     });
 
     // DELETE ENDPOINTS
-    
+    describe('DELETE endpoints', function() {
+        it('should remove correct user from database', function() {
+            let user;
+            return (
+                chai.request(app)
+                .get('/users')
+                .then(function(res) {
+                    user = res.body[0].id;
+                    return chai.request(app)
+                    .delete(`/users/${user}`)
+                    .then(function(res){
+                        res.should.have.status(204);
+                    })
+                })
+                .then(function() {
+                    return chai.request(app)
+                    .get(`/users/${user}`)
+                    .then(function(res) {
+                        res.should.have.status(500);
+                    })
+                    .then(function() {
+                        return chai.request(app)
+                        .get(`/people/user/${user}`)
+                        .then(function(res) {
+                            res.should.have.status(404);
+                        })
+                    })
+                })
+            )
+        })
+    })
 })
