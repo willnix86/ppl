@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 
 // GET ALL PEOPLE ASSIGNED TO PARTICULAR USER
 router.get('/userId/:id', (req,res) => {
-    People.find({user: req.params.id}, '-__v')
+    People.find({user: req.params.id}, '-goals -notes -__v -user')
     .then(people => {
         res.json(
             people.map((people) => people.serialize())
@@ -48,7 +48,7 @@ router.get('/:id', (req, res) => {
 // CREATE A NEW PERSON
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['firstName', 'lastName', 'user'];
-    for (let i = 0; i < requiredFields; i++) {
+    for (let i = 0; i < requiredFields.length; i++) {
         let field = requiredFields[i];
         if (!(field in req.body)) {
             let message = `Missing ${field} in request parameters`;

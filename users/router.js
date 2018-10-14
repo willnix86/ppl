@@ -35,11 +35,11 @@ router.get('/:id', (req, res) => {
 // CREATE A NEW USER
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['firstName', 'lastName', 'userName', 'password'];
-    for (let i = 0; i < requiredFields; i++){
+    for (let i = 0; i < requiredFields.length; i++) {
         let field = requiredFields[i];
         if (!(field in req.body)) {
             let message = `Missing ${field} in request parameters`;
-            console.err(message);
+            console.error(message);
             res.status(400).send(message);
         }
     }

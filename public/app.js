@@ -1,24 +1,14 @@
-const APP = (function(domJS, apiJS) {
-
-    const path = window.location.pathname;
-
-    const getAndDisplayInitialData = function() {
-        if (path.match(/(user.html)$/)) {
-            apiJS.getUserData(domJS.displayUserData);
-        } else if (path.match(/(person.html)$/)) {
-            apiJS.getPersonData(domJS.displayPersonData);
-        }
-    }
+const APP = (function(domJS, apiJS, eventsJS) {
 
     return {
 
         init: function() {
             console.log('Application has started');
-            getAndDisplayInitialData();
+            eventsJS.watchClicks();
         }
 
     }
 
-})(DOM, API);
+})(DOM, API, EVENTS);
 
-APP.init();
+$(APP.init());

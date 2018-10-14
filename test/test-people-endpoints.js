@@ -238,7 +238,7 @@ describe('People API Resource', function() {
         });
     });
 
-    // DELETE ENDPOINTS
+// DELETE ENDPOINTS
     context('DELETE endpoints', function() {
 
         beforeEach(function() {
