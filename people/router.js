@@ -6,7 +6,7 @@ const jsonParser = bodyParser.json();
 
 // GET ALL PEOPLE
 router.get('/', (req, res) => {
-    People.find({}, '-__v')
+    People.find({}, '-goals -notes -__v -user')
     .limit(10)
     .then(people => {
         res.json(
@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 
 // GET ALL PEOPLE ASSIGNED TO PARTICULAR USER
 router.get('/userId/:id', (req,res) => {
-    People.find({user: req.params.id}, '-goals -notes -__v -user')
+    People.find({user: req.params.id}, '-__v')
     .then(people => {
         res.json(
             people.map((people) => people.serialize())

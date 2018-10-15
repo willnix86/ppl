@@ -66,9 +66,7 @@ describe('People API Resource', function() {
                 res.body.should.have.lengthOf.at.least(1);
                 res.body.forEach(function(person){
                     person.should.be.a('object');
-                    person.should.include.keys('id', 'firstName', 'lastName', 'user', 'notes', 'goals');
-                    person.notes.should.be.a('array');
-                    person.goals.should.be.a('array');
+                    person.should.include.keys('id', 'firstName', 'lastName');
                 })
                 resPerson = res.body[0];
                 return People.findOne({_id: resPerson.id});
@@ -146,7 +144,7 @@ describe('People API Resource', function() {
                 res.body.forEach(function(person){
                     person.should.be.a('object');
                     person.should.include.keys('id', 'firstName', 'lastName');
-                    person.user.id.should.equal(id);
+                    person.user._id.should.equal(id);
                     person.notes.should.be.a('array');
                     person.goals.should.be.a('array');
                 })

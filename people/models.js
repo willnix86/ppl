@@ -31,6 +31,7 @@ peopleSchema.methods.serialize = function() {
         firstName: this.firstName,
         lastName: this.lastName,
         user: this.user,
+        meetings: this.meetings,
         notes: this.notes,
         goals: this.goals,
         files: this.files

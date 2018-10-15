@@ -4,8 +4,8 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-//get all meetings user is involved in
-router.get('/:id', (req, res) => {
+// GET ALL MEETING BY USER ID
+router.get('/userId/:id', (req, res) => {
     Meeting.find({host: req.params.id}, '-__v')
     .then(meeting => {
         res.json(meeting);
@@ -16,7 +16,19 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// create a new meeting
+// GET ALL MEETINGS BY PERSON ID
+router.get('/personId/:id', (req, res) => {
+    Meeting.find({person: req.params.id}, '-__v')
+    .then(meeting => {
+        res.json(meeting);
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({message: "Internal server error, please try again later."})
+    });
+});
+
+// CREATE A NEW MEETING
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['host', 'person'];
     for (let i = 0; i < requiredFields; i++){
@@ -37,5 +49,39 @@ router.post('/', jsonParser, (req, res) => {
     })
     .catch(err => res.status(500).send({message: 'Internal server error. Please try again later.'}))
 });
+
+// EDIT A MEETING BY ID
+router.put('/:id', jsonParser, (req, res) => {
+
+    if (!(req.params.id && req.body.id === req.body.id)) {
+        let message = 'Request path id and request body id must match';
+        console.error(message);
+        res.status(400).send(message);
+    }
+
+    let updated = {};
+    const updatableFields = ['host', 'person', 'date'];
+
+    updatableFields.forEach(field => {
+        if (field in req.body) {
+            updated[field] = req.body[field];
+        }
+    });
+
+    Meeting.findOneAndUpdate({_id: req.params.id}, {$set: updated}, {new: true})
+    .then(updatedMeeting => res.status(204).end())
+    .catch(err => res.status(500).json({message: 'Something went wrong.'}))
+})
+
+// DELETE A MEETING BY ID
+router.delete('/:id', (req, res) => {
+    Meeting.findByIdAndRemove(req.params.id)
+    .then(() => {
+        console.log(`Deleted meeting with id (${req.params.id})`);
+        res.status(204).end();
+        })
+    .catch(err => res.status(500).json({message: 'Internal server error.'}));
+});
+
 
 module.exports = router;
