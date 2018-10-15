@@ -22,12 +22,13 @@ describe('Load static pages', function() {
     
     it('should load the landing page HTML successfully', function() {
         let res;
-        chai.request(app)
+        return chai.request(app)
         .get('/')
         .then((_res) => {
             res = _res;
             res.should.have.status(200);
-            res.should.be.html;
+            res.should.have.header('content-type');
+            res.header['content-type'].should.equal('text/html; charset=UTF-8');
         })
         .catch(err => {
             console.log(err);
@@ -41,7 +42,8 @@ describe('Load static pages', function() {
         .then((_res) => {
             res = _res;
             res.should.have.status(200);
-            res.should.be.html;
+            res.should.have.header('content-type');
+            res.header['content-type'].should.equal('text/html; charset=UTF-8');
         })
         .catch(err => {
             console.log(err);
@@ -55,7 +57,8 @@ describe('Load static pages', function() {
         .then((_res) => {
             res = _res;
             res.should.have.status(200);
-            res.should.be.html;
+            res.should.have.header('content-type');
+            res.header['content-type'].should.equal('text/html; charset=UTF-8');
         })
         .catch(err => {
             console.log(err);
