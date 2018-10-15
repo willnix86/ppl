@@ -146,7 +146,7 @@ describe('People API Resource', function() {
                 res.body.forEach(function(person){
                     person.should.be.a('object');
                     person.should.include.keys('id', 'firstName', 'lastName');
-                    person.user._id.should.equal(id);
+                    person.user.id.should.equal(id);
                     person.notes.should.be.a('array');
                     person.goals.should.be.a('array');
                 })
