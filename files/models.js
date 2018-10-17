@@ -2,25 +2,23 @@
 
 const mongoose = require('mongoose');
 
-// const meetingSchema = mongoose.Schema({
-//     host: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-//     person: {type: mongoose.Schema.Types.ObjectId, ref: 'People'},
-//     date: {type: Date, required: true}
-// });
+const filesSchema = mongoose.Schema({
+    name: {type: String, required: true},
+    person: {type: mongoose.Schema.Types.ObjectId, ref: 'People'},
+    extension: {type: String, required: true}
+});
 
-// meetingSchema.pre('find', function(next) {
-//     this.populate('person', {files: 0, goals: 0, notes: 0, user: 0, __v: 0});
-//     this.populate('host', {userName: 0, password: 0, __v: 0});
-//     next();
-// })
+filesSchema.pre('find', function(next) {
+    this.populate('person', {files: 0, goals: 0, notes: 0, user: 0, __v: 0});
+    next();
+})
 
-// meetingSchema.pre('findOne', function(next) {
-//     this.populate('person', {files: 0, goals: 0, notes: 0, user: 0, __v: 0});
-//     this.populate('host', {userName: 0, password: 0, __v: 0});
-//     next();
-// })
+filesSchema.pre('findOne', function(next) {
+    this.populate('person', {files: 0, goals: 0, notes: 0, user: 0, __v: 0});
+    next();
+})
 
 
-const File = mongoose.model('File', fileSchema);
+const Files = mongoose.model('Files', filesSchema);
 
-module.exports = {File};
+module.exports = {Files};

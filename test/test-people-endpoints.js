@@ -105,11 +105,11 @@ describe('People API Resource', function() {
     context('Specialized GET endpoints', function() {
 
         beforeEach(function() {
-            const userData = seeders.seedUserWithSpecificData();
+            const userData = seeders.seedUserWithSpecificId();
             return Promise.all(
                 [
                     User.insertMany(userData),
-                    seeders.seedPeopleWithSpecificUsers(userData)
+                    seeders.seedPeopleWithSpecificUserIds(userData)
                 ]
             );
         });

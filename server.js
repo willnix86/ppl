@@ -7,6 +7,7 @@ const { PORT, DATABASE_URL } = require('./config');
 const userRouter = require('./users/router');
 const peopleRouter = require('./people/router');
 const meetingRouter = require('./meetings/router');
+const fileRouter = require('./files/router');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.static('public'));
 app.use('/users', userRouter);
 app.use('/people', peopleRouter);
 app.use('/meetings', meetingRouter);
+app.use('/files', fileRouter);
 
 app.use(morgan("common"));
 
@@ -29,26 +31,11 @@ app.get('/person', (req, res) => {
     res.sendFile(__dirname + '/views/person.html');
 })
 
-// CRUD for Meetings
-
 // CRUD for Files
 
-// post new goal to person
+// edit goal by id and person id
 
-// post new note to person
-
-// put goal by id and person id
-
-// put note by id and person id
-
-// put meeting by id and person id
-
-//.........THE FOLLOWING CAN USE $PULL..........//
-
-// delete goal by id and person id
-
-// delete note by id and person id
-
+// edit note by id and person id
 
 let server;
 

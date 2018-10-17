@@ -9,14 +9,14 @@ const meetingSchema = mongoose.Schema({
 });
 
 meetingSchema.pre('find', function(next) {
-    this.populate('person', {files: 0, goals: 0, notes: 0, user: 0, __v: 0});
-    this.populate('host', {userName: 0, password: 0, __v: 0});
+    this.populate('host', '-userName -password -__v');
+    this.populate('person', '-files -goals -notes -user -__v');
     next();
 })
 
 meetingSchema.pre('findOne', function(next) {
-    this.populate('person', {files: 0, goals: 0, notes: 0, user: 0, __v: 0});
-    this.populate('host', {userName: 0, password: 0, __v: 0});
+    this.populate('host', '-userName -password -__v');
+    this.populate('person', '-files -goals -notes -user -__v');
     next();
 })
 

@@ -31,7 +31,6 @@ peopleSchema.methods.serialize = function() {
         firstName: this.firstName,
         lastName: this.lastName,
         user: this.user,
-        meetings: this.meetings,
         notes: this.notes,
         goals: this.goals,
         files: this.files
@@ -39,12 +38,12 @@ peopleSchema.methods.serialize = function() {
 }
 
 peopleSchema.pre('find', function(next) {
-    this.populate('user', '-userName -password -meetings -__v')
+    this.populate('user', '-userName -password -__v');
     next();
 })
 
 peopleSchema.pre('findOne', function(next) {
-    this.populate('user', '-userName -password -meetings -__v');
+    this.populate('user', '-userName -password -__v');
     next();
 })
 

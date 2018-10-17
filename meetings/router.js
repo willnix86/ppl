@@ -4,6 +4,18 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
+// GET ALL MEETINGS
+router.get('/', (req, res) => {
+    Meeting.find({}, '-__v')
+    .then(meeting => {
+        res.json(meeting);
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({message: "Internal server error, please try again later."})
+    });
+});
+
 // GET ALL MEETING BY USER ID
 router.get('/userId/:id', (req, res) => {
     Meeting.find({host: req.params.id}, '-__v')
@@ -30,7 +42,7 @@ router.get('/personId/:id', (req, res) => {
 
 // CREATE A NEW MEETING
 router.post('/', jsonParser, (req, res) => {
-    const requiredFields = ['host', 'person'];
+    const requiredFields = ['host', 'person', 'date'];
     for (let i = 0; i < requiredFields; i++){
         let field = requiredFields[i];
         if (!(field in req.body)) {

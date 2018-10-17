@@ -14,9 +14,14 @@ const DOM = (function() {
             }
 
             for (index in data.meetings) {
+
+                let date = new Date(data.meetings[index].date);
+
+                let dateStr = DOM.formatDate(date);
+
                 $('.js-meetings').append(
                     `<p>
-                    Meeting with ${data.meetings[index].personName} on ${data.meetings[index].date}
+                    Meeting with ${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName} on ${dateStr}
                     </p>
                     `
                 )
@@ -28,18 +33,30 @@ const DOM = (function() {
             $('.js-person').text(`${data.firstName} ${data.lastName}`);
 
             for (index in data.meetings) {
-                $('.js-meetings').append(
+
+                let date = new Date(data.meetings[index].date);
+
+                let dateStr = DOM.formatDate(date);
+
+                let timeStr = DOM.formatTime(date);
+
+                $('.js-meetings-people').append(
                     `<p>
-                    Meeting with Will Nixon on ${data.meetings[index].date}
+                    Meeting with ${data.meetings[index].host.firstName} ${data.meetings[index].host.lastName} on ${dateStr} at ${timeStr}
                     </p>
                     `
                 )
             }
 
             for (index in data.goals) {
+
+                let date = new Date(data.goals[index].completeBy)
+
+                let dateStr = DOM.formatDate(date);
+
                 $('.js-goals').append(
                     `<p>${data.goals[index].goal}</p>
-                    <p>Complete by: ${data.goals[index].completeBy}</p>
+                    <p>Complete by: ${dateStr}</p>
                     `)
             }
 
@@ -53,6 +70,40 @@ const DOM = (function() {
                 `)
             }
 
+        },
+
+        resetPeoplePage: function() {
+            $('.js-meetings-people').empty();
+            $('.js-goals').empty();
+            $('.js-files').empty();
+            $('.js-notes').empty();
+        },
+
+        resetUserPage: function() {
+            $('.js-meetings').empty();
+            $('.js-people').empty();
+        },
+
+        formatDate(date) {
+            const monthNames = [
+                "January", "February", "March",
+                "April", "May", "June", "July",
+                "August", "September", "October",
+                "November", "December"
+            ];
+            
+            const day = date.getDate();
+            const monthIndex = date.getMonth();
+            const year = date.getFullYear();
+            
+            return `${day} ${monthNames[monthIndex]} ${year}`;
+        },
+
+        formatTime(date) {
+            const hour = date.getHours();
+            const minutes = date.getMinutes();
+
+            return `${hour}:${minutes}`;
         }
         
     }

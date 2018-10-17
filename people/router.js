@@ -90,7 +90,7 @@ router.put('/:id', jsonParser, (req, res) => {
     People.findOneAndUpdate({_id: req.params.id}, {$set: updated}, {new: true})
     .then(updatedPerson => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Something went wrong.'}))
-})
+});
 
 // DELETE A PERSON BY ID
 router.delete('/:id', (req, res) => {
@@ -101,5 +101,71 @@ router.delete('/:id', (req, res) => {
         })
     .catch(err => res.status(500).json({message: 'Internal server error.'}));
 });
+
+// CREATE A NEW NOTE
+router.put('/addNotes/:id', jsonParser, (req, res) => {
+    
+    if(!(req.params.id && req.body.id === req.body.id)) {
+        let message = 'Request path id and request body id must match';
+        console.error(message);
+        res.status(400).send(message);
+    }
+
+    let newNote = {};
+    const noteFields = ['content', 'createdAt'];
+
+    noteFields.forEach(field => {
+        if (field in req.body) {
+            newNote[field] = req.body[field];
+        }
+    });
+
+    People.findByIdAndUpdate({_id: req.params.id}, {$push: {notes: newNote}}, {new: true})
+    .then(note => res.status(204).end())
+    .catch(err => releaseEvents.status(500).json({message: 'Something went wrong.'}))
+});
+
+// DELETE A NOTE - NOT WORKING
+router.put('/removeNotes/:id', (req, res) => {
+    People.findOneAndUpdate({}, { $pull: {notes: { _id: req.params.id} } })
+    .then(() => {
+        console.log(`Deleted note with id (${req.params.id})`);
+        res.status(204).end();
+    })
+    .catch(err => res.json({message: 'Internal server error.'}));
+})
+
+// CREATE A NEW GOAL
+router.put('/addGoals/:id', jsonParser, (req, res) => {
+    
+    if(!(req.params.id && req.body.id === req.body.id)) {
+        let message = 'Request path id and request body id must match';
+        console.error(message);
+        res.status(400).send(message);
+    }
+
+    let newGoal = {};
+    const goalFields = ['goal', 'createdAt', 'completeBy', 'completed'];
+
+    goalFields.forEach(field => {
+        if (field in req.body) {
+            newGoal[field] = req.body[field];
+        }
+    });
+
+    People.findByIdAndUpdate({_id: req.params.id}, {$push: {goals: newGoal}}, {new: true})
+    .then(goal => res.status(204).end())
+    .catch(err => releaseEvents.status(500).json({message: 'Something went wrong.'}))
+});
+
+// DELETE A GOAL - NOT WORKING
+router.put('/removeGoals/:id', (req, res) => {
+    People.findOneAndUpdate({}, { $pull: {goals: { _id: req.params.id} } })
+    .then(() => {
+        console.log(`Deleted note with id (${req.params.id})`);
+        res.status(204).end();
+    })
+    .catch(err => res.json({message: 'Internal server error.'}));
+})
 
 module.exports = router;
