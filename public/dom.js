@@ -21,9 +21,11 @@ const DOM = (function() {
 
                 let dateStr = DOM.formatDate(date);
 
+                let timeStr = DOM.formatTime(date);
+
                 $('.js-meetings').append(
                     `<li>
-                    Meeting with ${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName} on ${dateStr}
+                    Meeting with ${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName} on ${dateStr} at ${timeStr}
                     </li>
                     `
                 )
@@ -53,7 +55,7 @@ const DOM = (function() {
 
             $('.js-meetings-people').attr('id', `${data.userId}`);
 
-            $('.js-meetings-people').append(`<button id=${data.id} class="new-meeting">Add New Meeting</button>`);
+            $('.js-meetings-people').append(`<button id=${data.id} class="new-meeting-people">Add New Meeting</button>`);
 
             for (index in data.goals) {
 
@@ -116,6 +118,11 @@ const DOM = (function() {
             const minutes = date.getMinutes();
 
             return `${hour}:${minutes}`;
+        },
+
+        resetForm: function(form) {
+            $(form).find('input[type=text], input[type=password], input[type=date], input[type=time], input[type=file], select, textarea').val('');
+            $(form).find('input[type=radio], input[type=checkbox]').removeAttr('checked').removeAttr('selected');
         }
         
     }

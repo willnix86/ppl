@@ -61,7 +61,7 @@ describe('Meeting API Resource', function() {
 // THE ONE BELOW ISN'T WORKING! IT RETURNS PASSED BUT DOESN'T ACTUALLY
 // DO WHAT I WANT
 
-        it.only('should get all meetings by user ID', function() {
+        it('should get all meetings by user ID', function() {
             let id;
             User.findOne()
             .then(function(user) {

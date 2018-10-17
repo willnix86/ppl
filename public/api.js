@@ -80,7 +80,77 @@ const API = (function() {
                 DOM.displayPersonData(peopleData);
             })
 
+        },
+
+        createNewNote: function(id, content) {
+            const data = {
+                content: content
+            }
+            fetch(`/people/${id}/addNotes`, {
+                method: 'PUT',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            throw new Error(response.statusText);
+            })
+            .then(responseJson => {
+                //UPDATE DOM WITH NEW ITEM
+            })
+        },
+
+        createNewGoal: function(id, goal, completeDate) {
+            const data = {
+                goal: goal,
+                completeBy: completeDate
+            }
+            fetch(`/people/${id}/addGoals`, {
+                method: 'PUT',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            throw new Error(response.statusText);
+            })
+            .then(responseJson => {
+                //UPDATE DOM WITH NEW ITEM
+            })
+        },
+
+        createNewMeeting: function(personId, hostId, date) {
+            const data = {
+                host: hostId,
+                person: personId,
+                date: date
+            }
+            fetch(`/meetings`, {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            throw new Error(response.statusText);
+            })
+            .then(responseJson => {
+                //UPDATE DOM WITH NEW ITEM
+            })
         }
+
     }
 
 })();

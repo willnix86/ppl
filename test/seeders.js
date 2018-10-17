@@ -42,17 +42,11 @@ const seeders = {
 
     seedPeopleData: function(userData) {
         console.log('Seeding people data...');
-        //const seedData = [];
         const promises = userData.map(user => {
             return People.create(seeders.generatePeopleData(user))
         })
 
         return Promise.all(promises)
-
-        // for (let i = 0; i < 10; i++) {
-        //     seedData.push(seeders.generatePeopleData(userData, i));
-        // };
-        // return People.insertMany(seedData);
     },
 
     generatePeopleData: function(user) {
@@ -117,7 +111,7 @@ const seeders = {
         console.log('Seeding people data with specific users...');
         const seedData = [];
         for (let i = 0; i < 10; i++) {
-            seedData.push(seeders.generatePeopleWithSpecificUserIds(userData));
+            seedData.push(seeders.generatePeopleWithSpecificUsersIds(userData));
         };
         return People.insertMany(seedData);
     },

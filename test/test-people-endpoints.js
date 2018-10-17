@@ -71,17 +71,16 @@ describe('People API Resource', function() {
                 resPerson.id.should.equal(person.id);
                 resPerson.firstName.should.equal(person.firstName);
                 resPerson.lastName.should.equal(person.lastName);
-                //resPerson.user.should.equal(person.user);
+
             })
         });
 
         // GET PERSON BY ID
         it('should return the correct person from database', function() {
             let id;
-            People.findOne()
+            return People.findOne()
             .populate('user', '-password -userName -__v -meetings')
             .then(function(person) {
-                console.log(person);
                 id = person.id;
                 return chai.request(app)
                 .get(`/people/${id}`)
@@ -90,10 +89,9 @@ describe('People API Resource', function() {
                 res.should.have.status(200);
                 res.body.id.should.equal(id);
                 res.body.should.be.a('object');
-                res.body.should.include.keys('id', 'firstName', 'lastName', 'user', 'notes', 'goals', 'files');
+                res.body.should.include.keys('id', 'firstName', 'lastName', 'user', 'notes', 'goals');
                 res.body.notes.should.be.a('array');
                 res.body.goals.should.be.a('array');
-                res.body.files.should.be.a('array');
             })
         });
 
@@ -152,7 +150,8 @@ describe('People API Resource', function() {
                 resPerson.id.should.equal(person.id);
                 resPerson.firstName.should.equal(person.firstName);
                 resPerson.lastName.should.equal(person.lastName);
-                //resPerson.user.should.equal(person.user);
+                resPerson.user.firstName.should.equal(person.user.firstName);
+                resPerson.user.lastName.should.equal(person.user.lastName);
             })
         });
 
@@ -163,38 +162,39 @@ describe('People API Resource', function() {
 
         beforeEach(function() {
             const userData = seeders.seedUserData();
-            return Promise.all(
-                [
-                    User.insertMany(userData),
-                    seeders.seedPeopleData(userData)
-                ]
-            );
+            return User.insertMany(userData);
         });
 
         // POST NEW PERSON
         it('should add a new person', function() {
-            const userData = seeders.seedUserData();
-            const newPerson = seeders.generatePeopleData(userData, 0);
+            let user;
             let res;
-            return chai.request(app)
-            .post('/people')
-            .send(newPerson)
-            .then(function(_res) {
-                res = _res;
-                res.should.have.status(201);
-                res.should.be.json;
-                res.body.should.be.a('object');
-                res.body.should.include.keys('id', 'firstName', 'lastName', 'user');
-                res.body.firstName.should.equal(newPerson.firstName);
-                res.body.lastName.should.equal(newPerson.lastName);
-                res.body.id.should.not.be.null;
-                return People.findOne({_id: res.body.id});
-            })
-            .then(function(person) {
-                person.firstName.should.equal(newPerson.firstName);
-                person.lastName.should.equal(newPerson.lastName);
-                //person.user.should.equal(newPerson.user);
-            });
+            let newPerson = {};
+            User.findOne()
+            .then(function(user) {
+                user = user;
+                newPerson = seeders.generatePeopleData(user);
+                return chai.request(app)
+                .post('/people')
+                .send(newPerson)
+                .then(function(_res) {
+                    res = _res;
+                    res.should.have.status(201);
+                    res.should.be.json;
+                    res.body.should.be.a('object');
+                    res.body.should.include.keys('id', 'firstName', 'lastName', 'user');
+                    res.body.firstName.should.equal(newPerson.firstName);
+                    res.body.lastName.should.equal(newPerson.lastName);
+                    res.body.id.should.not.be.null;
+                    return People.findOne({_id: res.body.id});
+                })
+                .then(function(person) {
+                    person.firstName.should.equal(newPerson.firstName);
+                    person.lastName.should.equal(newPerson.lastName);
+                    person.user.firstName.should.equal(newPerson.user.firstName);
+                    person.user.lastName.should.equal(newPerson.user.lastName);
+                });
+            }) 
         });
 
     });
@@ -204,16 +204,13 @@ describe('People API Resource', function() {
 
         beforeEach(function() {
             const userData = seeders.seedUserData();
-            return Promise.all(
-                [
-                    User.insertMany(userData),
-                    seeders.seedPeopleData(userData)
-                ]
-            );
+            return User.insertMany(userData)
+            .then((docs) => seeders.seedPeopleData(docs));
         });
 
         it('should update people in the database', function() {
             const updateData = seeders.generatePeopleUpdateData();
+            
             return chai.request(app)
             .get('/people')
             .then(function(res) {
@@ -231,6 +228,7 @@ describe('People API Resource', function() {
                 });
             })
         });
+        
     });
 
 // DELETE ENDPOINTS
@@ -238,12 +236,8 @@ describe('People API Resource', function() {
 
         beforeEach(function() {
             const userData = seeders.seedUserData();
-            return Promise.all(
-                [
-                    User.insertMany(userData),
-                    seeders.seedPeopleData(userData)
-                ]
-            );
+            return User.insertMany(userData)
+            .then((docs) => seeders.seedPeopleData(docs));
         });
 
         it('should remove correct user from database', function() {
