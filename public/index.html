@@ -8,65 +8,135 @@
         <link href="styles.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <h1>Ppl Landing Page</h1>
-        <p>This page will contain info on Ppl, and a signup / login form</p>
-        <br>
-        <br>
-        <button class="login">Log In</button>
-
+        <header>
+                <h1>Ppl Landing Page</h1>
+                <p>This page will contain info on Ppl, and a signup / login form</p>
+                <br>
+                <br>
+                <button class="login">Log In</button>
+        </header>
+        
         <main role="main">
-            <h1>User Admin Page</h1>
-            <p>This page will contain the user's information!</p>
-            <h2 class="js-user"></h2>
-
-            <section role="region">
+            <header>
+                    <h1>User Admin Page</h1>
+                    <p>This page will contain the user's information!</p>
+                    <h2 class="js-user"></h2>
+            </header>
+        
+            <!-- <section role="region">
                 <h3>Recent Activity</h3>
                 <div class="js-activity"></div>
-            </section>
+            </section> -->
 
             <section role="region">
                 <h3>Meetings</h3>
-                <div class="js-meetings"></div>
+                <div class="wrapper">
+                    <ul class="js-meetings"></ul>
+                </div>
+                <!-- <form class="new-meeting-form-user" name="new-meeting">
+                        <label for="meeting-person">Who with:</label>
+                        <input type="text" id="meeting-person" name="meeting-person" placeholder="e.g John Smith">
+                        <label for="meeting-date">When:</label>
+                        <input type="meeting-date" id="meeting-date" name="meeting-date">
+                        <label for="meeting-time">What time:</label>
+                        <input type="meeting-time" id="meeting-time" name="meeting-time" min="9:00" max="18:00">
+                        <label for="submit-meeting"></label>
+                        <input type="button" id="submit-meeting" name="submit-meeting" value="Submit">
+                </form> -->
             </section>
             
             <section role="region">
                 <h3>People</h3>
-                <div class="js-people"></div>
+                <div class="wrapper">
+                    <ul class="js-people"></ul>
+                </div>
+                <form class="new-person-form" name="new-person">
+                    <label for="person-first-name">First Name</label>
+                    <input type="text" id="person-first-name" name="person-first-name" placeholder="e.g Sam">
+                    <label for="person-last-name">Last Name</label>
+                    <input type="text" id="person-last-name" name="person-last-name" placeholder="e.g Smith">
+                    <label for="submit-person"></label>
+                    <input type="button" id="submit-person" name="submit-person" value="Submit">
+                </form>
             </section>
             
-        
-            <h1>Individual Profile Page</h1>
-            <p>This page will contain an individual person"s information</p>
-            <h2 class="js-person"></h2>
+            <header>
+                <h1>Individual Profile Page</h1>
+                <p>This page will contain an individual person"s information</p>
+                <h2 id='' class="js-person"></h2>
+            </header>
 
-            <section role="region">
+            <!-- <section role="region">
+                <h3>Recent Activity</h3>
+                <div class="js-activity"></div>
+            </section> -->
+
+            <section role="region" >
                 <h3>Notes</h3>
-                <div class="js-notes"></div>
+                <div class='wrapper'>
+                    <ul class="js-notes"></ul>
+                </div>
+                <form class="new-notes-form" name="new-note">
+                        <label for="content">Note:</label>
+                        <textarea id="content" name="content" form="new-notes-form" rows="4" wrap="soft">
+                        <input type="button" id="submit-note" name="submit-note" value="Add Note">
+                </form>
             </section>
 
             <section role="region">
                 <h3>Goals</h3>
-                <div class="js-goals"></div>
+                <div class="wrapper">
+                    <ul class="js-goals"></ul>
+                </div>
+                <form class="new-person-form" name="new-person">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first-name">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last-name">
+                        <label for="submit-person"></label>
+                        <input type="button" id="submit-person" name="submit-person" value="Add Goal">
+                </form>
             </section>
 
-            <section role="region">
+            <section class="meetings-people" role="region">
                 <h3>Meetings</h3>
-                <div class="js-meetings-people"></div>
+                <div class="wrapper">
+                    <ul class="js-meetings-people"></ul>
+                </div>
+                <form class="new-meetings-form-people" name="new-meetings-people">
+                        <label for="meeting-date-people">When:</label>
+                        <input type="date" id="meeting-date-people" name="meeting-date-people">
+                        <label for="meeting-time-people">What time:</label>
+                        <input type="meeting-time-people" id="meeting-time-people" name="meeting-time-people" min="9:00" max="18:00">
+                        <label for="submit-meeting-people"></label>
+                        <input type="button" id="submit-meeting-people" name="submit-meeting-people" value="
+                        Add Meeting">
+                </form>
             </section>
 
             <section role="region">
                 <h3>Files</h3>
-                <div class="js-files"></div>
+                <div class="wrapper">
+                    <ul class="js-files"></ul>
+                </div>
+                <form class="new-person-form" name="new-person">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first-name">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last-name">
+                        <label for="submit-person"></label>
+                        <input type="button" id="submit-person" name="submit-person" value="Submit">
+                </form>
             </section>
         </main>
 
-    <script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
-    <script src="api.js"></script>
-    <script src="events.js"></script>
-    <script src="dom.js"></script>
-    <script src="app.js"></script>
+        <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+        <script src="api.js"></script>
+        <script src="events.js"></script>
+        <script src="dom.js"></script>
+        <script src="app.js"></script>
     </body>
-</html>
+</html>    

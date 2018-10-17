@@ -103,7 +103,7 @@ router.delete('/:id', (req, res) => {
 });
 
 // CREATE A NEW NOTE
-router.put('/addNotes/:id', jsonParser, (req, res) => {
+router.put('/:id/addNotes', jsonParser, (req, res) => {
     
     if(!(req.params.id && req.body.id === req.body.id)) {
         let message = 'Request path id and request body id must match';
@@ -125,9 +125,9 @@ router.put('/addNotes/:id', jsonParser, (req, res) => {
     .catch(err => releaseEvents.status(500).json({message: 'Something went wrong.'}))
 });
 
-// DELETE A NOTE - NOT WORKING
-router.put('/removeNotes/:id', (req, res) => {
-    People.findOneAndUpdate({}, { $pull: {notes: { _id: req.params.id} } })
+// DELETE A NOTE
+router.put('/:personId/removeNotes/:noteId', (req, res) => {
+    People.findOneAndUpdate({_id: req.params.personId}, { $pull: {notes: { _id: req.params.noteId} } })
     .then(() => {
         console.log(`Deleted note with id (${req.params.id})`);
         res.status(204).end();
@@ -136,7 +136,7 @@ router.put('/removeNotes/:id', (req, res) => {
 })
 
 // CREATE A NEW GOAL
-router.put('/addGoals/:id', jsonParser, (req, res) => {
+router.put('/:id/addGoals', jsonParser, (req, res) => {
     
     if(!(req.params.id && req.body.id === req.body.id)) {
         let message = 'Request path id and request body id must match';
@@ -158,9 +158,9 @@ router.put('/addGoals/:id', jsonParser, (req, res) => {
     .catch(err => releaseEvents.status(500).json({message: 'Something went wrong.'}))
 });
 
-// DELETE A GOAL - NOT WORKING
-router.put('/removeGoals/:id', (req, res) => {
-    People.findOneAndUpdate({}, { $pull: {goals: { _id: req.params.id} } })
+// DELETE A GOAL
+router.put('/:personId/removeGoals/:goalId', (req, res) => {
+    People.findOneAndUpdate({_id: req.params.personId}, { $pull: {goals: { _id: req.params.goalId} } })
     .then(() => {
         console.log(`Deleted note with id (${req.params.id})`);
         res.status(204).end();

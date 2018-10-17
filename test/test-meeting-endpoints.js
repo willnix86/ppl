@@ -43,7 +43,7 @@ describe('Meeting API Resource', function() {
             return seeders.tearDownDb();
         });
 
-        it.only('should return all meetings from database', function() {
+        it('should return all meetings from database', function() {
             let res;
             return chai.request(app)
             .get('/meetings')
@@ -51,7 +51,6 @@ describe('Meeting API Resource', function() {
                 res = _res;
                 res.should.have.status(200);
                 res.body.should.have.lengthOf.at.least(1);
-                console.log(res.body);
                 return Meeting.countDocuments();
             }) 
             .then(function(count) {
@@ -60,6 +59,7 @@ describe('Meeting API Resource', function() {
         });
 
 // THE ONE BELOW ISN'T WORKING! IT RETURNS PASSED BUT DOESN'T ACTUALLY
+// DO WHAT I WANT
 
         it.only('should get all meetings by user ID', function() {
             let id;

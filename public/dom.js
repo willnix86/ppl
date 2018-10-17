@@ -11,7 +11,9 @@ const DOM = (function() {
                     `<button id=${data.people[index].id} class='person'>
                     ${data.people[index].firstName} ${data.people[index].lastName}</button>`
                 )
-            }
+            };
+
+            $('.js-people').append(`<button id=${data.user.id} class="new-person">Add New Person</button>`);
 
             for (index in data.meetings) {
 
@@ -20,12 +22,13 @@ const DOM = (function() {
                 let dateStr = DOM.formatDate(date);
 
                 $('.js-meetings').append(
-                    `<p>
+                    `<li>
                     Meeting with ${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName} on ${dateStr}
-                    </p>
+                    </li>
                     `
                 )
-            }
+            };
+
         },
 
         displayPersonData: function(data) {
@@ -41,12 +44,16 @@ const DOM = (function() {
                 let timeStr = DOM.formatTime(date);
 
                 $('.js-meetings-people').append(
-                    `<p>
+                    `<li>
                     Meeting with ${data.meetings[index].host.firstName} ${data.meetings[index].host.lastName} on ${dateStr} at ${timeStr}
-                    </p>
+                    </li>
                     `
                 )
             }
+
+            $('.js-meetings-people').attr('id', `${data.userId}`);
+
+            $('.js-meetings-people').append(`<button id=${data.id} class="new-meeting">Add New Meeting</button>`);
 
             for (index in data.goals) {
 
@@ -55,20 +62,25 @@ const DOM = (function() {
                 let dateStr = DOM.formatDate(date);
 
                 $('.js-goals').append(
-                    `<p>${data.goals[index].goal}</p>
-                    <p>Complete by: ${dateStr}</p>
+                    `<li>${data.goals[index].goal} || <span>Complete by: ${dateStr}</span></li>
                     `)
-            }
+            };
+
+            $('.js-goals').append(`<button id=${data.id} class="new-goal">Add New Goal</button>`);
 
             for (index in data.notes) {
-                $('.js-notes').append(`<p>${data.notes[index].content}</p>`)
-            }
+                $('.js-notes').append(`<li>${data.notes[index].content}</li>`)
+            };
+
+            $('.js-notes').append(`<button id=${data.id} class="new-note">Add New Note</button>`);
 
             for (index in data.files) {
                 $('.js-files').append(`
-                <p>${data.files[index].title} ${data.files[index].ext}</p>
+                <li>${data.files[index].title} ${data.files[index].ext}</li>
                 `)
-            }
+            };
+
+            $('.js-files').append(`<button id=${data.id} class="new-file">Upload New File</button>`);
 
         },
 

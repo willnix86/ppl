@@ -57,6 +57,8 @@ const API = (function() {
             throw new Error(response.statusText);
             })
             .then(responseJson => {
+                peopleData.id = responseJson.id;
+                peopleData.userId = responseJson.user._id;
                 peopleData.firstName = responseJson.firstName;
                 peopleData.lastName = responseJson.lastName;
                 peopleData.notes = responseJson.notes;
@@ -79,7 +81,6 @@ const API = (function() {
             })
 
         }
-
     }
 
 })();

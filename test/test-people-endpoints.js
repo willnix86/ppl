@@ -31,12 +31,8 @@ describe('People API Resource', function() {
 
         beforeEach(function() {
             const userData = seeders.seedUserData();
-            return Promise.all(
-                [
-                    User.insertMany(userData),
-                    seeders.seedPeopleData(userData)
-                ]
-            );
+            return User.insertMany(userData)
+            .then((docs) => seeders.seedPeopleData(docs));
         });
 
         // GET ALL PEOPLE
@@ -69,7 +65,7 @@ describe('People API Resource', function() {
                     person.should.include.keys('id', 'firstName', 'lastName');
                 })
                 resPerson = res.body[0];
-                return People.findOne({_id: resPerson.id});
+                return People.findOne({_id: resPerson.id})
             })
             .then(function(person) {
                 resPerson.id.should.equal(person.id);
@@ -85,6 +81,7 @@ describe('People API Resource', function() {
             People.findOne()
             .populate('user', '-password -userName -__v -meetings')
             .then(function(person) {
+                console.log(person);
                 id = person.id;
                 return chai.request(app)
                 .get(`/people/${id}`)

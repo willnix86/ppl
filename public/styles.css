@@ -1,7 +1,12 @@
+body {
+    text-align: center;
+}
+
 main {
     max-width: 1300px;
     margin: 0 auto;
 }
+
 h1 {
     font-size: 30px;
     font-weight: bold;
@@ -24,6 +29,10 @@ section {
 
 .login {
     margin-bottom: 30px;
+}
+
+form {
+    display: none;
 }
 
 .person {

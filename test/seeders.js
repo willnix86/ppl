@@ -23,7 +23,7 @@ const seeders = {
 
     generateUserData: function() {
         return {
-            _id: mongoose.Types.ObjectId(),
+            // _id: mongoose.Types.ObjectId(),
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
             userName: `${faker.name.firstName()}.${faker.name.lastName()}`,
@@ -42,18 +42,24 @@ const seeders = {
 
     seedPeopleData: function(userData) {
         console.log('Seeding people data...');
-        const seedData = [];
-        for (let i = 0; i < 10; i++) {
-            seedData.push(seeders.generatePeopleData(userData, i));
-        };
-        return People.insertMany(seedData);
+        //const seedData = [];
+        const promises = userData.map(user => {
+            return People.create(seeders.generatePeopleData(user))
+        })
+
+        return Promise.all(promises)
+
+        // for (let i = 0; i < 10; i++) {
+        //     seedData.push(seeders.generatePeopleData(userData, i));
+        // };
+        // return People.insertMany(seedData);
     },
 
-    generatePeopleData: function(userData, index) {
+    generatePeopleData: function(user) {
         return {
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
-            user: userData[index]._id,
+            user: user._id,
             notes: [
                 {
                     content: faker.lorem.sentence(),
