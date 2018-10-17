@@ -117,7 +117,7 @@ const seeders = {
         console.log('Seeding people data with specific users...');
         const seedData = [];
         for (let i = 0; i < 10; i++) {
-            seedData.push(seeders.generatePeopleWithSpecificUserIds(userData));
+            seedData.push(seeders.generatePeopleWithSpecificUsersIds(userData));
         };
         return People.insertMany(seedData);
     },

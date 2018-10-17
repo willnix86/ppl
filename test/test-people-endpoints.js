@@ -78,7 +78,7 @@ describe('People API Resource', function() {
         // GET PERSON BY ID
         it('should return the correct person from database', function() {
             let id;
-            People.findOne()
+            return People.findOne()
             .populate('user', '-password -userName -__v -meetings')
             .then(function(person) {
                 console.log(person);
@@ -152,7 +152,10 @@ describe('People API Resource', function() {
                 resPerson.id.should.equal(person.id);
                 resPerson.firstName.should.equal(person.firstName);
                 resPerson.lastName.should.equal(person.lastName);
-                //resPerson.user.should.equal(person.user);
+                // Comparing a json object (resPerson.user) with a Mongo document (person.user) won't work
+                // resPerson.user.should.equal(person.user);
+                resPerson.user.firstName.should.equal(person.user.firstName);
+                resPerson.user.lastName.should.equal(person.user.lastName);
             })
         });
 
