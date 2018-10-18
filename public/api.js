@@ -77,6 +77,7 @@ const API = (function() {
             })
             .then(responseJson => {
                 peopleData.meetings = responseJson;
+                console.log(peopleData)
                 DOM.displayPersonData(peopleData);
             })
 
@@ -157,6 +158,8 @@ const API = (function() {
                 person: personId,
                 date: date
             }
+
+            console.log(data);
             fetch(`/meetings`, {
                 method: 'POST',
                 headers: {

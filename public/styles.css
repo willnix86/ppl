@@ -32,7 +32,7 @@ li {
     list-style-type: none;
 }
 
-.js-notes, .js-goals, .js-files, .js-meetings-people {
+.js-notes, .js-goals, .js-files, .js-meetings-people, .js-people, .js-meetings {
     display: none;
 }
 
@@ -44,7 +44,7 @@ form {
     margin-bottom: 30px;
 }
 
-.completeBy {
+.completeBy, .createdAt {
     font-weight: bold;
 }
 

@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 
 // GET ALL MEETING BY USER ID
 router.get('/userId/:id', (req, res) => {
-    Meeting.find({host: req.params.id}, '-__v')
+    Meeting.find({ $and: [ {host: req.params.id}, { date: { $gte: new Date() }} ] }, '-__v').sort({date: 1})
     .then(meeting => {
         res.json(meeting);
     })
@@ -30,7 +30,7 @@ router.get('/userId/:id', (req, res) => {
 
 // GET ALL MEETINGS BY PERSON ID
 router.get('/personId/:id', (req, res) => {
-    Meeting.find({person: req.params.id}, '-__v')
+    Meeting.find({ $and: [ {person: req.params.id}, { date: { $gte: new Date() }} ] }, '-__v').sort({date: 1})
     .then(meeting => {
         res.json(meeting);
     })
