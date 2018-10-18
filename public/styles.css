@@ -27,10 +27,24 @@ section {
     margin: 30px auto;
 }
 
-.login {
-    margin-bottom: 30px;
+li {
+    margin: 15px 0;
+    list-style-type: none;
+}
+
+.js-notes, .js-goals, .js-files, .js-meetings-people {
+    display: none;
 }
 
 form {
     display: none;
 }
+
+.login {
+    margin-bottom: 30px;
+}
+
+.completeBy {
+    font-weight: bold;
+}
+

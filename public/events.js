@@ -5,16 +5,32 @@ const EVENTS = (function() {
         watchClicks: function() {
             $('body').on('click', '.login', function(e) {
                 e.preventDefault();
-                DOM.resetUserPage();
+                $('main').empty();
+                DOM.loadUserPage();
                 API.getUserData();
             });
 
+            $('body').on('click', '.back', function(e) {
+                e.preventDefault();
+                $('main').empty();
+                DOM.loadUserPage();
+                API.getUserData();
+            })
+
             $('body').on('click', '.person', function(e) {
                 e.preventDefault();
-                DOM.resetPeoplePage();
+                let personName = $(this).text();
                 let personId = $(this).attr('id');
-                API.getPersonsData(personId);
+                $('main').empty();
+                DOM.loadPeoplePage(personName, personId);
             });
+
+            $('body').on('click', '.notes-section, .goals-section, .files-section, .meetings-section-people', function(e) {
+                $(this).parent().find('ul').empty();
+                $(this).parent().find('ul').toggle();
+                let personId = $(this).parent().parent().find('h2').attr('id');
+                API.getPersonsData(personId);
+            })
 
             $('body').on('click', '.new-person', function(e) {
                 e.preventDefault();
@@ -23,10 +39,10 @@ const EVENTS = (function() {
 
             $('body').on('click', '#submit-person', function(e) {
                 e.preventDefault();
-                let userId = $('.new-person').attr('id');
+                let userId = $('.js-user').attr('id');
                 let person = {
                     firstName: $('#person-first-name').val(),
-                    lastLast: $('#person-last-name').val()
+                    lastName: $('#person-last-name').val()
                 };
                 API.createNewPerson(userId, person);
                 $('.new-person-form').slideUp(10);
@@ -45,6 +61,7 @@ const EVENTS = (function() {
                 API.createNewNote(personId, content);
                 $('.new-notes-form').slideUp(10);
                 DOM.resetForm('.new-notes-form');
+                $(this).parent().parent().find('ul').toggle();
             })
 
             $('body').on('click', '.new-goal', function(e) {
@@ -59,21 +76,23 @@ const EVENTS = (function() {
                 API.createNewGoal(personId, goal, date);
                 $('.new-goals-form').slideUp(10);
                 DOM.resetForm('.new-goals-form');
+                $(this).parent().parent().find('ul').toggle();
             })
 
-            $('body').on('click', '.new-meeting-people', function(e) {
+            $('body').on('click', '.new-meeting', function(e) {
                 e.preventDefault();
-                $('.new-meetings-form-people').slideDown(10);
+                $('.new-meetings-form').slideDown(10);
             });
 
-            $('body').on('click', '#submit-meeting-people', function(e) {
+            $('body').on('click', '#submit-meeting', function(e) {
                 e.preventDefault();
-                let personId = $('.new-meeting-people').attr('id');
-                let userId = $('.js-meetings-people').attr('id');
-                let date = new Date(`${$('#meeting-date-people').val()} ${$('#meeting-time-people').val()}`);
+                let personId = $('.new-meeting').attr('id');
+                let userId = $('.js-meetings').attr('id');
+                let date = new Date(`${$('#meeting-date').val()} ${$('#meeting-time').val()}`);
                 API.createNewMeeting(personId, userId, date);
-                $('.new-meetings-form-people').slideUp(10);
-                DOM.resetForm('.new-meetings-form-people');
+                $('.new-meetings-form').slideUp(10);
+                DOM.resetForm('.new-meetings-form');
+                $(this).parent().parent().find('ul').toggle();
             })
 
             // $('body').on('click', '.new-file', function(e) {

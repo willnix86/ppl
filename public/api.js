@@ -82,6 +82,30 @@ const API = (function() {
 
         },
 
+        createNewPerson: function(id, person) {
+            const newPerson = {
+                firstName: person.firstName,
+                lastName: person.lastName,
+                user: id
+            }
+            fetch(`/people`, {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(newPerson)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            throw new Error(response.statusText);
+            })
+            .then(responseJson => {
+                //UPDATE DOM WITH NEW ITEM
+            })
+        },
+
         createNewNote: function(id, content) {
             const data = {
                 content: content
