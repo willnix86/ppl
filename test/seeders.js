@@ -245,7 +245,7 @@ const seeders = {
                 let meeting = {
                     host: users[j]._id,
                     person: people[j]._id,
-                    date: faker.date.recent()
+                    date: faker.date.future()
                 }
     
                 seedData.push(meeting);

@@ -58,23 +58,19 @@ describe('Meeting API Resource', function() {
             })
         });
 
-// THE ONE BELOW ISN'T WORKING! IT RETURNS PASSED BUT DOESN'T ACTUALLY
-// DO WHAT I WANT
-
         it('should get all meetings by user ID', function() {
-            let id;
-            User.findOne()
+            let dbUser;
+            return User.findOne()
             .then(function(user) {
-                id = user._id;
+                dbUser = user;
                 return chai.request(app)
                 .get(`/meetings/userId/${user._id}`)
             })
             .then(function(res) {
-                console.log('hello');
                 res.should.have.status(200);
                 res.body.should.have.lengthOf.at.least(1);
                 res.body.forEach(meeting => {
-                    meeting.host.id.should.equal(id);
+                    meeting.host._id.should.equal("" + dbUser._id); //same as .toString()
                 });
             }) 
 

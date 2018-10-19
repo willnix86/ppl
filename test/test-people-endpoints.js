@@ -147,6 +147,7 @@ describe('People API Resource', function() {
                 return People.findOne({_id: resPerson.id});
             })
             .then(function(person) {
+                console.log(person);
                 resPerson.id.should.equal(person.id);
                 resPerson.firstName.should.equal(person.firstName);
                 resPerson.lastName.should.equal(person.lastName);
@@ -167,12 +168,10 @@ describe('People API Resource', function() {
 
         // POST NEW PERSON
         it('should add a new person', function() {
-            let user;
             let res;
             let newPerson = {};
-            User.findOne()
+            return User.findOne()
             .then(function(user) {
-                user = user;
                 newPerson = seeders.generatePeopleData(user);
                 return chai.request(app)
                 .post('/people')
@@ -191,8 +190,8 @@ describe('People API Resource', function() {
                 .then(function(person) {
                     person.firstName.should.equal(newPerson.firstName);
                     person.lastName.should.equal(newPerson.lastName);
-                    person.user.firstName.should.equal(newPerson.user.firstName);
-                    person.user.lastName.should.equal(newPerson.user.lastName);
+                    person.user.firstName.should.equal(user.firstName);
+                    person.user.lastName.should.equal(user.lastName);
                 });
             }) 
         });
@@ -221,10 +220,9 @@ describe('People API Resource', function() {
             })
             .then(function(res) {
                 res.should.have.status(204);
-                People.findById(updateData.id)
+                return People.findById(updateData.id)
                 .then(function(person) {
                     person.lastName.should.equal(updateData.lastName);
-                    person.password.should.equal(updateData.password);
                 });
             })
         });

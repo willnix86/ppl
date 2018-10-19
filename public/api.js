@@ -77,7 +77,6 @@ const API = (function() {
             })
             .then(responseJson => {
                 peopleData.meetings = responseJson;
-                console.log(peopleData)
                 DOM.displayPersonData(peopleData);
             })
 
@@ -103,7 +102,7 @@ const API = (function() {
             throw new Error(response.statusText);
             })
             .then(responseJson => {
-                //UPDATE DOM WITH NEW ITEM
+
             })
         },
 
@@ -125,7 +124,6 @@ const API = (function() {
             throw new Error(response.statusText);
             })
             .then(responseJson => {
-                //UPDATE DOM WITH NEW ITEM
             })
         },
 
@@ -148,7 +146,6 @@ const API = (function() {
             throw new Error(response.statusText);
             })
             .then(responseJson => {
-                //UPDATE DOM WITH NEW ITEM
             })
         },
 
@@ -174,7 +171,21 @@ const API = (function() {
             throw new Error(response.statusText);
             })
             .then(responseJson => {
-                //UPDATE DOM WITH NEW ITEM
+            })
+        },
+
+        deleteMeeting: function(id) {
+            fetch(`/meetings/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+            throw new Error(response.statusText);
+            })
+            .then(responseJson => {
+                alert('Meeting deleted');
             })
         }
 

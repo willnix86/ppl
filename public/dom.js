@@ -42,7 +42,7 @@ const DOM = (function() {
                 )
             };
 
-            $('.js-people').append(`<button id=${data.user.id} class="new-person">Add New Person</button>`);
+            $('.js-people').append(`<button class="new-person">Add New Person</button>`);
 
             for (index in data.meetings) {
 
@@ -53,10 +53,10 @@ const DOM = (function() {
                 let timeStr = DOM.formatTime(date);
 
                 $('.js-meetings').append(
-                    `<li>
+                    `<li id=${data.meetings[index]._id}>
                     Meeting with <b>${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName}</b> on <b>${dateStr}</b> at <b>${timeStr}</b>
-                    <button class="item-delete"><i class="fas fa-edit"></i></button>
-                    <button class="item-delete"><i class="fas fa-times-circle"></i></button></li>
+                    <button class="edit meeting-edit"><i class="fas fa-edit"></i></button>
+                    <button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button></li>
                     `
                 )
             };
@@ -66,7 +66,7 @@ const DOM = (function() {
             $('main').append(`
                 <header>
                     <h1>Individual Profile Page</h1>
-                    <h2 id='${personId}' class="js-person">${personName}</h2>
+                    <h2 class="js-person">${personName}</h2>
                     <button class="back">Back</button>
                 </header>
 
@@ -122,7 +122,6 @@ const DOM = (function() {
         displayPersonData: function(data) {
 
             $('.js-person').text(`${data.firstName} ${data.lastName}`);
-            $('.js-person').attr('id', data.id);
 
             for (index in data.meetings) {
 
@@ -133,16 +132,14 @@ const DOM = (function() {
                 let timeStr = DOM.formatTime(date);
 
                 $('.js-meetings-people').append(
-                    `<li>
+                    `<li id=${data.meetings[index]._id}>
                     Meeting with <b>${data.meetings[index].host.firstName} ${data.meetings[index].host.lastName}</b> on <b>${dateStr}</b> at <b>${timeStr}</b>
-                    <button class="item-delete"><i class="fas fa-edit"></i></button><button class="item-delete"><i class="fas fa-times-circle"></i></button></li>
+                    <button class="edit meeting-edit"><i class="fas fa-edit"></i></button><button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button></li>
                     `
                 )
             }
 
-            $('.js-meetings-people').attr('id', `${data.userId}`);
-
-            $('.js-meetings-people').append(`<button id=${data.id} class="new-meeting">Add New Meeting</button>`);
+            $('.js-meetings-people').append(`<button class="new-meeting">Add New Meeting</button>`);
 
             let goalsArr = data.goals;
 
@@ -155,11 +152,11 @@ const DOM = (function() {
                 let dateStr = DOM.formatDate(date);
 
                 $('.js-goals').append(
-                    `<li>${sortedGoals[index].goal} || <span class="completeBy">Complete by: ${dateStr}</span><button class="item-delete"><i class="fas fa-edit"></i></button><button class="item-delete"><i class="fas fa-times-circle"></i></button></li>
+                    `<li id=${data.goals[index]._id}>${sortedGoals[index].goal} || <span class="completeBy">Complete by: ${dateStr}</span><button class="edit goal-edit"><i class="fas fa-edit"></i></button><button class="delete goal-delete"><i class="fas fa-times-circle"></i></button></li>
                     `)
             };
 
-            $('.js-goals').append(`<button id=${data.id} class="new-goal">Add New Goal</button>`);
+            $('.js-goals').append(`<button class="new-goal">Add New Goal</button>`);
 
             let notesArr = data.notes;
 
@@ -169,18 +166,18 @@ const DOM = (function() {
                 let date = new Date(sortedNotes[index].createdAt);
                 let dateStr = DOM.formatDate(date);
 
-                $('.js-notes').append(`<li>${sortedNotes[index].content} <span class="createdAt">${dateStr}</span><button class="item-delete"><i class="fas fa-edit"></i></button><button class="item-delete"><i class="fas fa-times-circle"></i></button></li>`)
+                $('.js-notes').append(`<li id=${data.notes[index]._id}>${sortedNotes[index].content} <span class="createdAt">${dateStr}</span><button class="edit note-edit"><i class="fas fa-edit"></i></button><button class="delete note-delete"><i class="fas fa-times-circle"></i></button></li>`)
             };
 
-            $('.js-notes').append(`<button id=${data.id} class="new-note">Add New Note</button>`);
+            $('.js-notes').append(`<button class="new-note">Add New Note</button>`);
 
             for (index in data.files) {
                 $('.js-files').append(`
-                <li>${data.files[index].title} ${data.files[index].ext}<button class="item-delete"><i class="fas fa-edit"></i></button><button class="item-delete"><i class="fas fa-times-circle"></i></button></li>
+                <li id=${data.files[index]._id}>${data.files[index].title} ${data.files[index].ext}<button class="edit file-edit"><i class="fas fa-edit"></i></button><button class="delete file-delete"><i class="fas fa-times-circle"></i></button></li>
                 `)
             };
 
-            $('.js-files').append(`<button id=${data.id} class="new-file">Upload New File</button>`);
+            $('.js-files').append(`<button class="new-file">Upload New File</button>`);
 
         },
 
@@ -235,6 +232,14 @@ const DOM = (function() {
                 var x = a[key]; var y = b[key];
                 return ((x > y) ? -1 : ((x < y) ? 1 : 0));
             });
+        },
+
+        getUserId: function() {
+            return $('main').attr('id');
+        },
+
+        getPersonId: function() {
+            return $('main').attr('class');
         }
 
     }
