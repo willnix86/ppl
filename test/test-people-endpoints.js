@@ -147,7 +147,6 @@ describe('People API Resource', function() {
                 return People.findOne({_id: resPerson.id});
             })
             .then(function(person) {
-                console.log(person);
                 resPerson.id.should.equal(person.id);
                 resPerson.firstName.should.equal(person.firstName);
                 resPerson.lastName.should.equal(person.lastName);

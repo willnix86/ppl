@@ -19,9 +19,9 @@ const DOM = (function() {
                 <ul class="js-people"></ul>
                 <form class="new-person-form" name="new-person">
                     <label for="person-first-name">First Name:</label>
-                    <input type="text" id="person-first-name" name="person-first-name" placeholder="e.g Sam">
+                    <input type="text" id="person-first-name" name="person-first-name" placeholder="e.g Sam" required>
                     <label for="person-last-name">Last Name:</label>
-                    <input type="text" id="person-last-name" name="person-last-name" placeholder="e.g Smith">
+                    <input type="text" id="person-last-name" name="person-last-name" placeholder="e.g Smith" required>
                     <label for="submit-person"></label>
                     <input type="button" id="submit-person" name="submit-person" value="Submit">
                 </form>
@@ -37,7 +37,7 @@ const DOM = (function() {
 
             for (index in data.people) {
                 $('.js-people').append(
-                    `<li><button id=${data.people[index].id} class='person'>
+                    `<li class="people-item"><button id=${data.people[index].id} class='person'>
                     ${data.people[index].firstName} ${data.people[index].lastName}</button><li>`
                 )
             };
@@ -53,10 +53,19 @@ const DOM = (function() {
                 let timeStr = DOM.formatTime(date);
 
                 $('.js-meetings').append(
-                    `<li id=${data.meetings[index]._id}>
-                    Meeting with <b>${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName}</b> on <b>${dateStr}</b> at <b>${timeStr}</b>
+                    `<li id=${data.meetings[index]._id} class="meeting-item">
+                    Meeting with <span class="person-name">${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName}</span> on <span class="date-string">${dateStr}</span> at <span class="time-string">${timeStr}</span>
                     <button class="edit meeting-edit"><i class="fas fa-edit"></i></button>
-                    <button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button></li>
+                    <button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button>
+                    <form class="edit-meetings-form" name="edit-meetings">
+                        <label for="edit-meeting-date">When:</label>
+                        <input type="date" id="edit-meeting-date" name="edit-meeting-date">
+                        <label for="edit-meeting-time">What time:</label>
+                        <input type="time" id="edit-meeting-time" name="edit-meeting-time" min="9:00" max="18:00">
+                        <label for="submit-meeting-edit"></label>
+                        <input type="button" id="submit-meeting-edit" name="submit-meeting-edit" value="Ok">
+                </form>
+                </li>
                     `
                 )
             };
@@ -75,7 +84,7 @@ const DOM = (function() {
                     <ul class="js-notes"></ul>
                     <form class="new-notes-form" name="new-note">
                             <label for="content">Note:</label>
-                            <input type="text" id="content" name="content">
+                            <input type="text" id="content" name="content" required>
                             <input type="button" id="submit-note" name="submit-note" value="Add Note">
                     </form>
                 </section>
@@ -85,12 +94,13 @@ const DOM = (function() {
                     <ul class="js-goals"></ul>
                     <form class="new-goals-form" name="new-goal">
                             <label for="goal">Goal:</label>
-                            <input type="text" id="goal" name="goal">
+                            <input type="text" id="goal" name="goal" required>
                             <label for="complete-by">Complete by:</label>
-                            <input type="date" id="complete-by" name="complete-by">
+                            <input type="date" id="complete-by" name="complete-by" required>
                             <label for="submit-goal"></label>
                             <input type="button" id="submit-goal" name="submit-goal" value="Add Goal">
                     </form>
+
                 </section>
 
                 <section role="region">
@@ -98,22 +108,11 @@ const DOM = (function() {
                     <ul class="js-meetings-people"></ul>
                     <form class="new-meetings-form" name="new-meetings">
                             <label for="meeting-date">When:</label>
-                            <input type="date" id="meeting-date" name="meeting-date">
+                            <input type="date" id="meeting-date" name="meeting-date" required>
                             <label for="meeting-time">What time:</label>
-                            <input type="time" id="meeting-time" name="meeting-time" min="9:00" max="18:00">
+                            <input type="time" id="meeting-time" name="meeting-time" min="9:00" max="18:00" required>
                             <label for="submit-meeting"></label>
                             <input type="button" id="submit-meeting" name="submit-meeting-" value="Add Meeting">
-                    </form>
-                </section>
-
-                <section role="region">
-                    <h3 class="files-section">Files</h3>
-                    <ul class="js-files"></ul>
-                    <form class="new-file-form" name="new-file">
-                            <label for="file-name">File Name:</label>
-                            <input type="text" id="file-name" name="file-name">
-                            <label for="submit-file"></label>
-                            <input type="button" id="submit-file" name="submit-file" value="Upload File">
                     </form>
                 </section>
             `);
@@ -132,9 +131,17 @@ const DOM = (function() {
                 let timeStr = DOM.formatTime(date);
 
                 $('.js-meetings-people').append(
-                    `<li id=${data.meetings[index]._id}>
-                    Meeting with <b>${data.meetings[index].host.firstName} ${data.meetings[index].host.lastName}</b> on <b>${dateStr}</b> at <b>${timeStr}</b>
-                    <button class="edit meeting-edit"><i class="fas fa-edit"></i></button><button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button></li>
+                    `<li id=${data.meetings[index]._id} class="meeting-item">
+                    Meeting with <span class="user-name">${data.meetings[index].host.firstName} ${data.meetings[index].host.lastName}</span> on <span class="date-string">${dateStr}</span> at <span class="time-string">${timeStr}</span>
+                    <button class="edit meeting-edit"><i class="fas fa-edit"></i></button><button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button>
+                    <form class="edit-meetings-form" name="edit-meetings">
+                        <label for="edit-meeting-date">When:</label>
+                        <input type="date" id="edit-meeting-date" name="edit-meeting-date">
+                        <label for="edit-meeting-time">What time:</label>
+                        <input type="time" id="edit-meeting-time" name="edit-meeting-time" min="9:00" max="18:00">
+                        <label for="submit-meeting-edit"></label>
+                        <input type="button" id="submit-meeting-edit" name="submit-meeting-edit" value="Ok">
+                    </form></li>
                     `
                 )
             }
@@ -152,8 +159,13 @@ const DOM = (function() {
                 let dateStr = DOM.formatDate(date);
 
                 $('.js-goals').append(
-                    `<li id=${data.goals[index]._id}>${sortedGoals[index].goal} || <span class="completeBy">Complete by: ${dateStr}</span><button class="edit goal-edit"><i class="fas fa-edit"></i></button><button class="delete goal-delete"><i class="fas fa-times-circle"></i></button></li>
+                    `<li id=${data.goals[index]._id} class="goal-item">${sortedGoals[index].goal} || <span class="completeBy">Complete by: ${dateStr}</span><button class="delete goal-delete"><i class="fas fa-times-circle"></i></button></li>
                     `)
+
+                if (data.goals[index].completed) {
+                    $(`#${data.goals[index]._id}`).attr('class', 'completed');
+                }
+
             };
 
             $('.js-goals').append(`<button class="new-goal">Add New Goal</button>`);
@@ -166,18 +178,18 @@ const DOM = (function() {
                 let date = new Date(sortedNotes[index].createdAt);
                 let dateStr = DOM.formatDate(date);
 
-                $('.js-notes').append(`<li id=${data.notes[index]._id}>${sortedNotes[index].content} <span class="createdAt">${dateStr}</span><button class="edit note-edit"><i class="fas fa-edit"></i></button><button class="delete note-delete"><i class="fas fa-times-circle"></i></button></li>`)
+                $('.js-notes').append(`<li id=${data.notes[index]._id} class="note-item">${sortedNotes[index].content} <span class="createdAt">${dateStr}</span><button class="delete note-delete"><i class="fas fa-times-circle"></i></button></li>`)
             };
 
             $('.js-notes').append(`<button class="new-note">Add New Note</button>`);
 
-            for (index in data.files) {
-                $('.js-files').append(`
-                <li id=${data.files[index]._id}>${data.files[index].title} ${data.files[index].ext}<button class="edit file-edit"><i class="fas fa-edit"></i></button><button class="delete file-delete"><i class="fas fa-times-circle"></i></button></li>
-                `)
-            };
+            // for (index in data.files) {
+            //     $('.js-files').append(`
+            //     <li id=${data.files[index]._id}>${data.files[index].title} ${data.files[index].ext}<button class="edit file-edit"><i class="fas fa-edit"></i></button><button class="delete file-delete"><i class="fas fa-times-circle"></i></button></li>
+            //     `)
+            // };
 
-            $('.js-files').append(`<button class="new-file">Upload New File</button>`);
+            // $('.js-files').append(`<button class="new-file">Upload New File</button>`);
 
         },
 
@@ -210,7 +222,7 @@ const DOM = (function() {
 
         formatTime(date) {
             const hour = date.getHours();
-            const minutes = date.getMinutes();
+            const minutes = (date.getMinutes()<10?'0':'') + date.getMinutes();
 
             return `${hour}:${minutes}`;
         },

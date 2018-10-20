@@ -96,13 +96,9 @@ const API = (function() {
                 body: JSON.stringify(newPerson)
             })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
+                if (!response.ok) {
+                    throw new Error(response.statusText);
                 }
-            throw new Error(response.statusText);
-            })
-            .then(responseJson => {
-
             })
         },
 
@@ -118,13 +114,11 @@ const API = (function() {
                 body: JSON.stringify(data)
             })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
+                if (!response.ok) {
+                    throw new Error(response.statusText);
                 }
-            throw new Error(response.statusText);
             })
-            .then(responseJson => {
-            })
+
         },
 
         createNewGoal: function(id, goal, completeDate) {
@@ -140,12 +134,9 @@ const API = (function() {
                 body: JSON.stringify(data)
             })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
+                if (!response.ok) {
+                    throw new Error(response.statusText);
                 }
-            throw new Error(response.statusText);
-            })
-            .then(responseJson => {
             })
         },
 
@@ -156,7 +147,6 @@ const API = (function() {
                 date: date
             }
 
-            console.log(data);
             fetch(`/meetings`, {
                 method: 'POST',
                 headers: {
@@ -165,12 +155,43 @@ const API = (function() {
                 body: JSON.stringify(data)
             })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
+                if (!response.ok) {
+                    throw new Error(response.statusText);
                 }
-            throw new Error(response.statusText);
             })
-            .then(responseJson => {
+        },
+
+        editMeeting: function(id, data) {
+            fetch(`/meetings/${id}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(data) 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+            })
+        },
+
+        editGoalStatus: function(personId, goalId, status) {
+            const data = {
+                completed: status
+            };
+
+            fetch(`people/${personId}/goalStatus/${goalId}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
             })
         },
 
@@ -179,13 +200,31 @@ const API = (function() {
                 method: 'DELETE'
             })
             .then(response => {
-                if (response.ok) {
-                    return response.json()
+                if (!response.ok) {
+                    throw new Error(response.statusText);
                 }
-            throw new Error(response.statusText);
             })
-            .then(responseJson => {
-                alert('Meeting deleted');
+        },
+
+        deleteNote: function(personId, noteId) {
+            fetch(`/people/${personId}/removeNotes/${noteId}`, {
+                method: 'PUT'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+            })
+        },
+
+        deleteGoal: function(personId, noteId) {
+            fetch(`/people/${personId}/removeGoals/${noteId}`, {
+                method: 'PUT'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
             })
         }
 

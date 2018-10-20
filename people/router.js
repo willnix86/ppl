@@ -127,7 +127,12 @@ router.put('/:id/addNotes', jsonParser, (req, res) => {
 
 // DELETE A NOTE
 router.put('/:personId/removeNotes/:noteId', (req, res) => {
-    People.findOneAndUpdate({_id: req.params.personId}, { $pull: {notes: { _id: req.params.noteId} } })
+    People.findOneAndUpdate(
+        {_id: req.params.personId}, 
+        { $pull: 
+            {notes: { _id: req.params.noteId} }
+        }
+    )
     .then(() => {
         console.log(`Deleted note with id (${req.params.id})`);
         res.status(204).end();
@@ -145,7 +150,7 @@ router.put('/:id/addGoals', jsonParser, (req, res) => {
     }
 
     let newGoal = {};
-    const goalFields = ['goal', 'createdAt', 'completeBy', 'completed'];
+    const goalFields = ['goal', 'createdAt', 'completeBy'];
 
     goalFields.forEach(field => {
         if (field in req.body) {
@@ -158,9 +163,31 @@ router.put('/:id/addGoals', jsonParser, (req, res) => {
     .catch(err => releaseEvents.status(500).json({message: 'Something went wrong.'}))
 });
 
+// MARK A GOAL AS COMPLETE
+router.put('/:personId/goalStatus/:goalId', (req, res) => {
+
+    const goalStatus = {
+        completed: req.body.status
+    };
+
+    People.findOneAndUpdate(
+        {_id: req.params.personId},
+        {$set: goalStatus},
+        {$new: true}
+    )
+    .then(updatedGoal => res.status(204).end())
+    .catch(err => res.status(500).json({message: "Something went wrong."}))
+
+});
+
 // DELETE A GOAL
 router.put('/:personId/removeGoals/:goalId', (req, res) => {
-    People.findOneAndUpdate({_id: req.params.personId}, { $pull: {goals: { _id: req.params.goalId} } })
+    People.findOneAndUpdate(
+        {_id: req.params.personId},
+        { $pull: 
+            {goals: { _id: req.params.goalId} } 
+        }
+    )
     .then(() => {
         console.log(`Deleted note with id (${req.params.id})`);
         res.status(204).end();

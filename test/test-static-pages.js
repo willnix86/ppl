@@ -35,33 +35,4 @@ describe('Load static pages', function() {
         })
     })
 
-    it('should load the user admin page HTML successfully', function() {
-        let res;
-        chai.request(app)
-        .get('/user')
-        .then((_res) => {
-            res = _res;
-            res.should.have.status(200);
-            res.should.have.header('content-type');
-            res.header['content-type'].should.equal('text/html; charset=UTF-8');
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    })
-
-    it('should load the person profile page HTML successfully', function() {
-        let res;
-        chai.request(app)
-        .get('/person')
-        .then((_res) => {
-            res = _res;
-            res.should.have.status(200);
-            res.should.have.header('content-type');
-            res.header['content-type'].should.equal('text/html; charset=UTF-8');
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    })
 })

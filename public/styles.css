@@ -48,3 +48,8 @@ form {
     font-weight: bold;
 }
 
+.completed {
+    text-decoration: line-through;
+    font-style: italic;
+}
+
