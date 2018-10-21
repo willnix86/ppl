@@ -57,14 +57,6 @@ const DOM = (function() {
                     Meeting with <span class="person-name">${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName}</span> on <span class="date-string">${dateStr}</span> at <span class="time-string">${timeStr}</span>
                     <button class="edit meeting-edit"><i class="fas fa-edit"></i></button>
                     <button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button>
-                    <form class="edit-meetings-form" name="edit-meetings">
-                        <label for="edit-meeting-date">When:</label>
-                        <input type="date" id="edit-meeting-date" name="edit-meeting-date">
-                        <label for="edit-meeting-time">What time:</label>
-                        <input type="time" id="edit-meeting-time" name="edit-meeting-time" min="9:00" max="18:00">
-                        <label for="submit-meeting-edit"></label>
-                        <input type="button" id="submit-meeting-edit" name="submit-meeting-edit" value="Ok">
-                </form>
                 </li>
                     `
                 )
@@ -134,14 +126,7 @@ const DOM = (function() {
                     `<li id=${data.meetings[index]._id} class="meeting-item">
                     Meeting with <span class="user-name">${data.meetings[index].host.firstName} ${data.meetings[index].host.lastName}</span> on <span class="date-string">${dateStr}</span> at <span class="time-string">${timeStr}</span>
                     <button class="edit meeting-edit"><i class="fas fa-edit"></i></button><button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button>
-                    <form class="edit-meetings-form" name="edit-meetings">
-                        <label for="edit-meeting-date">When:</label>
-                        <input type="date" id="edit-meeting-date" name="edit-meeting-date">
-                        <label for="edit-meeting-time">What time:</label>
-                        <input type="time" id="edit-meeting-time" name="edit-meeting-time" min="9:00" max="18:00">
-                        <label for="submit-meeting-edit"></label>
-                        <input type="button" id="submit-meeting-edit" name="submit-meeting-edit" value="Ok">
-                    </form></li>
+                    </li>
                     `
                 )
             }

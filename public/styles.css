@@ -40,6 +40,10 @@ form {
     display: none;
 }
 
+#login {
+    display: inline-block;
+}
+
 .login {
     margin-bottom: 30px;
 }

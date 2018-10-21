@@ -113,6 +113,16 @@ const EVENTS = (function() {
 
             $('body').on('click', '.meeting-edit', function(e) {
                 e.preventDefault();
+                $(this).parent().append(`
+                    <form class="edit-meetings-form" name="edit-meetings">
+                        <label for="edit-meeting-date">When:</label>
+                        <input type="date" id="edit-meeting-date" name="edit-meeting-date">
+                        <label for="edit-meeting-time">What time:</label>
+                        <input type="time" id="edit-meeting-time" name="edit-meeting-time" min="9:00" max="18:00">
+                        <label for="submit-meeting-edit"></label>
+                        <input type="button" id="submit-meeting-edit" name="submit-meeting-edit" value="Ok">
+                    </form>
+                `);
                 $(this).siblings('form').slideDown(10);
             });
 
