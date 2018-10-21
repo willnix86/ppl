@@ -163,7 +163,7 @@ const DOM = (function() {
                     `)
 
                 if (data.goals[index].completed) {
-                    $(`#${data.goals[index]._id}`).attr('class', 'completed');
+                    $(`#${data.goals[index]._id}`).addClass('completed');
                 }
 
             };

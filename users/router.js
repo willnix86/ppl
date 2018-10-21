@@ -7,7 +7,9 @@ const jsonParser = bodyParser.json();
 
 //GET ALL USERS
 router.get('/', (req, res) => {
-    User.find({}, '-__v')
+    User.find(
+        {}, '-__v'
+    )
     .limit(10)
     .then(users => {
         res.json(
@@ -22,7 +24,9 @@ router.get('/', (req, res) => {
 
 // GET A USER BY ID
 router.get('/:id', (req, res) => {
-    User.findOne( { _id: req.params.id }, '-__v')
+    User.findOne(
+        { _id: req.params.id }, '-__v'
+    )
     .then(user => {
         res.json(user.serialize());
     })
@@ -43,7 +47,9 @@ router.post('/', jsonParser, (req, res) => {
             res.status(400).send(message);
         }
     }
-    User.findOne({userName: req.body.userName})
+    User.findOne(
+        {userName: req.body.userName}
+    )
     .then(user => {
         if (user) {
             let message = `Username (${req.body.userName}) is already taken.`;
@@ -83,14 +89,20 @@ router.put('/:id', jsonParser, (req, res) => {
     });
 
     User
-    .findOneAndUpdate({_id: req.params.id}, {$set: updated}, {new: true})
+    .findOneAndUpdate(
+        {_id: req.params.id},
+        {$set: updated},
+        {new: true}
+    )
     .then(updatedUser => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Something went wrong.'}));
 });
 
 // DELETE A USER BY ID (AND REMOVE ASSOCIATED PEOPLE ALONG WITH IT)
 router.delete('/:id', (req, res) => {
-    People.remove({ user: req.params.id})
+    People.remove(
+        {user: req.params.id}
+    )
     .then(() => {
         User.findByIdAndRemove(req.params.id)
         .then(() => {

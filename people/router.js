@@ -3,10 +3,14 @@ const { People } = require('./models');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const ObjectId = require('mongodb').ObjectID;
 
 // GET ALL PEOPLE
 router.get('/', (req, res) => {
-    People.find({}, '-goals -notes -__v -user').sort({firstName: 1})
+    People.find(
+        {}, '-goals -notes -__v -user'
+    )
+    .sort({firstName: 1})
     .limit(10)
     .then(people => {
         res.json(
@@ -21,7 +25,10 @@ router.get('/', (req, res) => {
 
 // GET ALL PEOPLE ASSIGNED TO PARTICULAR USER
 router.get('/userId/:id', (req,res) => {
-    People.find({user: req.params.id}, '-__v').sort({firstName: 1})
+    People.find(
+        {user: req.params.id}, '-__v'
+    )
+    .sort({firstName: 1})
     .then(people => {
         res.json(
             people.map((people) => people.serialize())
@@ -87,7 +94,11 @@ router.put('/:id', jsonParser, (req, res) => {
         }
     });
 
-    People.findOneAndUpdate({_id: req.params.id}, {$set: updated}, {new: true})
+    People.findOneAndUpdate(
+        {_id: req.params.id},
+        {$set: updated},
+        {new: true}
+    )
     .then(updatedPerson => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Something went wrong.'}))
 });
@@ -120,7 +131,11 @@ router.put('/:id/addNotes', jsonParser, (req, res) => {
         }
     });
 
-    People.findByIdAndUpdate({_id: req.params.id}, {$push: {notes: newNote}}, {new: true})
+    People.findByIdAndUpdate(
+        {_id: req.params.id},
+        {$push: {notes: newNote}},
+        {new: true}
+    )
     .then(note => res.status(204).end())
     .catch(err => releaseEvents.status(500).json({message: 'Something went wrong.'}))
 });
@@ -158,25 +173,28 @@ router.put('/:id/addGoals', jsonParser, (req, res) => {
         }
     });
 
-    People.findByIdAndUpdate({_id: req.params.id}, {$push: {goals: newGoal}}, {new: true})
+    People.findByIdAndUpdate(
+        {_id: req.params.id},
+        {$push: {goals: newGoal}},
+        {new: true}
+    )
     .then(goal => res.status(204).end())
     .catch(err => releaseEvents.status(500).json({message: 'Something went wrong.'}))
 });
 
 // MARK A GOAL AS COMPLETE
-router.put('/:personId/goalStatus/:goalId', (req, res) => {
-
-    const goalStatus = {
-        completed: req.body.status
-    };
+router.put('/:personId/goalStatus/:goalId', jsonParser, (req, res) => {
 
     People.findOneAndUpdate(
-        {_id: req.params.personId},
-        {$set: goalStatus},
-        {$new: true}
+        { "_id": ObjectId(req.params.personId), "goals._id": ObjectId(req.params.goalId)}, 
+        { 'goals.$.completed': req.body.completed },
+        {new: true}
     )
     .then(updatedGoal => res.status(204).end())
-    .catch(err => res.status(500).json({message: "Something went wrong."}))
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({message: "Something went wrong."})
+    })
 
 });
 

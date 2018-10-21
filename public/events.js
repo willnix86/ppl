@@ -181,9 +181,16 @@ const EVENTS = (function() {
                 e.preventDefault();
                 let personId = $('main').attr('class');
                 let goalId = $(this).attr('id');
-                $(this).toggleClass('completed');
-                let status = $(this).hasClass('completed');
-                //API.editGoalStatus(personId, goalId, status);
+                let data = {
+                    completed: false
+                };
+                if ($(this).hasClass('completed')) {
+                    $(this).removeClass('completed');
+                } else {
+                    $(this).addClass('completed');
+                    data.completed = true;
+                }
+                API.editGoalStatus(personId, goalId, data);
                 $(this).parent().empty();
                 API.getPersonsData(personId);
             })

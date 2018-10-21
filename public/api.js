@@ -176,10 +176,7 @@ const API = (function() {
             })
         },
 
-        editGoalStatus: function(personId, goalId, status) {
-            const data = {
-                completed: status
-            };
+        editGoalStatus: function(personId, goalId, data) {
 
             fetch(`people/${personId}/goalStatus/${goalId}`, {
                 method: 'PUT',

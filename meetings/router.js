@@ -6,7 +6,9 @@ const jsonParser = bodyParser.json();
 
 // GET ALL MEETINGS
 router.get('/', (req, res) => {
-    Meeting.find({}, '-__v')
+    Meeting.find(
+        {}, '-__v'
+    )
     .then(meeting => {
         res.json(meeting);
     })
@@ -18,8 +20,8 @@ router.get('/', (req, res) => {
 
 // GET ALL MEETING BY USER ID
 router.get('/userId/:id', (req, res) => {
-    Meeting.find({ 
-        $and: [ 
+    Meeting.find(
+        {$and: [ 
             {host: req.params.id}, 
             {date: { $gte: new Date() }} 
         ]
@@ -36,7 +38,13 @@ router.get('/userId/:id', (req, res) => {
 
 // GET ALL MEETINGS BY PERSON ID
 router.get('/personId/:id', (req, res) => {
-    Meeting.find({ $and: [ {person: req.params.id}, { date: { $gte: new Date() }} ] }, '-__v').sort({date: 1})
+    Meeting.find(
+        {$and: [ 
+            {person: req.params.id},
+            { date: { $gte: new Date() }}
+        ] 
+    }, '-__v')
+    .sort({date: 1})
     .then(meeting => {
         res.json(meeting);
     })
@@ -86,7 +94,11 @@ router.put('/:id', jsonParser, (req, res) => {
         }
     });
 
-    Meeting.findOneAndUpdate({_id: req.params.id}, {$set: updated}, {new: true})
+    Meeting.findOneAndUpdate(
+        {_id: req.params.id},
+        {$set: updated},
+        {new: true}
+    )
     .then(updatedMeeting => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Something went wrong.'}))
 })
