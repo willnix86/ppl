@@ -5,6 +5,14 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
+/*
+
+
+        DELETE THE FIRST TWO WHEN READY FOR PRODUCTION
+
+
+ */
+
 //GET ALL USERS
 router.get('/', (req, res) => {
     User.find(
@@ -36,39 +44,123 @@ router.get('/:id', (req, res) => {
     })
 });
 
+/*
+
+
+        DELETE THE ABOVE WHEN READY FOR PRODUCTION
+
+
+ */
+
 // CREATE A NEW USER
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['firstName', 'lastName', 'userName', 'password'];
-    for (let i = 0; i < requiredFields.length; i++) {
-        let field = requiredFields[i];
-        if (!(field in req.body)) {
-            let message = `Missing ${field} in request parameters`;
-            console.error(message);
-            res.status(400).send(message);
-        }
+    const missingField = requiredFields.find(
+        field => !(field in req.body)
+    );
+
+    if (missingField) {
+        return res.status(422).json({
+            code: 422,
+            reason: 'ValidationError',
+            message: 'Missing field',
+            location: missingField
+        })
     }
-    User.findOne(
-        {userName: req.body.userName}
-    )
-    .then(user => {
-        if (user) {
-            let message = `Username (${req.body.userName}) is already taken.`;
-            console.error(message);
-            res.status(400).send(message);
-        } else {
-            User.create({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                userName: req.body.userName,
-                password: req.body.password,
-                meetings: req.body.meetings
-            })
-            .then(user => {
-                res.status(201).json(user.serialize());
-            })
+
+    const stringFields = ['firstName', 'lastName', 'password', 'userName'];
+    const nonStringField = stringFields.find(
+        field => field in req.body && typeof req.body[field] !== 'string' 
+    );
+
+    if (nonStringFields) {
+        return res.status(422).json({
+            code: 422,
+            reason: 'ValidationError',
+            message: 'Incorrect field type: expected String',
+            location: nonStringField
+        })
+    };
+
+    const explicitlyTrimmedFields = ['userName', 'password'];
+    const nonTrimmedField = explicitlyTrimmedFields.find(
+        field => req.body[field].trim() !== req.body[field]
+    );
+
+    if (nonTrimmedField) {
+        return res.status(422).json({
+            code: 422,
+            reason: 'ValidationError',
+            message: 'Cannot start or end with whitespace',
+            location: nonTrimmedField
+        })
+    };
+
+    const sizedFields = {
+        userName: {
+            min: 1
+        },
+        password: {
+            min: 8,
+            max: 72
         }
-    })
-    .catch(err => res.status(500).send({message: 'Internal server error. Please try again later.'}))
+    };
+
+    const tooSmallField = Object.keys(sizedFields).find(
+        field => 'min' in sizedFields[field] && req.body[field].trim().length < sizedFields[field].min
+    );
+
+    const tooBigField = Object.keys(sizedFields).find(
+        field => 'max' in sizedFields[field] && req.body[field].trim().length > sizedFields[field].max
+    );
+
+    if (tooSmallField || tooBigField) {
+        return res.status(422).json({
+            code: 422,
+            reason: 'ValidationError',
+            message: tooSmallField
+            ? `Must be at least ${sizedFields[tooSmallField].min} characters long`
+            : `Must be at most ${sizedFields[tooLargeField].max} characters long`,
+            location: tooSmallField || tooBigField
+        });
+    };
+
+    let {username, password, firstName = '', lastName = ''} = req.body;
+    firstName = firstName.trim();
+    lastName = lastName.trim();
+
+    return User.find({username})
+    .count()
+    .then(count => {
+        if (count > 0) {
+            return Promise.reject({
+                code: 422,
+                reason: 'ValidationError',
+                message: 'Username already taken',
+                location: 'username'
+            });
+        }
+        
+        return User.hashPassword(password);
+        })
+        .then(hash => {
+            return User.create({
+            username,
+            password: hash,
+            firstName,
+            lastName
+            });
+        })
+        .then(user => {
+            return res.status(201).json(user.serialize());
+        })
+        .catch(err => {
+            if (err.reason === 'ValidationError') {
+                return res.status(err.code).json(err);
+            }
+            res.status(500).json({code: 500, message: 'Internal server error'});
+        });
+
 });
 
 // EDIT A USER BY ID

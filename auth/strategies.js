@@ -1,13 +1,45 @@
-'use strict';
+const { LocalStrategy } = require('passport-local');
+const { JwtStrategy, ExtractJwt } = require('passport-jwt');
 
-const chai = require('chai');
-const chaiHttp = require('chai-http');
+const { User } = require('..users/models');
+const { JWT_SECRET } = require('..config');
 
-const should = chai.should();
+const localStrategy = new LocalStrategy((username, password, callback) => {
+    let user;
+    User.findOne({username: username})
+    .then(_user => {
+        user = _user;
+        if (!user) {
+            return Promise.reject({
+                reason: 'LoginError',
+                message: 'Incorrect username or password'
+            });
+        }
+        return user.validatePassword(password);
+    })
+    .then(isValid => {
+        if (!isValid) {
+            return Promise.reject({
+                reason: 'LoginError',
+                message: 'Incorrect username or password'
+            });
+        }
+        return callback(null, user);
+    })
+    .catch(err => {
+        if (err.reason === 'LoginError') {
+            return callback(null, false, err);
+        }
+        return callback(err, false);
+    });
+});
 
-const { User } = require('../users/models');
-const { app, runServer, closeServer } = require('../server');
-const { TEST_DATABASE_URL } = require('../config');
-const { seeders } = require('./seeders');
+const jwtStrategy = new JwtStrategy({
+    secretOrKey: JWT_SECRET,
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
+    algorithms: ['HS256']
+}, (payload, done) => {
+    done(null, payload.user);
+});
 
-chai.use(chaiHttp);
+module.exports = {localStrategy, jwtStrategy};

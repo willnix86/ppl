@@ -1,35 +1,48 @@
 'use strict';
+
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const passport = require('passport');
 
-const { PORT, DATABASE_URL } = require('./config');
 const userRouter = require('./users/router');
 const peopleRouter = require('./people/router');
 const meetingRouter = require('./meetings/router');
-const fileRouter = require('./files/router');
+const { authRouter, localStrategy, jwtStrategy } = require('./auth');
+const { PORT, DATABASE_URL } = require('.config');
 
 const app = express();
+mongoose.Promise = global.Promise;
 
 app.use(express.static('public'));
 app.use('/users', userRouter);
 app.use('/people', peopleRouter);
 app.use('/meetings', meetingRouter);
-app.use('/files', fileRouter);
+app.user('/auth', authRouter);
 
 app.use(morgan("common"));
+
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+    if (req.method === 'OPTIONS') {
+        return res.send(204);
+    }
+    next();
+});
+
+app.use('*', (req, res) => {
+    return res.status(404).json({ message: 'Not Found' });
+});
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/index.html');
 });
-
-app.get('/user', (req, res) => {
-    res.sendFile(__dirname + '/views/user.html');
-})
-
-app.get('/person', (req, res) => {
-    res.sendFile(__dirname + '/views/person.html');
-})
 
 // CRUD for Files
 
