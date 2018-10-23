@@ -9,12 +9,15 @@ const passport = require('passport');
 const userRouter = require('./users/router');
 const peopleRouter = require('./people/router');
 const meetingRouter = require('./meetings/router');
-const authRouter = require('./auth/router');
-const { localStrategy, jwtStrategy } = require('./auth/strategies');
+const { router: authRouter } = require('./auth/router');
+const { localStrategy, jwtStrategy }  = require('./auth/strategies');
 const { PORT, DATABASE_URL } = require('./config');
 
 const app = express();
 mongoose.Promise = global.Promise;
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 app.use(express.static('public'));
 app.use('/users', userRouter);
@@ -34,9 +37,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-passport.use(localStrategy);
-passport.use(jwtStrategy);
-
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/index.html');
 });
@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
 
 app.use('*', (req, res) => {
     return res.status(404).json({ message: 'Not Found' });
-});  
+});
 
 let server;
 

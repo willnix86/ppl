@@ -3,9 +3,11 @@ const { Meeting } = require('./models');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const passport = require('passport');
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 // GET ALL MEETING BY USER ID
-router.get('/userId/:id', (req, res) => {
+router.get('/protected/userId/:id', jwtAuth, (req, res) => {
     Meeting.find(
         {$and: [ 
             {host: req.params.id}, 

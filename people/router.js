@@ -8,7 +8,7 @@ const ObjectId = require('mongodb').ObjectID;
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 // GET ALL PEOPLE ASSIGNED TO PARTICULAR USER
-router.get('/userId/:id', jwtAuth, (req,res) => {
+router.get('/protected/:id', jwtAuth, (req,res) => {
     People.find(
         {user: req.params.id}, '-__v'
     )
@@ -24,17 +24,6 @@ router.get('/userId/:id', jwtAuth, (req,res) => {
     })
 })
 
-// GET PERSON BY ID
-router.get('/:id', (req, res) => {
-    People.findById(req.params.id, '-__v')
-    .then(person => {
-        res.json(person.serialize());
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).json({message: 'Internal server error, please try again later.'})
-    })
-})
 // CREATE A NEW PERSON
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['firstName', 'lastName', 'user'];

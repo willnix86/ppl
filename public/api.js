@@ -10,8 +10,11 @@ const API = (function() {
                 userName: username,
                 password: passWord
             };
-            fetch(`/users/login`, {
+            fetch(`/auth/login`, {
                 method: 'POST',
+                headers: {
+                    "Content-type": "application/json"
+                },
                 body: JSON.stringify(data)
             })
             .then(response => {
@@ -21,15 +24,13 @@ const API = (function() {
             throw new Error(response.statusText);
             })
             .then(responseJson => {
-                console.log("USER LOGGED IN!")
+                console.log(responseJson);
             })
         },
 
         getUserData: function(userId) {
             let user = userId;
-            fetch(`/users/${user}`, {
-                headers:'',
-            })
+            fetch(`/users/protected/${user}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -44,7 +45,7 @@ const API = (function() {
         },
 
         getUsersPeople: function(user) {
-            fetch(`/people/userId/${user}`)
+            fetch(`/people/protected/${user}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
