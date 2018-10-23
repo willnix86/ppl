@@ -5,9 +5,11 @@ const EVENTS = (function() {
         watchClicks: function() {
             $('body').on('click', '.login', function(e) {
                 e.preventDefault();
+                const username = $('#username').val();
+                const password = $('#password').val();
                 $('main').empty();
                 DOM.loadUserPage();
-                API.getUserData();
+                API.logUserIn(username, password);
             });
 
             $('body').on('click', '.back', function(e) {

@@ -1,30 +1,14 @@
 const express = require('express');
+const passport = require('passport');
 const { People } = require('./models');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const ObjectId = require('mongodb').ObjectID;
-
-// GET ALL PEOPLE
-router.get('/', (req, res) => {
-    People.find(
-        {}, '-goals -notes -__v -user'
-    )
-    .sort({firstName: 1})
-    .limit(10)
-    .then(people => {
-        res.json(
-            people.map((people) => people.serialize())
-        );
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).json({message: 'Internal server error, please try again later.'})
-    });
-});
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 // GET ALL PEOPLE ASSIGNED TO PARTICULAR USER
-router.get('/userId/:id', (req,res) => {
+router.get('/userId/:id', jwtAuth, (req,res) => {
     People.find(
         {user: req.params.id}, '-__v'
     )
@@ -51,7 +35,6 @@ router.get('/:id', (req, res) => {
         res.status(500).json({message: 'Internal server error, please try again later.'})
     })
 })
-
 // CREATE A NEW PERSON
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['firstName', 'lastName', 'user'];

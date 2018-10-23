@@ -5,9 +5,31 @@ const API = (function() {
 
     return {
 
-        getUserData: function() {
-            let user = "5bbf88a9e7263972af43646f";
-            fetch(`/users/${user}`)
+        logUserIn: function(username, passWord) {
+            const data = {
+                userName: username,
+                password: passWord
+            };
+            fetch(`/users/login`, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if(response.ok) {
+                    return response.json();
+                }
+            throw new Error(response.statusText);
+            })
+            .then(responseJson => {
+                console.log("USER LOGGED IN!")
+            })
+        },
+
+        getUserData: function(userId) {
+            let user = userId;
+            fetch(`/users/${user}`, {
+                headers:'',
+            })
             .then(response => {
                 if (response.ok) {
                     return response.json();

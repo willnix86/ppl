@@ -4,20 +4,6 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-// GET ALL MEETINGS
-router.get('/', (req, res) => {
-    Meeting.find(
-        {}, '-__v'
-    )
-    .then(meeting => {
-        res.json(meeting);
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).json({message: "Internal server error, please try again later."})
-    });
-});
-
 // GET ALL MEETING BY USER ID
 router.get('/userId/:id', (req, res) => {
     Meeting.find(

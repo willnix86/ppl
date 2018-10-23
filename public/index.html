@@ -12,13 +12,18 @@
             <nav>
                     <h1></h1>
                     <p>Managing your people's growth</p>
-                    <form id="login" name="login">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" value="username" required>
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" value="password" required>
+                    <form id="login" name="login" method="post">
+                        <fieldset>
+                            <legend>Log In</legend>
+                            <label for="username"></label>
+                            <input type="text" id="username" name="username" placeholder="Username" required>
+                            <label for="password"></label>
+                            <input type="password" id="password" name="password" placeholder="Password" required>
+                            <label for="login-button"></label>
+                            <button type="submit" name="login" id="login-button">Log In</button>
+                        </fieldset>
+                        
                     </form>
-                    <button class="login">Log In</button>
             </nav>
         <main role="main">
             

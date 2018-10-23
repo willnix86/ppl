@@ -9,8 +9,9 @@ const passport = require('passport');
 const userRouter = require('./users/router');
 const peopleRouter = require('./people/router');
 const meetingRouter = require('./meetings/router');
-const { authRouter, localStrategy, jwtStrategy } = require('./auth');
-const { PORT, DATABASE_URL } = require('.config');
+const authRouter = require('./auth/router');
+const { localStrategy, jwtStrategy } = require('./auth/strategies');
+const { PORT, DATABASE_URL } = require('./config');
 
 const app = express();
 mongoose.Promise = global.Promise;
@@ -19,7 +20,7 @@ app.use(express.static('public'));
 app.use('/users', userRouter);
 app.use('/people', peopleRouter);
 app.use('/meetings', meetingRouter);
-app.user('/auth', authRouter);
+app.use('/auth', authRouter);
 
 app.use(morgan("common"));
 
@@ -31,10 +32,6 @@ app.use(function (req, res, next) {
         return res.send(204);
     }
     next();
-});
-
-app.use('*', (req, res) => {
-    return res.status(404).json({ message: 'Not Found' });
 });
 
 passport.use(localStrategy);
@@ -49,6 +46,10 @@ app.get('/', (req, res) => {
 // edit goal by id and person id
 
 // edit note by id and person id
+
+app.use('*', (req, res) => {
+    return res.status(404).json({ message: 'Not Found' });
+});  
 
 let server;
 
