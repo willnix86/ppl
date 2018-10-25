@@ -5,15 +5,16 @@ const API = (function() {
 
     return {
 
-        logUserIn: function(username, passWord) {
+        logUserIn: function(userName, passWord) {
             const data = {
-                userName: username,
+                username: userName,
                 password: passWord
             };
+
             fetch(`/auth/login`, {
                 method: 'POST',
                 headers: {
-                    "Content-type": "application/json"
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify(data)
             })
@@ -21,16 +22,39 @@ const API = (function() {
                 if(response.ok) {
                     return response.json();
                 }
+            $('.alert').append(`<p class='alert alert__text-error'>${response.statusText}</p>`);
             throw new Error(response.statusText);
             })
             .then(responseJson => {
                 console.log(responseJson);
+                const { token, id } = responseJson;
+                sessionStorage.setItem('token', token);
+                sessionStorage.setItem('id', id);
+                $('main').empty();
+                $('#login').slideUp(10);
+                $('#logout').slideDown(10);
+                DOM.loadUserPage();
+                API.getUserData();
             })
         },
 
-        getUserData: function(userId) {
-            let user = userId;
-            fetch(`/users/protected/${user}`)
+        logUserOut: function() {
+            sessionStorage.clear();
+            console.log(`You've been logged out!`);
+            DOM.resetPpl();
+        },
+
+        getUserData: function() {
+            const token = sessionStorage.getItem('token');
+            const userId = sessionStorage.getItem('id');
+
+            fetch(`/users/protected/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -39,13 +63,19 @@ const API = (function() {
             })
             .then(responseJson => {
                 userData.user = responseJson;
-                API.getUsersPeople(user);
-                API.getUsersMeetings(user);
+                API.getUsersPeople(userId, token);
+                API.getUsersMeetings(userId, token);
             })
         },
 
-        getUsersPeople: function(user) {
-            fetch(`/people/protected/${user}`)
+        getUsersPeople: function(userId, token) {
+            fetch(`/people/protected/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -57,8 +87,14 @@ const API = (function() {
             })
         },
 
-        getUsersMeetings: function(user) {
-            fetch(`/meetings/userId/${user}`)
+        getUsersMeetings: function(userID, token) {
+            fetch(`/meetings/protected/userId/${userID}`, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -68,6 +104,28 @@ const API = (function() {
             .then(responseJson => {
                 userData.meetings = responseJson;
                 DOM.displayUserData(userData);
+            })
+        },
+
+        createNewUser: function(newUser) {
+            fetch(`/users/`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    $('.alert').append(`<p class='alert alert__text-error'>There was an error creating your account! ${response.statusText}</p>`);
+                    throw new Error(response.statusText);
+                }
+
+                $('.alert').append(`<p class='alert alert__text-success'>Congratulations, your account was created successfully!</p>`);
+                $('#login').toggle();
+                $('#signup').toggle();
+                $('.main__account').toggle();
+                $('.main__no-account').toggle();
             })
         },
 
@@ -114,7 +172,7 @@ const API = (function() {
             fetch(`/people`, {
                 method: 'POST',
                 headers: {
-                    "Content-type": "application/json"
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify(newPerson)
             })
@@ -132,7 +190,7 @@ const API = (function() {
             fetch(`/people/${id}/addNotes`, {
                 method: 'PUT',
                 headers: {
-                    "Content-type": "application/json"
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify(data)
             })
@@ -152,7 +210,7 @@ const API = (function() {
             fetch(`/people/${id}/addGoals`, {
                 method: 'PUT',
                 headers: {
-                    "Content-type": "application/json"
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify(data)
             })
@@ -173,7 +231,7 @@ const API = (function() {
             fetch(`/meetings`, {
                 method: 'POST',
                 headers: {
-                    "Content-type": "application/json"
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify(data)
             })
@@ -188,7 +246,7 @@ const API = (function() {
             fetch(`/meetings/${id}`, {
                 method: 'PUT',
                 headers: {
-                    "Content-type": "application/json"
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify(data) 
             })
@@ -204,7 +262,7 @@ const API = (function() {
             fetch(`people/${personId}/goalStatus/${goalId}`, {
                 method: 'PUT',
                 headers: {
-                    "Content-type": "application/json"
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify(data)
             })

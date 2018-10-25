@@ -1,15 +1,52 @@
 body {
+    background-color: #e6f4f4;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+header {
+    margin: 0 auto;
+    padding: 10px 0;
+    max-width: 100%;
     text-align: center;
 }
 
 main {
-    max-width: 1300px;
     margin: 0 auto;
+    padding: 20px 0;
+    width: 100%;
+    min-height: 60vh;
+    max-height: auto;
 }
 
-h1 {
-    font-size: 30px;
-    font-weight: bold;
+form {
+    display: none;
+}
+
+input, button {
+    width: auto;
+    margin: 5px;
+    height: 28px;
+    font-size: 15px;
+    text-align: center;
+}
+
+button {
+    margin: 10px 0;
+    width: auto;
+    background-color: #d7e5e5;
+    border: none;
+    border-radius: 5px;
+}
+
+fieldset {
+    border: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
 }
 
 h2 {
@@ -25,27 +62,110 @@ h3 {
 
 section {
     margin: 30px auto;
+    display: inline-block;
+}
+
+ul {
+    margin: 0 auto;
+    padding: 0;
 }
 
 li {
-    margin: 15px 0;
+    padding: 10px 0;
     list-style-type: none;
 }
 
-.js-notes, .js-goals, .js-files, .js-meetings-people, .js-people, .js-meetings {
-    display: none;
+.meeting-item, .note-item, .goal-item {
+    padding: 10px;
+    background-color: #edf7f7;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(107,107,107,0.28);
+    margin-bottom: 10px;
 }
 
-form {
-    display: none;
+.meeting-item:nth-child(2n), .note-item:nth-child(2n), .goal-item:nth-child(2n) {
+    background-color: #e6f4f4;
+}
+
+footer {
+    height: 120px;
+    max-width: 100%;
+    text-align: center;
+}
+
+.header__logo {
+    width: 100px;
+    height: 100px;
+    margin-bottom: -20px;
+}
+
+.header__title {
+    font-family: 'Righteous', cursive;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.header__subtitle {
+    font-size: 20px;
+}
+
+.header__logo-wrapper, .header__title-wrapper {
+    margin: 0;
+    padding: 0;
 }
 
 #login {
     display: inline-block;
 }
 
-.login {
+#logout {
+    display: none;
+}
+
+.alert {
+    font-weight: bold;
+}
+
+.alert_text-success {
+    color: #60db66;
+}
+
+.alert__text-error {
+    color: #db6060;
+}
+
+.main__no-account {
+    margin: -20px 0 20px 0;
+}
+
+.main__account {
+    margin: -20px 0 20px 0;
+    display: none;
+}
+
+.user__title {
+    font-family: 'Righteous', cursive;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.person__header {
     margin-bottom: 30px;
+}
+
+.person__title {
+    font-family: 'Righteous', cursive;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.person__img, .meetings__img, .notes__img, .goals__img {
+    width: 40px;
+    height: 40px;
+}
+
+.js-notes, .js-goals, .js-files, .js-meetings-people, .js-people, .js-meetings {
+    display: none;
 }
 
 .completeBy, .createdAt {
@@ -55,5 +175,14 @@ form {
 .completed {
     text-decoration: line-through;
     font-style: italic;
+    color: #6b6b6b6b;
 }
 
+.footer__wrapper {
+    padding: 20px;
+}
+
+.footer__credits {
+    display: inline-block;
+    font-size: 5px;
+}

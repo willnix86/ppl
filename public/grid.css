@@ -3,7 +3,7 @@
 }
 
 .row {
-  max-width: 1200px;
+  max-width: 2000px;
   padding-left: 20px;
   padding-right: 20px;
   margin: 0 auto;
@@ -30,8 +30,12 @@
   width: 100%;
 }
 
-.card {
-  height: 340px;
+@media only screen and (max-width: 639px) {
+
+  input {
+    display: block;
+  }
+
 }
 
 /* Tablet defaults */
@@ -40,10 +44,6 @@
   .col-3, .col-4, .col-6, .col-12 {
     width: 48%;
     margin: 0 1% 50px 1%;
-  }
-
-  .card {
-    height: 340px;
   }
 
 }
@@ -58,12 +58,12 @@
 
   /* 4 columns */
   .col-4 {
-    width: 33.33%;
+    width: 31.3%;
   }
 
   /* 6 columns */
   .col-6 {
-    width: 50%;
+    width: 48%;
   }
 
   /* 12 columns */
@@ -75,15 +75,10 @@
 
 @media only screen and (min-width: 769px) and (max-width: 1031px) {
   
-  .card {
-    height: 390px
-  }
+
 }
 
 @media only screen and (min-width: 1032px) {
 
-  .card {
-    height: 350px;
-  }
 
 }

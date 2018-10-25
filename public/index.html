@@ -4,30 +4,65 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
         <title>Ppl</title>
+        <link href="https://fonts.googleapis.com/css?family=Righteous|Roboto" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
         <link href="grid.css" rel="stylesheet" type="text/css" />
         <link href="styles.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-            <nav>
-                    <h1></h1>
-                    <p>Managing your people's growth</p>
-                    <form id="login" name="login">
-                        <fieldset>
-                            <legend>Log In</legend>
-                            <label for="username"></label>
-                            <input type="text" id="username" name="username" placeholder="Username" required>
-                            <label for="password"></label>
-                            <input type="password" id="password" name="password" placeholder="Password" required>
-                            <label for="login-button"></label>
-                            <button type="submit" name="login" id="login-button">Log In</button>
-                        </fieldset>
-                        
-                    </form>
-            </nav>
-        <main role="main">
+        <header role="banner" class="row">
+            <div class="header__logo-wrapper col-12">
+                <img class="header__logo" src="images/ppl.png">
+            </div>
+            <div class="header__title-wrapper col-12">
+                    <h1 class="header__title">Ppl</h1>
+                    <p class="header__subtitle">Managing your people's growth</p>
+            </div>
+            <form class="header__form col-12" id="login" name="login">
+                <fieldset>
+                    <label for="username"></label>
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                    <label for="password"></label>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <label for="login-button"></label>
+                    <button name="login" id="login-button">Log In</button>
+                </fieldset>
+            </form>
+            <form class="header__form col-12" id="signup" name="signup">
+                <fieldset>
+                    <label for="firstname"></label>
+                    <input type="text" id="firstname" name="firstname" placeholder="First Name" required>
+                    <label for="lastname"></label>
+                    <input type="text" id="lastname" name="lastname" placeholder="Last Name" required>
+                    <label for="new-username"></label>
+                    <input type="text" id="new-username" name="new-username" placeholder="Username" required>
+                    <label for="new-password"></label>
+                    <input type="password" id="new-password" name="new-password" placeholder="Password" required>
+                    <label for="signup-button"></label>
+                    <button name="signup" id="signup-button">Create Account</button>
+                </fieldset>
+            </form>
+            <button id="logout" name="logout">Log Out</button>
+        </header>
             
+        <main role="main" class="row">
+            <div class="main__no-account">
+                    <p>Don't have an account?</p>
+                    <button name="signup-form" id="signup-form">Sign Up</button>
+            </div>
+            <div class="main__account">
+                    <p>Already have an account?</p>
+                    <button name="signup-form" id="signup-form">Log In</button>
+            </div>
+            <div role="alert" class="alert"></div>
         </main>
+
+        <footer role="contentinfo">
+            <div class="footer__wrapper">
+                    <p>&copy 2018 - Will Nixon</p>
+                    <p class="footer__credits">Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></p>
+            </div>
+        </footer>
 
         <script
         src="https://code.jquery.com/jquery-3.3.1.min.js"

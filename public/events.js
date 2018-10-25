@@ -3,23 +3,52 @@ const EVENTS = (function() {
     return {
 
         watchClicks: function() {
-            $('body').on('click', '.login', function(e) {
+            $('body').on('click', '#login-button', function(e) {
                 e.preventDefault();
+                $('.alert').empty();
                 const username = $('#username').val();
                 const password = $('#password').val();
-                $('main').empty();
-                DOM.loadUserPage();
                 API.logUserIn(username, password);
+                DOM.resetForm('#login');
             });
 
-            $('body').on('click', '.back', function(e) {
+            $('body').on('click', '#signup-form', function(e) {
                 e.preventDefault();
+                $('.alert').empty();
+                $('#login').toggle();
+                $('#signup').toggle();
+                $('.main__account').toggle();
+                $('.main__no-account').toggle();
+            })
+
+            $('body').on('click', '#signup-button', function(e) {
+                e.preventDefault();
+                const newUser = {};
+                newUser.firstName = $('#firstname').val();
+                newUser.lastName = $('#lastname').val();
+                newUser.userName = $('#new-username').val();
+                newUser.password = $('#new-password').val();
+                API.createNewUser(newUser);
+                DOM.resetForm('#signup');
+            })
+
+            $('body').on('click', '#logout', function(e) {
+                e.preventDefault();
+                API.logUserOut();
+                $('#login').slideDown(10);
+                $('#logout').slideUp(10);
+            })
+
+            $('body').on('click', '#back', function(e) {
+                e.preventDefault();
+                const userId = $('main').attr('id');
                 $('main').empty();
                 DOM.loadUserPage();
-                API.getUserData();
+                API.getUserData(userId);
             });
 
             $('body').on('click', '.people-section, .meetings-section', function(e) {
+                $(this).parent().parent().find('form').slideUp(5);
                 $(this).parent().parent().find('ul').slideUp(5);
                 $(this).parent().find('ul').empty();
                 API.getUserData();
@@ -60,7 +89,7 @@ const EVENTS = (function() {
                 API.createNewPerson(userId, person);
                 $('.new-person-form').slideUp(10);
                 DOM.resetForm('.new-person-form');
-                $(this).parent().parent().empty();
+                $(this).parent().parent().find('ul').empty();
                 API.getUserData(userId);
             });
 
@@ -198,8 +227,10 @@ const EVENTS = (function() {
                 };
                 if ($(this).hasClass('completed')) {
                     $(this).removeClass('completed');
+                    $(this).children('button').removeClass('completed');
                 } else {
                     $(this).addClass('completed');
+                    $(this).children('button').addClass('completed');
                     data.completed = true;
                 }
                 API.editGoalStatus(personId, goalId, data);

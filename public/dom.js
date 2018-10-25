@@ -4,18 +4,13 @@ const DOM = (function() {
 
         loadUserPage: function() {
             $('main').append(`
-            <header>
-                <h1>User Admin Page</h1>
-                <h2 class="js-user"></h2>
-            </header>
-
-            <section role="region">
-                <h3 class="meetings-section">Meetings</h3>
-                <ul class="js-meetings"></ul>
-            </section>
+            <div class="user__header">
+                <h2 class="js-user user__title"></h2>
+            </div>
             
-            <section role="region">
-                <h3 class="people-section">People</h3>
+            <section role="region" class="col-6">
+                <img class="person__img" src="images/person.png">
+                <h3 class="people-section">My People</h3>
                 <ul class="js-people"></ul>
                 <form class="new-person-form" name="new-person">
                     <label for="person-first-name">First Name:</label>
@@ -23,8 +18,14 @@ const DOM = (function() {
                     <label for="person-last-name">Last Name:</label>
                     <input type="text" id="person-last-name" name="person-last-name" placeholder="e.g Smith" required>
                     <label for="submit-person"></label>
-                    <input type="button" id="submit-person" name="submit-person" value="Submit">
+                    <button id="submit-person" name="submit-person">Submit</button>
                 </form>
+            </section>
+
+            <section role="region" class="col-6">
+                <img class="meetings__img" src="images/meetings.png">
+                <h3 class="meetings-section">My Meetings</h3>
+                <ul class="js-meetings"></ul>
             </section>
             `);
         },
@@ -54,7 +55,9 @@ const DOM = (function() {
 
                 $('.js-meetings').append(
                     `<li id=${data.meetings[index]._id} class="meeting-item">
-                    Meeting with <span class="person-name">${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName}</span> on <span class="date-string">${dateStr}</span> at <span class="time-string">${timeStr}</span>
+                    <p class="date-string">${dateStr}</p>
+                    <p class="time-string">${timeStr}</p>
+                    <p class="person-name">${data.meetings[index].person.firstName} ${data.meetings[index].person.lastName}</p>
                     <button class="edit meeting-edit"><i class="fas fa-edit"></i></button>
                     <button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button>
                 </li>
@@ -63,25 +66,26 @@ const DOM = (function() {
             };
         },
 
-        loadPeoplePage: function(personName, personId) {
+        loadPeoplePage: function(personName) {
             $('main').append(`
-                <header>
-                    <h1>Individual Profile Page</h1>
-                    <h2 class="js-person">${personName}</h2>
-                    <button class="back">Back</button>
-                </header>
+                <div class="person__header">
+                    <h2 class="js-person person__title">${personName}</h2>
+                    <button id="back" name="back">Back</button>
+                </div>
 
-                <section role="region">
+                <section role="region" class="col-4">
+                    <img class="notes__img" src="images/notes.png">
                     <h3 class="notes-section">Notes</h3>
                     <ul class="js-notes"></ul>
                     <form class="new-notes-form" name="new-note">
                             <label for="content">Note:</label>
                             <input type="text" id="content" name="content" required>
-                            <input type="button" id="submit-note" name="submit-note" value="Add Note">
+                            <button type="button" id="submit-note" name="submit-note">Add Note</button>
                     </form>
                 </section>
 
-                <section role="region">
+                <section role="region" class="col-4">
+                    <img class="goals__img" src="images/goals.png">
                     <h3 class="goals-section">Goals</h3>
                     <ul class="js-goals"></ul>
                     <form class="new-goals-form" name="new-goal">
@@ -90,12 +94,13 @@ const DOM = (function() {
                             <label for="complete-by">Complete by:</label>
                             <input type="date" id="complete-by" name="complete-by" required>
                             <label for="submit-goal"></label>
-                            <input type="button" id="submit-goal" name="submit-goal" value="Add Goal">
+                            <button type="button" id="submit-goal" name="submit-goal">Add Goal</button>
                     </form>
 
                 </section>
 
-                <section role="region">
+                <section role="region" class="col-4">
+                    <img class="meetings__img" src="images/meetings.png">
                     <h3 class="meetings-section-people">Meetings</h3>
                     <ul class="js-meetings-people"></ul>
                     <form class="new-meetings-form" name="new-meetings">
@@ -104,7 +109,7 @@ const DOM = (function() {
                             <label for="meeting-time">What time:</label>
                             <input type="time" id="meeting-time" name="meeting-time" min="9:00" max="18:00" required>
                             <label for="submit-meeting"></label>
-                            <input type="button" id="submit-meeting" name="submit-meeting-" value="Add Meeting">
+                            <button type="button" id="submit-meeting" name="submit-meeting">Add Meeting</button>
                     </form>
                 </section>
             `);
@@ -124,10 +129,11 @@ const DOM = (function() {
 
                 $('.js-meetings-people').append(
                     `<li id=${data.meetings[index]._id} class="meeting-item">
-                    Meeting with <span class="user-name">${data.meetings[index].host.firstName} ${data.meetings[index].host.lastName}</span> on <span class="date-string">${dateStr}</span> at <span class="time-string">${timeStr}</span>
+                    <p class="date-string">${dateStr}</p>
+                    <p class="time-string">${timeStr}</p>
+                    <p class="user-name">${data.meetings[index].host.firstName} ${data.meetings[index].host.lastName}</p>
                     <button class="edit meeting-edit"><i class="fas fa-edit"></i></button><button class="delete meeting-delete"><i class="fas fa-times-circle"></i></button>
-                    </li>
-                    `
+                    </li>`
                 )
             }
 
@@ -135,7 +141,7 @@ const DOM = (function() {
 
             let goalsArr = data.goals;
 
-            let sortedGoals = DOM.sortByKeyAsc(goalsArr, 'completeBy');
+            let sortedGoals = DOM.sortByKeyDsc(goalsArr, 'completeBy');
 
             for (index in sortedGoals) {
 
@@ -144,11 +150,15 @@ const DOM = (function() {
                 let dateStr = DOM.formatDate(date);
 
                 $('.js-goals').append(
-                    `<li id=${data.goals[index]._id} class="goal-item">${sortedGoals[index].goal} || <span class="completeBy">Complete by: ${dateStr}</span><button class="delete goal-delete"><i class="fas fa-times-circle"></i></button></li>
-                    `)
+                    `<li id=${data.goals[index]._id} class="goal-item">
+                    <p class="goal">${sortedGoals[index].goal}</p>
+                    <p class="completeBy">Complete by: ${dateStr}</p>
+                    <button class="delete goal-delete"><i class="fas fa-times-circle"></i></button>
+                    </li>`)
 
                 if (data.goals[index].completed) {
                     $(`#${data.goals[index]._id}`).addClass('completed');
+                    $(`#${data.goals[index]._id}`).children('button').addClass('completed');
                 }
 
             };
@@ -163,18 +173,14 @@ const DOM = (function() {
                 let date = new Date(sortedNotes[index].createdAt);
                 let dateStr = DOM.formatDate(date);
 
-                $('.js-notes').append(`<li id=${data.notes[index]._id} class="note-item">${sortedNotes[index].content} <span class="createdAt">${dateStr}</span><button class="delete note-delete"><i class="fas fa-times-circle"></i></button></li>`)
+                $('.js-notes').append(`<li id=${data.notes[index]._id} class="note-item">
+                <p class='note-content'>${sortedNotes[index].content}</p>
+                <p class="createdAt">${dateStr}</p>
+                <button class="delete note-delete"><i class="fas fa-times-circle"></i></button>
+                </li>`)
             };
 
             $('.js-notes').append(`<button class="new-note">Add New Note</button>`);
-
-            // for (index in data.files) {
-            //     $('.js-files').append(`
-            //     <li id=${data.files[index]._id}>${data.files[index].title} ${data.files[index].ext}<button class="edit file-edit"><i class="fas fa-edit"></i></button><button class="delete file-delete"><i class="fas fa-times-circle"></i></button></li>
-            //     `)
-            // };
-
-            // $('.js-files').append(`<button class="new-file">Upload New File</button>`);
 
         },
 
@@ -215,6 +221,21 @@ const DOM = (function() {
         resetForm: function(form) {
             $(form).find('input[type=text], input[type=password], input[type=date], input[type=time], input[type=file], select, textarea').val('');
             $(form).find('input[type=radio], input[type=checkbox]').removeAttr('checked').removeAttr('selected');
+        },
+
+        resetPpl: function() {
+            $('main').empty();
+            $('main').append(`
+            <div class="main__no-account">
+                    <p>Don't have an account?</p>
+                    <button name="signup-form" id="signup-form">Sign Up</button>
+            </div>
+            <div class="main__account">
+                    <p>Already have an account?</p>
+                    <button name="signup-form" id="signup-form">Log In</button>
+            </div>
+            <div role="alert" class="alert"></div>
+            `);
         },
 
         sortByKeyAsc: function(array, key) {

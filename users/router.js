@@ -119,53 +119,6 @@ router.post('/', jsonParser, (req, res) => {
         });
 });
 
-// // LOG A USER IN
-// router.post('/userLogin', jsonParser, (req, res) => {
-//     const requiredFields = ['userName', 'password'];
-//     const missingField = requiredFields.find(field => !(field in req.body));
-//     if (missingField) {
-//         return res.status(422).json({
-//             code: 422,
-//             reason: 'ValidationError',
-//             message: 'Missing field',
-//             location: missingField
-//         });
-//     };
-
-//     let { userName, password } = req.body;
-//     let user;
-    
-//     User.findOne({ userName: userName })
-//         .then(_user => {
-//             user = _user;
-//             if (!user) {
-//                 return Promise.reject({
-//                     reason: 'ValidationError',
-//                     message: 'Incorrect username or password'
-//                 });
-//             }
-//             return user.validatePassword(password);
-//         })
-//         .then(isValid => {
-//             if (!isValid) {
-//                 console.log('failed validation');
-//                 return Promise.reject({
-//                     reason: 'ValidationError',
-//                     message: 'Incorrect username or password'
-//                 });
-//             }
-//             console.log('validation successful');
-//             return res.status(201).json(user.serialize());
-//         })
-//         .catch(err => {
-//             console.log(err.message);
-//             if (err.reason === 'ValidationError') {
-//                 return res.status(400).json(err);
-//             }
-//             res.status(500).json({ code: 500, message: 'Internal server error' });
-//         });
-// });
-
 // GET A USER BY ID
 router.get('/protected/:id', jwtAuth, (req, res) => {
     User.findOne(

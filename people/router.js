@@ -22,7 +22,19 @@ router.get('/protected/:id', jwtAuth, (req,res) => {
         console.error(err);
         res.status(500).json({message: 'Internal server error, please try again later.'})
     })
-})
+});
+
+// GET A PERSON BY ID
+router.get('/:id', (req, res) => {
+    People.findById(req.params.id, '-__v')
+    .then(person => {
+        res.json(person.serialize());
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({message: 'Internal server error, please try again later.'})
+    })
+});
 
 // CREATE A NEW PERSON
 router.post('/', jsonParser, (req, res) => {
@@ -46,7 +58,7 @@ router.post('/', jsonParser, (req, res) => {
         res.status(201).json(person.serialize());
     })
     .catch(err => res.status(500).send({message: 'Internal server error. Please try again later.'}))
-})
+});
 
 // EDIT A PERSON BY ID
 router.put('/:id', jsonParser, (req, res) => {
@@ -125,7 +137,7 @@ router.put('/:personId/removeNotes/:noteId', (req, res) => {
         res.status(204).end();
     })
     .catch(err => res.json({message: 'Internal server error.'}));
-})
+});
 
 // CREATE A NEW GOAL
 router.put('/:id/addGoals', jsonParser, (req, res) => {
@@ -183,6 +195,6 @@ router.put('/:personId/removeGoals/:goalId', (req, res) => {
         res.status(204).end();
     })
     .catch(err => res.json({message: 'Internal server error.'}));
-})
+});
 
 module.exports = router;
