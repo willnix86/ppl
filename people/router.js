@@ -124,6 +124,22 @@ router.put('/:id/addNotes', jsonParser, (req, res) => {
     .catch(err => releaseEvents.status(500).json({message: 'Something went wrong.'}))
 });
 
+// EDIT A NOTE
+router.put('/:personId/editNotes/:noteId', jsonParser, (req, res) => {
+debugger
+    People.findOneAndUpdate(
+        { "_id": ObjectId(req.params.personId), "notes._id": ObjectId(req.params.noteId)}, 
+        { 'notes.$.content': req.body.data },
+        {new: true}
+    )
+    .then(updatedNote => res.status(204).end())
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({message: "Something went wrong."})
+    })
+
+});
+
 // DELETE A NOTE
 router.put('/:personId/removeNotes/:noteId', (req, res) => {
     People.findOneAndUpdate(
@@ -164,6 +180,22 @@ router.put('/:id/addGoals', jsonParser, (req, res) => {
     )
     .then(goal => res.status(204).end())
     .catch(err => releaseEvents.status(500).json({message: 'Something went wrong.'}))
+});
+
+// EDIT A GOAL
+router.put('/:personId/editGoals/:goalId', jsonParser, (req, res) => {
+    debugger
+    People.findOneAndUpdate(
+        { "_id": ObjectId(req.params.personId), "goals._id": ObjectId(req.params.goalId)}, 
+        { 'goals.$.completeBy': req.body.data.date, 'goals.$.goal': req.body.data.goal },
+        {new: true}
+    )
+    .then(updatedGoal => res.status(204).end())
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({message: "Something went wrong."})
+    })
+
 });
 
 // MARK A GOAL AS COMPLETE

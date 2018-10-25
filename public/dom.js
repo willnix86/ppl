@@ -38,8 +38,9 @@ const DOM = (function() {
 
             for (index in data.people) {
                 $('.js-people').append(
-                    `<li class="people-item"><button id=${data.people[index].id} class='person'>
-                    ${data.people[index].firstName} ${data.people[index].lastName}</button><li>`
+                    `<li class="people-item">
+                    <p class="people-name">${data.people[index].firstName} ${data.people[index].lastName}</p>
+                    <button id=${data.people[index].id} class='person'>${data.people[index].firstName}'s Profile</button></li>`
                 )
             };
 
@@ -152,8 +153,9 @@ const DOM = (function() {
                 $('.js-goals').append(
                     `<li id=${data.goals[index]._id} class="goal-item">
                     <p class="goal">${sortedGoals[index].goal}</p>
-                    <p class="completeBy">Complete by: ${dateStr}</p>
-                    <button class="delete goal-delete"><i class="fas fa-times-circle"></i></button>
+                    <p class="completeBy">Complete by: <span class="date-string">${dateStr}</span></p>
+                    <button class="goal-complete"><i class="fas fa-check"></i></button>
+                    <button class="edit goal-edit"><i class="fas fa-edit"></i></button><button class="delete goal-delete"><i class="fas fa-times-circle"></i></button>
                     </li>`)
 
                 if (data.goals[index].completed) {
@@ -176,7 +178,7 @@ const DOM = (function() {
                 $('.js-notes').append(`<li id=${data.notes[index]._id} class="note-item">
                 <p class='note-content'>${sortedNotes[index].content}</p>
                 <p class="createdAt">${dateStr}</p>
-                <button class="delete note-delete"><i class="fas fa-times-circle"></i></button>
+                <button class="edit note-edit"><i class="fas fa-edit"></i></button><button class="delete note-delete"><i class="fas fa-times-circle"></i></button>
                 </li>`)
             };
 

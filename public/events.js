@@ -57,7 +57,7 @@ const EVENTS = (function() {
 
             $('body').on('click', '.person', function(e) {
                 e.preventDefault();
-                let personName = $(this).text();
+                let personName = $(this).siblings('.people-name').text();
                 $('main').attr('class', $(this).attr('id'))
                 $('main').empty();
                 let personId = $('main').attr('class');
@@ -93,38 +93,6 @@ const EVENTS = (function() {
                 API.getUserData(userId);
             });
 
-            $('body').on('click', '.new-note', function(e) {
-                e.preventDefault();
-                $('.new-notes-form').slideDown(10);
-            });
-
-            $('body').on('click', '#submit-note', function(e) {
-                e.preventDefault();
-                let personId = $('main').attr('class');
-                let content = $('#content').val();
-                API.createNewNote(personId, content);
-                $('.new-notes-form').slideUp(10);
-                DOM.resetForm('.new-notes-form');
-                $(this).parent().parent().find('ul').empty();
-                API.getPersonsData(personId);
-            })
-
-            $('body').on('click', '.new-goal', function(e) {
-                e.preventDefault();
-                $('.new-goals-form').slideDown(10);
-            });
-
-            $('body').on('click', '#submit-goal', function(e) {
-                let goal = $('#goal').val();
-                let date = new Date(`${$('#complete-by').val()} 09:00`).toISOString();
-                let personId = $('main').attr('class');
-                API.createNewGoal(personId, goal, date);
-                $('.new-goals-form').slideUp(10);
-                DOM.resetForm('.new-goals-form');
-                $(this).parent().parent().find('ul').empty();
-                API.getPersonsData(personId);
-            });
-
             $('body').on('click', '.new-meeting', function(e) {
                 e.preventDefault();
                 $('.new-meetings-form').slideDown(10);
@@ -150,8 +118,7 @@ const EVENTS = (function() {
                         <input type="date" id="edit-meeting-date" name="edit-meeting-date">
                         <label for="edit-meeting-time">What time:</label>
                         <input type="time" id="edit-meeting-time" name="edit-meeting-time" min="9:00" max="18:00">
-                        <label for="submit-meeting-edit"></label>
-                        <input type="button" id="submit-meeting-edit" name="submit-meeting-edit" value="Ok">
+                        <button id="submit-meeting-edit" name="submit-meeting-edit">OK</button>
                     </form>
                 `);
                 $(this).siblings('form').slideDown(10);
@@ -188,6 +155,102 @@ const EVENTS = (function() {
                 }
             });
 
+            $('body').on('click', '.new-note', function(e) {
+                e.preventDefault();
+                $('.new-notes-form').slideDown(10);
+            });
+
+            $('body').on('click', '#submit-note', function(e) {
+                e.preventDefault();
+                let personId = $('main').attr('class');
+                let content = $('#content').val();
+                API.createNewNote(personId, content);
+                $('.new-notes-form').slideUp(10);
+                DOM.resetForm('.new-notes-form');
+                $(this).parent().parent().find('ul').empty();
+                API.getPersonsData(personId);
+            });
+
+            $('body').on('click', '.note-edit', function(e) {
+                e.preventDefault();
+                const oldContent = $(this).parent().children('.note-content').text();
+                $(this).parent().append(`
+                    <form class="edit-note-form" name="edit-notes">
+                        <label for="edit-content"></label>
+                        <input type="text" id="edit-content" value="${oldContent}">
+                        <button id="submit-note-edit" name="submit-note-edit">OK</button>
+                    </form>
+                `);
+                $(this).siblings('form').slideDown(10);
+            });
+
+            $('body').on('click', '#submit-note-edit', function(e) {
+                e.preventDefault();
+                let personId = $('main').attr('class');
+                let noteId = $(this).parent().parent().attr('id');
+                let data = $('#edit-content').val();
+                API.editNote(personId, noteId, data);
+                $(this).parent().parent().parent().empty();
+                API.getPersonsData(personId);
+            });
+
+            $('body').on('click', '.note-delete', function(e) {
+                let noteId = $(this).parent().attr('id');
+                let personId = $('main').attr('class');
+                API.deleteNote(personId, noteId);
+                $(this).parent().parent().parent().find('ul').empty();
+                API.getPersonsData(personId);
+            });
+
+            $('body').on('click', '.new-goal', function(e) {
+                e.preventDefault();
+                $('.new-goals-form').slideDown(10);
+            });
+
+            $('body').on('click', '#submit-goal', function(e) {
+                let goal = $('#goal').val();
+                let date = new Date(`${$('#complete-by').val()} 09:00`).toISOString();
+                let personId = $('main').attr('class');
+                API.createNewGoal(personId, goal, date);
+                $('.new-goals-form').slideUp(10);
+                DOM.resetForm('.new-goals-form');
+                $(this).parent().parent().find('ul').empty();
+                API.getPersonsData(personId);
+            });
+
+            $('body').on('click', '.goal-edit', function(e) {
+                e.preventDefault();
+                const oldGoal = $(this).parent().children('.goal').text();
+                $(this).parent().append(`
+                    <form class="edit-goal-form" name="edit-goals">
+                        <label for="edit-goal-date">Complete by:</label>
+                        <input type="date" id="edit-goal-date" name="edit-goal-date">
+                        <label for="edit-goal">Goal:</label>
+                        <input type="text" id="edit-goal" name="edit-goal" value="${oldGoal}">
+                        <button id="submit-goal-edit" name="submit-goal-edit">OK</button>
+                    </form>
+                `);
+                $(this).siblings('form').slideDown(10);
+            });
+
+            $('body').on('click', '#submit-goal-edit', function(e) {
+                const data = {};
+                e.preventDefault();
+                let personId = $('main').attr('class');
+                let goalId = $(this).parent().parent().attr('id');
+                let dateVal;
+                if ($(this).siblings('#edit-goal-date').val() === "") {
+                    dateVal = $(this).parent().siblings('.completeBy').children('span').text();
+                } else {
+                    dateVal = $(this).siblings('#edit-goal-date').val();
+                };
+                data.date = new Date(`${dateVal} 00:10`);
+                data.goal = $('#edit-goal').val();
+                API.editGoal(personId, goalId, data);
+                $(this).parent().parent().parent().empty();
+                API.getPersonsData(personId);
+            });
+
             $('body').on('click', '.meeting-delete', function(e) {
                 let userId = $('main').attr('id');
                 let meetingId = $(this).parent().attr('id');
@@ -201,14 +264,6 @@ const EVENTS = (function() {
                 }
             });
 
-            $('body').on('click', '.note-delete', function(e) {
-                let noteId = $(this).parent().attr('id');
-                let personId = $('main').attr('class');
-                API.deleteNote(personId, noteId);
-                $(this).parent().parent().parent().find('ul').empty();
-                API.getPersonsData(personId);
-            });
-
             $('body').on('click', '.goal-delete', function(e) {
                 let goalId = $(this).parent().attr('id');
                 console.log(goalId);
@@ -218,23 +273,23 @@ const EVENTS = (function() {
                 API.getPersonsData(personId);
             });
 
-            $('body').on('click', '.goal-item', function(e) {
+            $('body').on('click', '.goal-complete', function(e) {
                 e.preventDefault();
                 let personId = $('main').attr('class');
-                let goalId = $(this).attr('id');
+                let goalId = $(this).parent().attr('id');
                 let data = {
                     completed: false
                 };
-                if ($(this).hasClass('completed')) {
-                    $(this).removeClass('completed');
+                if ($(this).parent().hasClass('completed')) {
+                    $(this).parent().removeClass('completed');
                     $(this).children('button').removeClass('completed');
                 } else {
-                    $(this).addClass('completed');
+                    $(this).parent().addClass('completed');
                     $(this).children('button').addClass('completed');
                     data.completed = true;
                 }
                 API.editGoalStatus(personId, goalId, data);
-                $(this).parent().empty();
+                $(this).parent().parent().empty();
                 API.getPersonsData(personId);
             })
 

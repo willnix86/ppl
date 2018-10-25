@@ -257,6 +257,40 @@ const API = (function() {
             })
         },
 
+        editNote: function(personId, notesId, data) {
+            
+            fetch(`/people/${personId}/editNotes/${notesId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+            })
+
+        },
+
+        editGoal: function(personId, goalId, data) {
+
+            fetch(`/people/${personId}/editGoals/${goalId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+            })
+
+        },
+
         editGoalStatus: function(personId, goalId, data) {
 
             fetch(`people/${personId}/goalStatus/${goalId}`, {
