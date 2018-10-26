@@ -126,10 +126,9 @@ router.put('/:id/addNotes', jsonParser, (req, res) => {
 
 // EDIT A NOTE
 router.put('/:personId/editNotes/:noteId', jsonParser, (req, res) => {
-debugger
     People.findOneAndUpdate(
         { "_id": ObjectId(req.params.personId), "notes._id": ObjectId(req.params.noteId)}, 
-        { 'notes.$.content': req.body.data },
+        { 'notes.$.content': req.body.content },
         {new: true}
     )
     .then(updatedNote => res.status(204).end())
@@ -184,18 +183,17 @@ router.put('/:id/addGoals', jsonParser, (req, res) => {
 
 // EDIT A GOAL
 router.put('/:personId/editGoals/:goalId', jsonParser, (req, res) => {
-    debugger
     People.findOneAndUpdate(
         { "_id": ObjectId(req.params.personId), "goals._id": ObjectId(req.params.goalId)}, 
-        { 'goals.$.completeBy': req.body.data.date, 'goals.$.goal': req.body.data.goal },
+        { 'goals.$.completeBy': req.body.date, 'goals.$.goal': req.body.goal },
         {new: true}
     )
     .then(updatedGoal => res.status(204).end())
+    
     .catch(err => {
         console.log(err);
         res.status(500).json({message: "Something went wrong."})
     })
-
 });
 
 // MARK A GOAL AS COMPLETE

@@ -1,5 +1,6 @@
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .row {
@@ -34,6 +35,8 @@
 
   input {
     display: block;
+    margin: 5px auto;
+    text-align: center;
   }
 
 }
@@ -41,8 +44,8 @@
 /* Tablet defaults */
 @media only screen and (min-width: 640px) {
 
-  .col-3, .col-4, .col-6, .col-12 {
-    width: 48%;
+  .col-4 {
+    width: 31.33%;
     margin: 0 1% 50px 1%;
   }
 
@@ -71,14 +74,4 @@
     width: 100%;
   }
   
-}
-
-@media only screen and (min-width: 769px) and (max-width: 1031px) {
-  
-
-}
-
-@media only screen and (min-width: 1032px) {
-
-
 }

@@ -14,7 +14,6 @@ router.post('/', jsonParser, (req, res) => {
     const missingField = requiredFields.find(
         field => !(field in req.body)
     );
-
     if (missingField) {
         return res.status(422).json({
             code: 422,
@@ -70,13 +69,18 @@ router.post('/', jsonParser, (req, res) => {
         field => 'max' in sizedFields[field] && req.body[field].trim().length > sizedFields[field].max
     );
 
+    const fields = {
+        userName: "Username",
+        password: "Password"
+    }
+
     if (tooSmallField || tooBigField) {
         return res.status(422).json({
             code: 422,
             reason: 'ValidationError',
             message: tooSmallField
-            ? `Must be at least ${sizedFields[tooSmallField].min} characters long`
-            : `Must be at most ${sizedFields[tooLargeField].max} characters long`,
+            ? `(${fields[tooSmallField]}) must be at least ${sizedFields[tooSmallField].min} characters long`
+            : `(${fields[tooBigField]}) must be at most ${sizedFields[tooLargeField].max} characters long`,
             location: tooSmallField || tooBigField
         });
     };
@@ -92,7 +96,7 @@ router.post('/', jsonParser, (req, res) => {
             return Promise.reject({
                 code: 422,
                 reason: 'ValidationError',
-                message: 'Username already taken',
+                message: 'This username already taken',
                 location: 'userName'
             });
         }

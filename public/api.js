@@ -22,7 +22,7 @@ const API = (function() {
                 if(response.ok) {
                     return response.json();
                 }
-            $('.alert').append(`<p class='alert alert__text-error'>${response.statusText}</p>`);
+            $('.alert').append(`<p class='alert alert__text-error'>Incorrect username or password</p>`);
             throw new Error(response.statusText);
             })
             .then(responseJson => {
@@ -36,6 +36,9 @@ const API = (function() {
                 $('#logout').slideDown(10);
                 DOM.loadUserPage();
                 API.getUserData();
+            })
+            .catch(err => {
+                console.log(err);
             })
         },
 
@@ -118,10 +121,11 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    $('.alert').append(`<p class='alert alert__text-error'>There was an error creating your account! ${response.statusText}</p>`);
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
-
                 $('.alert').append(`<p class='alert alert__text-success'>Congratulations, your account was created successfully!</p>`);
                 $('#login').toggle();
                 $('#signup').toggle();
@@ -136,6 +140,7 @@ const API = (function() {
                 if (response.ok) {
                     return response.json();
                 }
+            $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
             throw new Error(response.statusText);
             })
             .then(responseJson => {
@@ -155,6 +160,7 @@ const API = (function() {
                 if (response.ok) {
                     return response.json();
                 }
+            $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
             throw new Error(response.statusText);
             })
             .then(responseJson => {
@@ -179,7 +185,10 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
             })
         },
@@ -197,7 +206,10 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
             })
 
@@ -217,7 +229,10 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
             })
         },
@@ -259,7 +274,6 @@ const API = (function() {
         },
 
         editNote: function(personId, notesId, data) {
-            
             fetch(`/people/${personId}/editNotes/${notesId}`, {
                 method: 'PUT',
                 headers: {
@@ -269,14 +283,16 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
             })
 
         },
 
         editGoal: function(personId, goalId, data) {
-
             fetch(`/people/${personId}/editGoals/${goalId}`, {
                 method: 'PUT',
                 headers: {
@@ -286,7 +302,10 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
             })
 
@@ -303,7 +322,10 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
             })
         },
@@ -314,7 +336,10 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
             })
         },
@@ -325,7 +350,10 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
             })
         },
@@ -336,7 +364,10 @@ const API = (function() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(response.statusText);
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>${responseJson.message}</p>`);
+                    })
                 }
             })
         }

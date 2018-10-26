@@ -34,7 +34,7 @@ const DOM = (function() {
 
             $('.js-user').text(`${data.user.firstName} ${data.user.lastName}`);
 
-            $('main').attr('id', data.user.id);
+            $('main').data('userId', data.user.id);
 
             for (index in data.people) {
                 $('.js-people').append(

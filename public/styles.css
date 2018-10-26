@@ -26,16 +26,24 @@ form {
     display: none;
 }
 
+input {
+    background-color: #f7ffff;
+    border: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+}
+
 input, button {
     width: auto;
-    margin: 5px;
     height: 40px;
     font-size: 15px;
     text-align: center;
+    display: block;
+    margin: 10px auto;
 }
 
 button {
-    margin: 10px 0;
+    margin: 10px auto;
     width: auto;
     background-color: #d7e5e5;
     border: none;
@@ -79,7 +87,8 @@ li {
     padding: 10px;
     background-color: #edf7f7;
     border-radius: 8px;
-    box-shadow: 0 1px 6px rgba(107,107,107,0.28);
+    -webkit-box-shadow: 0 1px 6px rgba(107,107,107,0.28);
+            box-shadow: 0 1px 6px rgba(107,107,107,0.28);
     margin-bottom: 10px;
 }
 
@@ -127,7 +136,7 @@ footer {
     font-weight: bold;
 }
 
-.alert_text-success {
+.alert__text-success {
     color: #60db66;
 }
 
@@ -197,8 +206,9 @@ footer {
     color: #db6060;
 }
 
-.edit {
-    margin: 0 5px;
+.edit, .delete, .goal-complete {
+    margin: 0 5px 15px 5px;
+    display: inline-block;
 }
 
 .edit > .fas {
