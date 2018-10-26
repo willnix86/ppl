@@ -14,33 +14,34 @@ Features
 Live Demo
 ---------
 
-Demo: https://www.wheremyppl.at
+Demo: wheremyppl.at
+Login: tess.ting / Password
 
 
 Screenshots
 -----------
 
 ### Desktop
-![Screenshot of the 'Ppl' Front Page](/images/front-page.png)
+![Screenshot of the 'Ppl' Front Page](/public/images/front-page.png)
 
-![Screenshot of the 'Ppl' User Area](/images/map.png)
+![Screenshot of the 'Ppl' User Area](/public/images/user-area.png)
 
-![Screenshot of the 'Ppl' People Area](/images/results.png)
+![Screenshot of the 'Ppl' People Area](/public/images/people-area.png)
 
 
 ### Mobile
-![Screenshot of the 'Ppl' Mobile Front Page](/images/front-page.png)
+![Screenshot of the 'Ppl' Mobile Front Page](/public/images/front-page-mobile.png)
 
-![Screenshot of the 'Ppl' Mobile User Area](/images/map.png)
+![Screenshot of the 'Ppl' Mobile User Area](/public/images/user-area-mobile.png)
 
-![Screenshot of the 'Ppl' Mobile People Area](/images/results.png)
+![Screenshot of the 'Ppl' Mobile People Area](/public/images/people-area-mobile.png)
 
 
 Built with:
 -----------
 
 Front-End: HTML5 | CSS3 | JavaScript ES6 | jQuery
-Back-End: Node.js | Express.js | Mocha | Chai | RESTful API Endpoints | MongoDB | Mongoose
+Back-End: Node.js | Express.js | Mocha | Chai | REST API | MongoDB | Mongoose
 
 
 Author
