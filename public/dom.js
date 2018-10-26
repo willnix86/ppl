@@ -9,8 +9,8 @@ const DOM = (function() {
             </div>
             
             <section role="region" class="col-6">
-                <img class="person__img" src="images/person.png">
-                <h3 class="people-section">My People</h3>
+                <img class="person__img" src="images/person.png" alt="icon of a magnifying glass centered on a person">
+                <button class="people-section">My People</button>
                 <ul class="js-people"></ul>
                 <form class="new-person-form" name="new-person">
                     <label for="person-first-name">First Name:</label>
@@ -23,8 +23,8 @@ const DOM = (function() {
             </section>
 
             <section role="region" class="col-6">
-                <img class="meetings__img" src="images/meetings.png">
-                <h3 class="meetings-section">My Meetings</h3>
+                <img class="meetings__img" src="images/meetings.png" alt="icon of a calendar">
+                <button class="meetings-section">My Meetings</button>
                 <ul class="js-meetings"></ul>
             </section>
             `);
@@ -75,8 +75,8 @@ const DOM = (function() {
                 </div>
 
                 <section role="region" class="col-4">
-                    <img class="notes__img" src="images/notes.png">
-                    <h3 class="notes-section">Notes</h3>
+                    <img class="notes__img" src="images/notes.png" alt="icon of a sheet of paper with writing and a pencil">
+                    <button class="notes-section">Notes</button>
                     <ul class="js-notes"></ul>
                     <form class="new-notes-form" name="new-note">
                             <label for="content">Note:</label>
@@ -86,8 +86,8 @@ const DOM = (function() {
                 </section>
 
                 <section role="region" class="col-4">
-                    <img class="goals__img" src="images/goals.png">
-                    <h3 class="goals-section">Goals</h3>
+                    <img class="goals__img" src="images/goals.png" alt="icon of a target with an arrow in the bullseye">
+                    <button class="goals-section">Goals</button>
                     <ul class="js-goals"></ul>
                     <form class="new-goals-form" name="new-goal">
                             <label for="goal">Goal:</label>
@@ -101,8 +101,8 @@ const DOM = (function() {
                 </section>
 
                 <section role="region" class="col-4">
-                    <img class="meetings__img" src="images/meetings.png">
-                    <h3 class="meetings-section-people">Meetings</h3>
+                    <img class="meetings__img" src="images/meetings.png" alt="icon of a calendar">
+                    <button class="meetings-section-people">Meetings</button>
                     <ul class="js-meetings-people"></ul>
                     <form class="new-meetings-form" name="new-meetings">
                             <label for="meeting-date">When:</label>

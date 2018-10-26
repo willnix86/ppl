@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
+        <meta name="Description" content="Ppl: Manage, Develop, Grow. Created by: Will Nixon">
         <title>Ppl</title>
         <link href="https://fonts.googleapis.com/css?family=Righteous|Roboto" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
@@ -10,9 +11,9 @@
         <link href="styles.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <header role="banner" class="row">
+        <header class="row">
             <div class="header__logo-wrapper col-12">
-                <img class="header__logo" src="images/ppl.png">
+                <img class="header__logo" src="images/ppl.png" alt="icon of 3 people">
             </div>
             <div class="header__title-wrapper col-12">
                     <h1 class="header__title">Ppl</h1>
@@ -43,41 +44,41 @@
                 </fieldset>
             </form>
             <button id="logout" name="logout">Log Out</button>
-        </header>
-            
-        <main role="main" class="row">
-            <div class="main__no-account">
+            <div class="header__no-account">
                     <p>Don't have an account?</p>
                     <button name="signup-form" id="signup-form">Sign Up</button>
             </div>
-            <div class="main__account">
+            <div class="header__account">
                     <p>Already have an account?</p>
-                    <button name="signup-form" id="signup-form">Log In</button>
+                    <button name="login-form" id="login-form">Log In</button>
             </div>
             <div role="alert" class="alert"></div>
+        </header>
+            
+        <main class="row">
             <div class="row">
-                <p class="col-12">Ppl helps you develop the people in your care, whether they're a student, a client, a subordinate, or a member of your congregation.</p>
+                <p class="features__header col-12">Develop the people in your care, whether they're a student, a client, a subordinate, or a member of your congregation.</p>
             </div>
             <div class="row">
                 <div class="col-4 features">
-                    <img class="features__img" src="images/goals.png">
-                    <p class="features__text">Track their progress with SMART goals and appropriate deadlines</p>
+                    <img class="features__img" src="images/goals.png" alt="icon of a target with an arrow in the bullseye">
+                    <p class="features__text">Track progress with SMART goals and appropriate deadlines</p>
                 </div>
                 <div class="col-4 features">
-                    <img class="features__img" src="images/notes.png">
+                    <img class="features__img" src="images/notes.png" alt="icon of a sheet of paper with writing and a pencil">
                     <p class="features__text">Record successes, milestones, and areas for further development</p>
                 </div>
                 <div class="col-4 features">
-                    <img class="features__img" src="images/meetings.png">
-                    <p class="features__text">Schedule your next one-to-one and get a bird's eye view of all your meetings</p>
+                    <img class="features__img" src="images/meetings.png" alt="icon of a calendar">
+                    <p class="features__text">Schedule your next one-to-one, and view all meetings in one place</p>
                 </div>
             </div>
         </main>
 
-        <footer role="contentinfo">
+        <footer>
             <div class="footer__wrapper">
                     <p>&copy 2018 - Will Nixon</p>
-                    <p class="footer__credits">Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></p>
+                    <p class="footer__credits">Icons made by <a href="http://www.freepik.com" title="Freepik" rel="noopener">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" rel="noopener">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener">CC 3.0 BY</a></p>
             </div>
         </footer>
 

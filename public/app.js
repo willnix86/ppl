@@ -8,10 +8,13 @@ const APP = (function(domJS, apiJS, eventsJS) {
             if (sessionStorage.getItem('token')) {
                 $('#login').slideUp(10);
                 $('#logout').slideDown(10);
+                $('.header__no-account').slideUp(10);
+                $('.header__account').slideUp(10);
                 $('main').empty();
                 domJS.loadUserPage();
                 apiJS.getUserData();
             };
+            $('.header__account').slideUp(10);
         }
 
     }

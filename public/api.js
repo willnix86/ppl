@@ -26,11 +26,12 @@ const API = (function() {
             throw new Error(response.statusText);
             })
             .then(responseJson => {
-                console.log(responseJson);
                 const { token, id } = responseJson;
                 sessionStorage.setItem('token', token);
                 sessionStorage.setItem('id', id);
                 $('main').empty();
+                $('.header__no-account').slideUp(10);
+                $('.header__account').slideUp(10);
                 $('#login').slideUp(10);
                 $('#logout').slideDown(10);
                 DOM.loadUserPage();

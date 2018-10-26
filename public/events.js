@@ -17,8 +17,17 @@ const EVENTS = (function() {
                 $('.alert').empty();
                 $('#login').toggle();
                 $('#signup').toggle();
-                $('.main__account').toggle();
-                $('.main__no-account').toggle();
+                $('.header__account').toggle();
+                $('.header__no-account').toggle();
+            });
+
+            $('body').on('click', '#login-form', function(e) {
+                e.preventDefault();
+                $('.alert').empty();
+                $('#login').toggle();
+                $('#signup').toggle();
+                $('.header__account').toggle();
+                $('.header__no-account').toggle();
             })
 
             $('body').on('click', '#signup-button', function(e) {

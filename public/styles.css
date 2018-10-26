@@ -4,6 +4,7 @@ body {
     padding: 0;
     text-align: center;
     font-family: 'Roboto', sans-serif;
+    font-display: block;
 }
 
 header {
@@ -62,7 +63,6 @@ h3 {
 
 section {
     margin: 30px auto;
-    display: inline-block;
 }
 
 ul {
@@ -103,6 +103,7 @@ footer {
     font-family: 'Righteous', cursive;
     font-size: 50px;
     font-weight: bold;
+    font-display: block;
 }
 
 .header__subtitle {
@@ -134,22 +135,27 @@ footer {
     color: #db6060;
 }
 
-.main__no-account {
+.header__no-account {
     margin: -20px 0 20px 0;
 }
 
-.main__account {
+.header__account {
     margin: -20px 0 20px 0;
     display: none;
 }
 
+.features__header {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
 .features__img {
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 }
 
 .features__text {
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .user__title {
@@ -171,6 +177,16 @@ footer {
 .person__img, .meetings__img, .notes__img, .goals__img {
     width: 40px;
     height: 40px;
+    display: block;
+    margin: 0 auto;
+}
+
+.people-section, .meetings-section, .notes-section, .goals-section, .meetings-section-people {
+    background-color: #e6f4f4;
+    font-size: 15px;
+    text-decoration: underline;
+    border: none;
+    text-align: center;
 }
 
 .js-notes, .js-goals, .js-files, .js-meetings-people, .js-people, .js-meetings {
