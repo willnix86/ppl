@@ -1,6 +1,8 @@
 Ppl
 =================
-Develop the people in your care, whether they're a student, a client, a subordinate, or a member of your congregation.
+Ppl is a webapp to help you develop the people in your care, whether they're a student, a client, a subordinate, or a member of your congregation.
+
+The focus is simple: set goals, track progress, and schedule regular face-time.
 
 
 Features
@@ -11,14 +13,23 @@ Features
 * Schedule your next one-to-one, and view all meetings in one place
 
 
-Live Demo
+Future Releases:
+---------------
+
+* Upload important files and documentation
+* Add contact details to People pages
+* Calendar integration
+* Styling overhaul
+
+
+Live Demo:
 ---------
 
 Demo: wheremyppl.at
-Login: tess.ting / Password
+Demo login: tess.ting / Password
 
 
-Screenshots
+Screenshots:
 -----------
 
 ### Desktop
@@ -41,10 +52,11 @@ Built with:
 -----------
 
 Front-End: HTML5 | CSS3 | JavaScript ES6 | jQuery
-Back-End: Node.js | Express.js | Mocha | Chai | REST API | MongoDB | Mongoose
+
+Back-End: Node.js | Express.js | Mocha | Chai | REST API | MongoDB | Mongoose | Passport & JWT Authentication
 
 
-Author
+Author:
 ------
 
 [Will Nixon](https://www.devnx.io)
