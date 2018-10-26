@@ -42,11 +42,11 @@ Screenshots:
 
 
 ### Mobile
-![Screenshot of the 'Ppl' Mobile Front Page](/public/images/front-page-mobile.png)
+![Screenshot of the 'Ppl' Mobile Front Page](/public/images/front-page-mobile.PNG)
 
-![Screenshot of the 'Ppl' Mobile User Area](/public/images/user-area-mobile.png)
+![Screenshot of the 'Ppl' Mobile User Area](/public/images/user-area-mobile.PNG)
 
-![Screenshot of the 'Ppl' Mobile People Area](/public/images/people-area-mobile.png)
+![Screenshot of the 'Ppl' Mobile People Area](/public/images/people-area-mobile.PNG)
 
 
 Built with:
