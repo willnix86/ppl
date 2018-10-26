@@ -14,44 +14,33 @@ Features
 Live Demo
 ---------
 
-Demo: https://www.getyourbeerings.com
+Demo: https://www.wheremyppl.at
 
 
 Screenshots
 -----------
 
 ### Desktop
-![Screenshot of the 'Get Your Beerings' Front Page](/images/front-page.png)
+![Screenshot of the 'Ppl' Front Page](/images/front-page.png)
 
-![Screenshot of the 'Get Your Beerings' Map](/images/map.png)
+![Screenshot of the 'Ppl' User Area](/images/map.png)
 
-![Screenshot of the 'Get Your Beerings' Result Cards](/images/results.png)
+![Screenshot of the 'Ppl' People Area](/images/results.png)
 
 
 ### Mobile
-![Screenshot of the 'Get Your Beerings' Mobile Front Page](/images/front-page-mob.png)
+![Screenshot of the 'Ppl' Mobile Front Page](/images/front-page.png)
 
-![Screenshot of the 'Get Your Beerings' Mobile Map](/images/map-mob.png)
+![Screenshot of the 'Ppl' Mobile User Area](/images/map.png)
 
-![Screenshot of the 'Get Your Beerings' Mobile Result Cards](/images/results-mob.png)
+![Screenshot of the 'Ppl' Mobile People Area](/images/results.png)
 
 
 Built with:
 -----------
 
-* HTML
-* CSS
-* Javascript
-* jQuery
-* Google Places Javascript Library
-
-
-APIs used:
----------
-
-* Google Maps Javascript API
-* Google Distance Matrix API
-* Location IQ Api
+Front-End: HTML5 | CSS3 | JavaScript ES6 | jQuery
+Back-End: Node.js | Express.js | Mocha | Chai | RESTful API Endpoints | MongoDB | Mongoose
 
 
 Author
