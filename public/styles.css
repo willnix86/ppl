@@ -202,6 +202,16 @@ footer {
     display: none;
 }
 
+#delete-person, #confirm-delete-person {
+    background-color: #ff5454;
+    color: white;
+    font-weight: bold;
+}
+
+.confirm-delete-person-container {
+    display: none;
+}
+
 .delete > .fas {
     color: #db6060;
 }

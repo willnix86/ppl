@@ -113,6 +113,17 @@ const DOM = (function() {
                             <button type="button" id="submit-meeting" name="submit-meeting">Add Meeting</button>
                     </form>
                 </section>
+
+                <div class="row delete-person-container">
+                    <label for="delete-person">
+                    <button type="button" id="delete-person" name="delete-person">Delete ${personName}</button>
+                </div>
+                <div class="row confirm-delete-person-container">
+                    <label for="confirm-delete">
+                    <button type="button" id="confirm-delete-person" name="confirm-delete">Confirm</button>
+                    <label for="cancel-delete">
+                    <button type="button" id="cancel-delete" name="cancel-delete">Cancel</button>
+                </div>
             `);
         },
 

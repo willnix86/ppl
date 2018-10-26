@@ -370,6 +370,20 @@ const API = (function() {
                     })
                 }
             })
+        },
+
+        deletePerson: function(personId, personName) {
+            fetch(`/people/${personId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json()
+                    .then(responseJson => {
+                        $('.alert').append(`<p class='alert alert__text-error'>Deletion was unsuccessful, please try again later.</p>`);
+                    })
+                }
+            })
         }
 
     }

@@ -8,6 +8,8 @@ const EVENTS = (function() {
                 $('.alert').empty();
                 const username = $('#username').val();
                 const password = $('#password').val();
+                console.log(username);
+                console.log(password);
                 API.logUserIn(username, password);
                 DOM.resetForm('#login');
             });
@@ -307,6 +309,26 @@ const EVENTS = (function() {
                 API.getPersonsData(personId);
             });
 
+            $('body').on('click', '#delete-person', function(e) {
+                e.preventDefault();
+                $('.delete-person-container').slideUp(10);
+                $('.confirm-delete-person-container').slideDown(10);
+            });
+
+            $('body').on('click', '#confirm-delete-person', function(e) {
+                e.preventDefault();
+                let personId = $('main').data('personId');
+                API.deletePerson(personId);
+                $('main').empty();
+                DOM.loadUserPage();
+                API.getUserData();
+            });
+
+            $('body').on('click', '#cancel-delete', function(e) {
+                e.preventDefault();
+                $('.confirm-delete-person-container').slideUp(10);
+                $('.delete-person-container').slideDown(10);
+            })
         }
     }
     
