@@ -12,6 +12,10 @@ const { app, runServer, closeServer } = require('../server');
 const { TEST_DATABASE_URL } = require('../config');
 const { seeders } = require('./seeders');
 
+const config = require('../config');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../config');
+
 chai.use(chaiHttp);
 
 describe('Meeting API Resource', function() {
@@ -43,28 +47,20 @@ describe('Meeting API Resource', function() {
             return seeders.tearDownDb();
         });
 
-        it('should return all meetings from database', function() {
-            let res;
-            return chai.request(app)
-            .get('/meetings')
-            .then(function(_res) {
-                res = _res;
-                res.should.have.status(200);
-                res.body.should.have.lengthOf.at.least(1);
-                return Meeting.countDocuments();
-            }) 
-            .then(function(count) {
-                res.body.should.have.lengthOf(count);
-            })
-        });
-
         it('should get all meetings by user ID', function() {
             let dbUser;
+            let token;
             return User.findOne()
             .then(function(user) {
                 dbUser = user;
+                token = jwt.sign({user}, config.JWT_SECRET, {
+                    subject: user.userName,
+                    expiresIn: config.JWT_EXPIRY,
+                    algorithm: 'HS256'
+                    });
                 return chai.request(app)
-                .get(`/meetings/userId/${user._id}`)
+                .get(`/meetings/protected/userId/${user._id}`)
+                .set('Authorization', `Bearer ${token}`)
             })
             .then(function(res) {
                 res.should.have.status(200);

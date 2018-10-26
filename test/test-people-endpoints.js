@@ -11,6 +11,10 @@ const { app, runServer, closeServer } = require('../server');
 const { TEST_DATABASE_URL } = require('../config');
 const { seeders } = require('./seeders');
 
+const config = require('../config');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../config');
+
 chai.use(chaiHttp);
 
 describe('People API Resource', function() {
@@ -27,77 +31,7 @@ describe('People API Resource', function() {
     });
 
 // GET ENDPOINTS
-    context('Generic GET endpoints', function() {
-
-        beforeEach(function() {
-            const userData = seeders.seedUserData();
-            return User.insertMany(userData)
-            .then((docs) => seeders.seedPeopleData(docs));
-        });
-
-        // GET ALL PEOPLE
-        it('should return all people from the database', function(){
-            let res;
-            return chai.request(app)
-            .get('/people')
-            .then(function(_res) {
-                res = _res;
-                res.should.have.status(200);
-                res.body.should.have.lengthOf.at.least(1);
-                return People.countDocuments();
-            })
-            .then(function(count) {
-                res.body.should.have.lengthOf(count);
-            })
-        });
-
-        it('should return people with all the right fields', function() {
-            let resPerson;
-            return chai.request(app)
-            .get('/people')
-            .then(function(res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('array');
-                res.body.should.have.lengthOf.at.least(1);
-                res.body.forEach(function(person){
-                    person.should.be.a('object');
-                    person.should.include.keys('id', 'firstName', 'lastName');
-                })
-                resPerson = res.body[0];
-                return People.findOne({_id: resPerson.id})
-            })
-            .then(function(person) {
-                resPerson.id.should.equal(person.id);
-                resPerson.firstName.should.equal(person.firstName);
-                resPerson.lastName.should.equal(person.lastName);
-
-            })
-        });
-
-        // GET PERSON BY ID
-        it('should return the correct person from database', function() {
-            let id;
-            return People.findOne()
-            .populate('user', '-password -userName -__v -meetings')
-            .then(function(person) {
-                id = person.id;
-                return chai.request(app)
-                .get(`/people/${id}`)
-            })
-            .then(function(res) {
-                res.should.have.status(200);
-                res.body.id.should.equal(id);
-                res.body.should.be.a('object');
-                res.body.should.include.keys('id', 'firstName', 'lastName', 'user', 'notes', 'goals');
-                res.body.notes.should.be.a('array');
-                res.body.goals.should.be.a('array');
-            })
-        });
-
-    });
-
-    context('Specialized GET endpoints', function() {
+    context('GET endpoints', function() {
 
         beforeEach(function() {
             const userData = seeders.seedUserWithSpecificId();
@@ -112,9 +46,18 @@ describe('People API Resource', function() {
         // GET ALL PEOPLE ASSOCIATED WITH SPECIFIC USER
         it('should return the correct people from the database', function() {
             let id = "5bbfbe91f60377afff6deca9";
+            let token;
             let res;
+            return User.findOne()
+            .then(function(user) {
+                token = jwt.sign({user}, config.JWT_SECRET, {
+                    subject: user.userName,
+                    expiresIn: config.JWT_EXPIRY,
+                    algorithm: 'HS256'
+                    });
             return chai.request(app)
-            .get(`/people/userId/${id}`)
+            .get(`/people/protected/${id}`)
+            .set('Authorization', `Bearer ${token}`)
             .then(function(_res) {
                 res = _res;
                 res.should.have.status(200);
@@ -124,13 +67,23 @@ describe('People API Resource', function() {
             .then(function(count) {
                 res.body.should.have.lengthOf(count);
             })
-        });
+            })
+        })
 
         it('should return people with all the right fields', function() {
             let id = "5bbfbe91f60377afff6deca9";
+            let token;
             let resPerson;
+            return User.findOne()
+            .then(function(user) {
+                token = jwt.sign({user}, config.JWT_SECRET, {
+                    subject: user.userName,
+                    expiresIn: config.JWT_EXPIRY,
+                    algorithm: 'HS256'
+                    });
             return chai.request(app)
-            .get(`/people/userId/${id}`)
+            .get(`/people/protected/${id}`)
+            .set('Authorization', `Bearer ${token}`)
             .then(function(res) {
                 res.should.have.status(200);
                 res.should.be.json;
@@ -154,8 +107,8 @@ describe('People API Resource', function() {
                 resPerson.user.lastName.should.equal(person.user.lastName);
             })
         });
-
-    })
+        })
+});
 
 // POST ENDPOINTS
     context('Generic POST endpoints', function() {
@@ -208,9 +161,19 @@ describe('People API Resource', function() {
 
         it('should update people in the database', function() {
             const updateData = seeders.generatePeopleUpdateData();
-            
+            let id;
+            let token;
+            return User.findOne()
+            .then(function(user) {
+                id = user.id;
+                token = jwt.sign({user}, config.JWT_SECRET, {
+                    subject: user.userName,
+                    expiresIn: config.JWT_EXPIRY,
+                    algorithm: 'HS256'
+                    });
             return chai.request(app)
-            .get('/people')
+            .get(`/people/protected/${id}`)
+            .set('Authorization', `Bearer ${token}`)
             .then(function(res) {
                 updateData.id = res.body[0].id;
                 return chai.request(app)
@@ -224,8 +187,8 @@ describe('People API Resource', function() {
                     person.lastName.should.equal(updateData.lastName);
                 });
             })
-        });
-        
+            });
+        })
     });
 
 // DELETE ENDPOINTS
@@ -237,27 +200,37 @@ describe('People API Resource', function() {
             .then((docs) => seeders.seedPeopleData(docs));
         });
 
-        it('should remove correct user from database', function() {
+        it('should remove correct person from database', function() {
             let person;
-            return (
-                chai.request(app)
-                .get('/people')
-                .then(function(res) {
-                    person = res.body[0].id;
-                    return chai.request(app)
-                    .delete(`/people/${person}`)
+            let id;
+            let token;
+            return User.findOne()
+            .then(function(user) {
+                id = user.id;
+                token = jwt.sign({user}, config.JWT_SECRET, {
+                    subject: user.userName,
+                    expiresIn: config.JWT_EXPIRY,
+                    algorithm: 'HS256'
+                    });
+            return chai.request(app)
+            .get(`/people/protected/${id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .then(function(res) {
+                person = res.body[0];
+                return chai.request(app)
+                    .delete(`/people/${person.id}`)
                     .then(function(res){
                         res.should.have.status(204);
                     })
                 })
                 .then(function() {
                     return chai.request(app)
-                    .get(`/people/${person}`)
+                    .get(`/people/${person.id}`)
                     .then(function(res) {
                         res.should.have.status(500);
                     })
                 })
-            )
+            })
         })
     })
 });

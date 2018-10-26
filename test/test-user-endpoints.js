@@ -10,6 +10,10 @@ const { app, runServer, closeServer } = require('../server');
 const { TEST_DATABASE_URL } = require('../config');
 const { seeders } = require('./seeders');
 
+const config = require('../config');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../config');
+
 chai.use(chaiHttp);
 
 describe('Users API Resource', function() {
@@ -33,56 +37,21 @@ describe('Users API Resource', function() {
     // GET ENDPOINTS
     describe('GET endpoints', function() {
 
-        // GET ALL USERS
-        it('should return all users from database', function() {
-            let res;
-            return chai.request(app)
-            .get('/users')
-            .then(function(_res) {
-                res = _res;
-                res.should.have.status(200);
-                res.body.should.have.lengthOf.at.least(1);
-                return User.countDocuments();
-            })
-            .then(function(count) {
-                res.body.should.have.lengthOf(count);
-            })
-        });
-        
-        it('should return users with all the right fields', function() {
-            let resUser;
-            return chai.request(app)
-            .get('/users')
-            .then(function(res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('array');
-                res.body.should.have.lengthOf.at.least(1);
-
-                res.body.forEach(function(user) {
-                    user.should.be.a('object');
-                    user.should.include.keys('id', 'firstName', 'lastName', 'userName');
-                });
-
-                resUser = res.body[0];
-                return User.findById(resUser.id);
-            })
-            .then(function(user) {
-                resUser.id.should.equal(user.id);
-                resUser.firstName.should.equal(user.firstName);
-                resUser.lastName.should.equal(user.lastName);
-                resUser.userName.should.equal(user.userName);
-            })
-        });
-
         // GET USER BY ID
         it('should return the correct user from database', function() {
             let id;
+            let token;
             return User.findOne()
             .then(function(user) {
                 id = user.id;
+                token = jwt.sign({user}, config.JWT_SECRET, {
+                    subject: user.userName,
+                    expiresIn: config.JWT_EXPIRY,
+                    algorithm: 'HS256'
+                    });
                 return chai.request(app)
-                .get(`/users/${id}`)
+                .get(`/users/protected/${id}`)
+                .set('Authorization', `Bearer ${token}`)
             })
             .then(function(res) {
                 res.should.have.status(200);
@@ -91,6 +60,33 @@ describe('Users API Resource', function() {
                 res.body.should.include.keys('id', 'firstName', 'lastName', 'userName');
             });
         })
+
+        it('should return user with all the right fields', function() {
+            let id;
+            let token;
+            let resUser;
+            let user;
+            return User.findOne()
+            .then(function(user) {
+                resUser = user;
+                id = user.id;
+                token = jwt.sign({user}, config.JWT_SECRET, {
+                    subject: user.userName,
+                    expiresIn: config.JWT_EXPIRY,
+                    algorithm: 'HS256'
+                    });
+                return chai.request(app)
+                .get(`/users/protected/${id}`)
+                .set('Authorization', `Bearer ${token}`)
+            })
+            .then(function(res) {
+                resUser = res.body;
+                resUser.id.should.equal(res.body.id);
+                resUser.firstName.should.equal(res.body.firstName);
+                resUser.lastName.should.equal(res.body.lastName);
+                resUser.userName.should.equal(res.body.userName);
+            })
+        });
 
     });
 
@@ -129,34 +125,56 @@ describe('Users API Resource', function() {
     describe('PUT endpoints', function() {
         it('should update users in the database', function() {
             const updateData = seeders.generateUserUpdateData();
-            return chai.request(app)
-            .get('/users')
-            .then(function(res) {
-                updateData.id = res.body[0].id;
+            let id;
+            let token;
+            return User.findOne()
+            .then(function(user) {
+                id = user.id;
+                token = jwt.sign({user}, config.JWT_SECRET, {
+                    subject: user.userName,
+                    expiresIn: config.JWT_EXPIRY,
+                    algorithm: 'HS256'
+                    });
                 return chai.request(app)
-                .put(`/users/${updateData.id}`)
-                .send(updateData)
-            })
-            .then(function(res) {
-                res.should.have.status(204);
-                User.findById(updateData.id)
-                .then(function(user) {
-                    user.lastName.should.equal(updateData.lastName);
-                    user.password.should.equal(updateData.password);
-                });
-            })
+                .get(`/users/protected/${id}`)
+                .set('Authorization', `Bearer ${token}`)
+                .then(function(res) {
+                    updateData.id = res.body.id;
+                    return chai.request(app)
+                    .put(`/users/${updateData.id}`)
+                    .send(updateData)
+                })
+                .then(function(res) {
+                    res.should.have.status(204);
+                    User.findById(updateData.id)
+                    .then(function(user) {
+                        user.lastName.should.equal(updateData.lastName);
+                        user.password.should.equal(updateData.password);
+                    });
+                })
+            });
         });
+
     });
 
     // DELETE ENDPOINTS
     describe('DELETE endpoints', function() {
         it('should remove correct user from database', function() {
-            let user;
-            return (
-                chai.request(app)
-                .get('/users')
+            let id;
+            let token;
+            return User.findOne()
+            .then(function(user) {
+                id = user.id;
+                token = jwt.sign({user}, config.JWT_SECRET, {
+                    subject: user.userName,
+                    expiresIn: config.JWT_EXPIRY,
+                    algorithm: 'HS256'
+                    });
+                return chai.request(app)
+                .get(`/users/protected/${id}`)
+                .set('Authorization', `Bearer ${token}`)
                 .then(function(res) {
-                    user = res.body[0].id;
+                    user = res.body.id;
                     return chai.request(app)
                     .delete(`/users/${user}`)
                     .then(function(res){
@@ -165,7 +183,8 @@ describe('Users API Resource', function() {
                 })
                 .then(function() {
                     return chai.request(app)
-                    .get(`/users/${user}`)
+                    .get(`/users/protected/${id}`)
+                    .set('Authorization', `Bearer ${token}`)
                     .then(function(res) {
                         res.should.have.status(500);
                     })
@@ -177,7 +196,8 @@ describe('Users API Resource', function() {
                         })
                     })
                 })
-            )
+            })
         })
-    })
-})
+    });
+
+});
