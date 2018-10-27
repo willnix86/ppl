@@ -25,7 +25,7 @@ Future Releases:
 Live Demo:
 ---------
 
-Demo: wheremyppl.at
+Demo: https://wheremypplat.herokuapp.com/
 
 Demo login: tess.ting / Password
 
