@@ -114,11 +114,11 @@ const DOM = (function() {
                     </form>
                 </section>
 
-                <div class="row delete-person-container">
+                <div class="col-12 delete-person-container">
                     <label for="delete-person">
                     <button type="button" id="delete-person" name="delete-person">Delete ${personName}</button>
                 </div>
-                <div class="row confirm-delete-person-container">
+                <div class="col-12 confirm-delete-person-container">
                     <label for="confirm-delete">
                     <button type="button" id="confirm-delete-person" name="confirm-delete">Confirm</button>
                     <label for="cancel-delete">
