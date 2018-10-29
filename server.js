@@ -38,14 +38,8 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/views/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 });
-
-// CRUD for Files
-
-// edit goal by id and person id
-
-// edit note by id and person id
 
 app.use('*', (req, res) => {
     return res.status(404).json({ message: 'Not Found' });
