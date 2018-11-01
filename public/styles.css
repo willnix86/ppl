@@ -83,6 +83,10 @@ li {
     list-style-type: none;
 }
 
+.test-info {
+    font-size: 12px;
+}
+
 .meeting-item, .note-item, .goal-item, .people-item {
     padding: 10px;
     background-color: #edf7f7;

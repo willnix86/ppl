@@ -239,15 +239,23 @@ const DOM = (function() {
         resetPpl: function() {
             $('main').empty();
             $('main').append(`
-            <div class="main__no-account">
-                    <p>Don't have an account?</p>
-                    <button name="signup-form" id="signup-form">Sign Up</button>
+            <div class="row">
+                <p class="features__header col-12">Develop the people in your care, whether they're a student, a client, a subordinate, or a member of your congregation.</p>
             </div>
-            <div class="main__account">
-                    <p>Already have an account?</p>
-                    <button name="signup-form" id="signup-form">Log In</button>
+            <div class="row">
+                <div class="col-4 features">
+                    <img class="features__img" src="images/goals.png" alt="icon of a target with an arrow in the bullseye">
+                    <p class="features__text">Track progress with SMART goals and appropriate deadlines</p>
+                </div>
+                <div class="col-4 features">
+                    <img class="features__img" src="images/notes.png" alt="icon of a sheet of paper with writing and a pencil">
+                    <p class="features__text">Record successes, milestones, and areas for further development</p>
+                </div>
+                <div class="col-4 features">
+                    <img class="features__img" src="images/meetings.png" alt="icon of a calendar">
+                    <p class="features__text">Schedule your next one-to-one, and view all meetings in one place</p>
+                </div>
             </div>
-            <div role="alert" class="alert"></div>
             `);
         },
 
