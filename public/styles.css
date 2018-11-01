@@ -48,6 +48,7 @@ button {
     background-color: #d7e5e5;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 fieldset {
