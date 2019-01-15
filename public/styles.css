@@ -189,15 +189,14 @@ footer {
 }
 
 .person__img, .meetings__img, .notes__img, .goals__img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     display: block;
     margin: 0 auto;
 }
 
 .people-section, .meetings-section, .notes-section, .goals-section, .meetings-section-people {
     background-color: #e6f4f4;
-    font-size: 15px;
     text-decoration: underline;
     border: none;
     text-align: center;
