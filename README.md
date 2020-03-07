@@ -30,6 +30,14 @@ Demo: [Ppl](https://wheremypplat.herokuapp.com/)
 Demo login: tess.ting / Password
 
 
+Built with:
+-----------
+
+Front-End: HTML5 | CSS3 | JavaScript ES6 | jQuery
+
+Back-End: Node.js | Express.js | Mocha | Chai | REST API | MongoDB | Mongoose | Passport & JWT Authentication
+
+
 Screenshots:
 -----------
 
@@ -48,13 +56,6 @@ Screenshots:
 
 ![Screenshot of the 'Ppl' Mobile People Area](/public/images/people-area-mobile.PNG)
 
-
-Built with:
------------
-
-Front-End: HTML5 | CSS3 | JavaScript ES6 | jQuery
-
-Back-End: Node.js | Express.js | Mocha | Chai | REST API | MongoDB | Mongoose | Passport & JWT Authentication
 
 
 Author:
