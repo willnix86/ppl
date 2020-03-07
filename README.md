@@ -25,7 +25,7 @@ Future Releases:
 Live Demo:
 ---------
 
-Demo: http://www.wheremyppl.at
+Demo: [Ppl](https://wheremypplat.herokuapp.com/)
 
 Demo login: tess.ting / Password
 
@@ -60,4 +60,4 @@ Back-End: Node.js | Express.js | Mocha | Chai | REST API | MongoDB | Mongoose | 
 Author:
 ------
 
-[Will Nixon](https://www.devnx.io)
+[Will Nixon](https://www.willnixon.dev)
